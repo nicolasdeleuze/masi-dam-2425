@@ -3,6 +3,22 @@ allprojects {
         google()
         mavenCentral()
     }
+
+    // Allow to use dependencies that doesn't have namespace
+    // and use the project group as namespace
+    subprojects {
+        afterEvaluate { project ->
+            if (project.hasProperty('android')) {
+                project.android {
+                    if (namespace == null) {
+                        namespace project.group
+                    }
+                }
+            }
+        }
+    }
+    // end
+
 }
 
 rootProject.buildDir = "../build"
