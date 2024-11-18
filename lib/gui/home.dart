@@ -9,10 +9,15 @@ import '../comm/com_service.dart';
 import '../comm/user_role.dart';
 
 class HomeWidget extends StatefulWidget {
-  HomeWidget({super.key});
+  HomeWidget(
+      {
+        super.key,
+        required ComService this.comService
+      }
+  );
 
   UserRole? role;
-  ComService comService = ComService();
+  ComService? comService;
 
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
@@ -37,7 +42,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   widget.role = UserRole.barman;
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const BarmanHomeWidget())
+                    MaterialPageRoute(builder: (context) => BarmanHomeWidget(comService: widget.comService!))
                   );
                 },
                 style: homeButtonStyle,
@@ -52,7 +57,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   widget.role = UserRole.waiter;
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const WaiterHomeWidget())
+                    MaterialPageRoute(builder: (context) => WaiterHomeWidget(comService: widget.comService!))
                   );
                 },
                 style: homeButtonStyle,

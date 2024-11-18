@@ -8,7 +8,7 @@ class ComService {
   String? _networkName;
   UserRole? _role;
   FlutterP2pConnection? _connection;
-  List<DiscoveredPeers> _peers = [];
+  final List<DiscoveredPeers> _peers = [];
   WifiP2PInfo? _wifiP2PInfo;
   StreamSubscription<WifiP2PInfo>? _streamWifiInfo;
   StreamSubscription<List<DiscoveredPeers>>? _streamPeers;
@@ -26,21 +26,24 @@ class ComService {
     do {
       isAllAuthorized = 0;
 
-      if(await _connection!.checkLocationEnabled())
+      if(await _connection!.checkLocationEnabled()) {
         isAllAuthorized++;
-      else
+      } else {
         await _connection!.askLocationPermission();
+      }
 
-      if(await _connection!.checkStoragePermission())
+      if(await _connection!.checkStoragePermission()) {
         isAllAuthorized++;
-      else
+      } else {
         await _connection!.askStoragePermission();
+      }
 
-      if(await _connection!.checkWifiEnabled())
+      if(await _connection!.checkWifiEnabled()) {
         isAllAuthorized++;
-      else {
-        if(await _connection!.enableWifiServices())
+      } else {
+        if(await _connection!.enableWifiServices()) {
           isAllAuthorized++;
+        }
       }
 
     } while(isAllAuthorized != 3);
@@ -69,26 +72,30 @@ class ComService {
 
   void createGroup() async {
     bool ret = await _connection!.createGroup();
-    if(ret == false)
+    if(ret == false) {
       throw Exception('Failed to create group');
+    }
   }
 
   void removeGroup() async {
     bool ret = await _connection!.removeGroup();
-    if(ret == false)
+    if(ret == false) {
       throw Exception('Failed to leave group');
+    }
   }
 
   void discoverPeers() async {
     bool ret = await _connection!.discover();
-    if(ret == false)
+    if(ret == false) {
       throw Exception('Failed to enable peers discovery');
+    }
   }
 
   void stopDiscoverPeers() async {
     bool ret = await _connection!.stopDiscovery();
-    if(ret == false)
+    if(ret == false) {
       throw Exception('Failed to stop peers discovery');
+    }
   }
 
   Future<void> startSocket (
@@ -106,12 +113,13 @@ class ComService {
         transferUpdate: transferUpdate,
         receiveString: receiveString,
       );
-      if(!started)
+      if(!started) {
         throw Exception('Failed to start socket');
+      }
     }
   }
 
-  Future<void> connectToSoecket(
+  Future<void> connectToSocket(
       void Function(String) onConnect,
       void Function(TransferUpdate) transferUpdate,
       void Function(dynamic) receiveString,
@@ -128,15 +136,21 @@ class ComService {
   }
 
   Future<void> closeSocket() async {
-    bool s = await _connection!.closeSocket();
-    if(!s)
+    bool s = _connection!.closeSocket();
+    if(!s) {
       throw Exception('Failed to close socket');
+    }
   }
 
   Future<void> sendString(String message) async {
-    bool s = await _connection!.sendStringToSocket(message);
-    if(!s)
+    bool s = _connection!.sendStringToSocket(message);
+    if(!s) {
       throw Exception('Failed to send message');
+    }
+  }
+
+  WifiP2PInfo getWifiP2PInfo() {
+    return _wifiP2PInfo!;
   }
 
 }

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:masi_dam_2425/comm/com_service.dart';
 
 import 'theme.dart';
 
 class BarmanHomeWidget extends StatelessWidget {
-  const BarmanHomeWidget({Key? key}) : super(key: key);
+  BarmanHomeWidget(
+      {super.key, required this.comService}
+  );
+
+  ComService comService;
 
   @override
   Widget build(BuildContext context) {
