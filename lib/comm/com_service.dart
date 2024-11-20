@@ -8,7 +8,7 @@ class ComService {
   String? _networkName;
   UserRole? _role;
   FlutterP2pConnection? _connection;
-  final List<DiscoveredPeers> _peers = [];
+  final List<DiscoveredPeers> peers = [];
   WifiP2PInfo? _wifiP2PInfo;
   StreamSubscription<WifiP2PInfo>? _streamWifiInfo;
   StreamSubscription<List<DiscoveredPeers>>? _streamPeers;

@@ -19,16 +19,18 @@ class WaiterHomeWidget extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            const Spacer(),
+            Spacer(),
 
 
             // TODO
             // List all available networks
             // make it selecteable
 
-            ComServicePeersList(comService: comService),
+            Expanded(
+                child:  ComServicePeersList(comService: comService),
+            ),
 
 
 
@@ -47,7 +49,7 @@ class WaiterHomeWidget extends StatelessWidget {
                 style: homeButtonTextStyle,
               ),
             ),
-            const Spacer(),
+            Spacer()
           ],
         ),
       ),
