@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/com_service_peers_list.dart';
+import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 
 import 'theme.dart';
 
@@ -43,7 +44,7 @@ class WaiterHomeWidget extends StatelessWidget {
                 // Go to waiter orders page
 
               },
-              style: homeButtonStyle,
+              style: homeButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
               child: const Text(
                 'Join network',
                 style: homeButtonTextStyle,

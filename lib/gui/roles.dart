@@ -13,7 +13,7 @@ class RolesWidget extends StatefulWidget {
   static CircleAvatar calendarIcon() {
     return CircleAvatar(
       radius: 25.0,
-      backgroundColor: LightColors.kGreen,
+      backgroundColor: LightColors.kLightGreen,
       child: Icon(
         Icons.calendar_today,
         size: 20.0,
@@ -52,7 +52,6 @@ class _RolesWidgetState extends State<RolesWidget> {
                       Icon(Icons.menu,
                           color: LightColors.kDarkBlue, size: 30.0),
                       CircleAvatar(
-                        backgroundColor: LightColors.kGreen,
                         radius: 30.0,
                         backgroundImage: AssetImage(
                           "assets/images/avatar.png",
@@ -99,11 +98,10 @@ class _RolesWidgetState extends State<RolesWidget> {
                                 builder: (context) => BarmanHomeWidget(
                                     comService: widget.comService!)));
                       },
-                      style: homeButtonStyle,
+                      style: homeButtonStyle(LightColors.kGreen, LightColors.kLightYellow),
                       child: Column(
                         children: <Widget>[
                           CircleAvatar(
-                            backgroundColor: LightColors.kGreen,
                             radius: 50.0,
                             backgroundImage: AssetImage(
                               "assets/images/avatar.png",
@@ -130,11 +128,10 @@ class _RolesWidgetState extends State<RolesWidget> {
                                 builder: (context) => WaiterHomeWidget(
                                     comService: widget.comService!)));
                       },
-                      style: homeButtonStyle,
+                      style: homeButtonStyle(LightColors.kRed, LightColors.kLightYellow),
                       child: Column(
                         children: <Widget>[
                           CircleAvatar(
-                            backgroundColor: LightColors.kGreen,
                             radius: 50.0,
                             backgroundImage: AssetImage(
                               "assets/images/avatar.png",
