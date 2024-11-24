@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'theme/colors/light_colors.dart';
 import 'comm/com_service.dart';
-import 'gui/roles.dart';
+import 'gui/roles_selection_screen.dart';
 
 ComService comService = ComService();
 

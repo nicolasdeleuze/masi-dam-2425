@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:masi_dam_2425/gui/theme.dart';
+import 'package:masi_dam_2425/gui/admin_home_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
-import 'package:masi_dam_2425/gui/barman_home.dart';
-import 'package:masi_dam_2425/gui/waiter_home.dart';
-import 'package:masi_dam_2425/widgets/top_container.dart';
+import 'package:masi_dam_2425/gui/barman_home_screen.dart';
+import 'package:masi_dam_2425/gui/waiter_home_screen.dart';
+import 'package:masi_dam_2425/widgets/top_container_widget.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
+import 'package:masi_dam_2425/widgets/role_button_widget.dart';
 
 class RolesWidget extends StatefulWidget {
   RolesWidget({super.key, required ComService this.comService});
@@ -61,7 +62,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const <Widget>[
                           Text(
-                            'Rodrigues Lejeune',
+                            'Welcome Rodrigues',
                             style: TextStyle(
                               fontSize: 22.0,
                               color: LightColors.kDarkBlue,
@@ -84,71 +85,43 @@ class _RolesWidgetState extends State<RolesWidget> {
               ),
             ),
             const Spacer(flex: 2),
-            Row(
+            Column(
               children: [
-                const Spacer(),
-                SizedBox(
-                    height: 250,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        widget.role = UserRole.barman;
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BarmanHomeWidget(
-                                    comService: widget.comService!)));
-                      },
-                      style: homeButtonStyle(LightColors.kGreen, LightColors.kLightYellow),
-                      child: Column(
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 50.0,
-                            backgroundImage: AssetImage(
-                              "assets/images/avatar.png",
-                            ),
-                          ),
-
-                          const Text(
-                            'Barman',
-                            style: homeButtonTextStyle,
-                          ),
-                        ],
-                      ),
+                Row(
+                  children: [
+                    const Spacer(),
+                    RoleButton(
+                      label: 'Barman',
+                      role: UserRole.barman,
+                      backgroundColor: LightColors.kGreen,
+                      textColor: LightColors.kLightYellow,
+                      nextPage: BarmanHomeWidget(comService: widget.comService!),
+                      comService: widget.comService!,
                     ),
-                  ),
-                const Spacer(),
-                  SizedBox(
-                    height: 250,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        widget.role = UserRole.waiter;
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => WaiterHomeWidget(
-                                    comService: widget.comService!)));
-                      },
-                      style: homeButtonStyle(LightColors.kRed, LightColors.kLightYellow),
-                      child: Column(
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 50.0,
-                            backgroundImage: AssetImage(
-                              "assets/images/avatar.png",
-                            ),
-                          ),
-                          const Text(
-                            'Waiter',
-                            style: homeButtonTextStyle,
-                          ),
-                        ],
-                      ),
+                    const Spacer(),
+                    RoleButton(
+                      label: 'Waiter',
+                      role: UserRole.waiter,
+                      backgroundColor: LightColors.kRed,
+                      textColor: LightColors.kLightYellow,
+                      nextPage: WaiterHomeWidget(comService: widget.comService!),
+                      comService: widget.comService!,
                     ),
-                  ),
-
-                const Spacer(),
+                    const Spacer(),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                RoleButton(
+                  label: 'Admin',
+                  role: UserRole.admin,
+                  backgroundColor: LightColors.kBlue,
+                  textColor: LightColors.kLightYellow,
+                  nextPage: AdminHomeWidget(),
+                  comService: widget.comService!,
+                ),
               ],
             ),
+            const Spacer(),
             const Spacer(flex: 2),
           ],
         ),
@@ -156,3 +129,4 @@ class _RolesWidgetState extends State<RolesWidget> {
     );
   }
 }
+
