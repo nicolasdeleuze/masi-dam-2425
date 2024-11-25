@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
 
 import 'user_role.dart';
 
 class ComService {
+  bool _isInitialized = false;
   String? _networkName;
   UserRole? _role;
   FlutterP2pConnection? _connection;
@@ -17,7 +19,14 @@ class ComService {
     _connection = FlutterP2pConnection();
   }
 
-  void init(String networkName, UserRole role) async {
+  Future<ConnectionState> init(String networkName, UserRole role) async {
+    if(_isInitialized && _networkName != null && _role != null && _networkName == networkName && _role == role) {
+      return ConnectionState.done;
+    }
+    else {
+      _isInitialized = false;
+      _connection!.unregister();
+    }
     _networkName = networkName;
     _role = role;
 
@@ -50,6 +59,10 @@ class ComService {
 
     await _connection!.initialize();
     await _connection!.register();
+
+    _isInitialized = true;
+
+    return ConnectionState.done;
   }
 
   void start() {
