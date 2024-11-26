@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/colors/light_colors.dart';
 
 // home button style
 ButtonStyle homeButtonStyle(Color backgroundColor, Color foregroundColor) {
