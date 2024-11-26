@@ -1,5 +1,6 @@
 
 enum UserRole {
   barman,
-  waiter
+  waiter,
+  admin
 }

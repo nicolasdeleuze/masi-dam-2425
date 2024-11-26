@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:masi_dam_2425/comm/com_service.dart';
+import 'package:masi_dam_2425/theme/colors/light_colors.dart';
+import 'package:masi_dam_2425/widgets/home_button_widget.dart';
+import 'package:masi_dam_2425/widgets/homepage_top_container_widget.dart';
+import 'package:masi_dam_2425/widgets/top_container_widget.dart';
 
-import 'theme.dart';
-
-class BarmanHomeWidget extends StatelessWidget {
-  BarmanHomeWidget(
-      {super.key, required this.comService}
-  );
-
-  ComService comService;
+class AdminHomeWidget extends StatelessWidget {
+  const AdminHomeWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Barman'),
-        centerTitle: true,
-      ),
-      body: Center(
+      backgroundColor: LightColors.kLightYellow,
+      body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            CustomTopContainer(
+              height: 150,
+              width: width,
+              title: 'Welcome Rodrigues',
+              subtitle: 'Event Administration',
+            ),
             const Spacer(),
             ElevatedButton(
               onPressed: () {
@@ -32,7 +32,7 @@ class BarmanHomeWidget extends StatelessWidget {
                 // Go to barman orders page
 
               },
-              style: homeButtonStyle,
+              style: homeButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
               child: const Text(
                 'Start event',
                 style: homeButtonTextStyle,
@@ -47,7 +47,7 @@ class BarmanHomeWidget extends StatelessWidget {
                 // Go to events manager page
 
               },
-              style: homeButtonStyle,
+              style: homeButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
               child: const Text(
                 'Events manager',
                 style: homeButtonTextStyle,
@@ -62,7 +62,7 @@ class BarmanHomeWidget extends StatelessWidget {
                 // Go to inventory manager page
 
               },
-              style: homeButtonStyle,
+              style: homeButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
               child: const Text(
                 'Inventory',
                 style: homeButtonTextStyle,
