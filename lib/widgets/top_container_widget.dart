@@ -12,19 +12,17 @@ class TopContainer extends StatelessWidget {
     required this.height,
     required this.width,
     required this.child,
-    this.padding = const EdgeInsets.symmetric(horizontal: 20.0),
+    this.padding = const EdgeInsets.symmetric(horizontal: 0.0),
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.all(8),
       padding: padding,
       decoration: BoxDecoration(
         color: LightColors.kDarkYellow,
-        borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(40.0),
-          bottomLeft: Radius.circular(40.0),
-        ),
+        borderRadius: const BorderRadius.all(Radius.circular(40.0))
       ),
       height: height,
       width: width,

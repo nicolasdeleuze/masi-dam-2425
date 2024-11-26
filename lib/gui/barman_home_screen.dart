@@ -16,18 +16,19 @@ class BarmanHomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CustomTopContainer(
-              height: 150,
-              width: width,
-              title: 'Welcome Rodrigues',
-              subtitle: 'Bartender',
-            ),
-            Spacer()
-          ],
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CustomTopContainer(
+                height: 150,
+                width: width,
+                subtitle: 'Bartender',
+              ),
+              Spacer()
+            ],
+          ),
         ),
       ),
     );

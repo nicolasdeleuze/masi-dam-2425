@@ -5,17 +5,16 @@ import 'package:masi_dam_2425/widgets/top_container_widget.dart';
 class CustomTopContainer extends StatelessWidget {
   final double height;
   final double width;
-  final String title;
   final String subtitle;
   final String avatarPath;
+  final _name = "Rodrigues";
 
   const CustomTopContainer({
     super.key,
     required this.height,
     required this.width,
-    required this.title,
     required this.subtitle,
-    this.avatarPath = "assets/images/avatar.png",
+    this.avatarPath = "assets/images/avatarMale.png",
   });
 
   @override
@@ -30,16 +29,20 @@ class CustomTopContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              CircleAvatar(
-                radius: 30.0,
-                backgroundColor: LightColors.kLightYellow,
-                backgroundImage: AssetImage(avatarPath),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Image.asset(
+                  avatarPath,
+                  height: 80.0,
+                  width: 80.0,
+                  fit: BoxFit.cover,
+                ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    title,
+                    "Hello, $_name",
                     style: const TextStyle(
                       fontSize: 22.0,
                       color: LightColors.kDarkBlue,

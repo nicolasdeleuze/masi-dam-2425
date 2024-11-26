@@ -9,7 +9,7 @@ ButtonStyle homeButtonStyle(Color backgroundColor, Color foregroundColor) {
     padding: WidgetStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(20)),
     shape: WidgetStateProperty.all<RoundedRectangleBorder>(
       RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(50),
       ),
     ),
   );
@@ -17,7 +17,7 @@ ButtonStyle homeButtonStyle(Color backgroundColor, Color foregroundColor) {
 
 // home button text style
 const TextStyle homeButtonTextStyle = TextStyle(
-  fontSize: 24,
+  fontSize: 16,
   fontWeight: FontWeight.bold,
 );
 

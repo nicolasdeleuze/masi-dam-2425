@@ -19,8 +19,7 @@ class AdminHomeWidget extends StatelessWidget {
             CustomTopContainer(
               height: 150,
               width: width,
-              title: 'Welcome Rodrigues',
-              subtitle: 'Event Administration',
+              subtitle: 'Event Administrator',
             ),
             const Spacer(),
             ElevatedButton(

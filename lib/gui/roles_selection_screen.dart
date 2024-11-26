@@ -4,15 +4,14 @@ import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/gui/barman_home_screen.dart';
 import 'package:masi_dam_2425/gui/waiter_home_screen.dart';
 import 'package:masi_dam_2425/widgets/homepage_top_container_widget.dart';
-import 'package:masi_dam_2425/widgets/top_container_widget.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
 import 'package:masi_dam_2425/widgets/role_button_widget.dart';
 
 class RolesWidget extends StatefulWidget {
-  RolesWidget({super.key, required ComService this.comService});
+  const RolesWidget({super.key, required ComService this.comService});
 
-  ComService? comService;
+  final ComService? comService;
 
   @override
   State<RolesWidget> createState() => _RolesWidgetState();
@@ -33,7 +32,6 @@ class _RolesWidgetState extends State<RolesWidget> {
             CustomTopContainer(
               height: 150,
               width: width,
-              title: 'Welcome Rodrigues',
               subtitle: 'Select your role',
             ),
             Expanded(

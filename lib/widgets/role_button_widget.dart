@@ -42,6 +42,7 @@ class RoleButton extends StatelessWidget {
         child: Center(
           child: Row(
             children: <Widget>[
+              SizedBox(width: 20.0),
               ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Image.asset(
@@ -54,7 +55,7 @@ class RoleButton extends StatelessWidget {
               SizedBox(width: 20.0),
               Text(
                 label,
-                style: homeButtonTextStyle,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
             ],
           ),
