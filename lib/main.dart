@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'theme/colors/light_colors.dart';
-import 'comm/com_service.dart';
 import 'gui/roles_selection_screen.dart';
-
-ComService comService = ComService();
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +22,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Poppins'
         ),
       ),
-      home: RolesWidget(comService: comService),
+      home: RolesWidget(),
     );
   }
 }
