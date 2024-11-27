@@ -6,6 +6,8 @@ import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
 import 'user_role.dart';
 
 class ComService {
+  static ComService? _instance;
+
   bool _isInitialized = false;
   String? _networkName;
   UserRole? _role;
@@ -14,9 +16,18 @@ class ComService {
   WifiP2PInfo? _wifiP2PInfo;
   StreamSubscription<WifiP2PInfo>? _streamWifiInfo;
   StreamSubscription<List<DiscoveredPeers>>? _streamPeers;
+  bool _isGroupCreated = false;
 
-  ComService() {
+  // private constructor
+  ComService._() {
     _connection = FlutterP2pConnection();
+  }
+
+  static ComService getInstance() {
+    if(_instance == null) {
+      _instance = ComService._();
+    }
+    return _instance!;
   }
 
   Future<ConnectionState> init(String networkName, UserRole role) async {
@@ -25,7 +36,9 @@ class ComService {
     }
     else {
       _isInitialized = false;
-      _connection!.unregister();
+      if(_networkName != null && _role != null) {
+        await _connection!.unregister();
+      }
     }
     _networkName = networkName;
     _role = role;
@@ -78,16 +91,21 @@ class ComService {
   }
 
   void startAsBarman(String networkName) {
+    createGroup();
   }
 
   void startAsWaiter(String networkName) {
   }
 
   void createGroup() async {
+    if(_isGroupCreated) {
+      return;
+    }
     bool ret = await _connection!.createGroup();
     if(ret == false) {
       throw Exception('Failed to create group');
     }
+    _isGroupCreated = true;
   }
 
   void removeGroup() async {
@@ -95,6 +113,7 @@ class ComService {
     if(ret == false) {
       throw Exception('Failed to leave group');
     }
+    _isGroupCreated = false;
   }
 
   void discoverPeers() async {

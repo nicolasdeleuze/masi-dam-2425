@@ -8,9 +8,9 @@ import '../widgets/home_button_widget.dart';
 import 'loader.dart';
 
 class WaiterHomeWidget extends StatefulWidget {
-  WaiterHomeWidget({super.key, required this.comService});
+  WaiterHomeWidget({super.key});
 
-  ComService comService = ComService();
+  ComService comService = ComService.getInstance();
 
   @override
   State<WaiterHomeWidget> createState() => _WaiterHomeWidgetState();
@@ -20,7 +20,6 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    widget.comService.init('OpenAirPOS', UserRole.waiter);
     return Scaffold(
       body: Center(
           child: FutureBuilder(

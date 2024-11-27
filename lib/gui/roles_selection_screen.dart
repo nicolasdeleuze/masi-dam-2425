@@ -10,7 +10,7 @@ import 'package:masi_dam_2425/comm/user_role.dart';
 import 'package:masi_dam_2425/widgets/role_button_widget.dart';
 
 class RolesWidget extends StatefulWidget {
-  RolesWidget({super.key, required ComService this.comService});
+  RolesWidget({super.key});
 
   ComService? comService;
 
@@ -47,8 +47,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                     iconColor : LightColors.kLightYellow,
                     backgroundColor: LightColors.kGreen,
                     textColor: LightColors.kLightYellow,
-                    nextPage: BarmanHomeWidget(comService: widget.comService!),
-                    comService: widget.comService!,
+                    nextPage: BarmanHomeWidget(),
                   ),
                   const SizedBox(height: 20),
                   RoleButton(
@@ -58,8 +57,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                     iconColor : LightColors.kLightYellow,
                     backgroundColor: LightColors.kRed,
                     textColor: LightColors.kLightYellow,
-                    nextPage: WaiterHomeWidget(comService: widget.comService!),
-                    comService: widget.comService!,
+                    nextPage: WaiterHomeWidget(),
                   ),
                   const SizedBox(height: 20),
                   RoleButton(
@@ -70,7 +68,6 @@ class _RolesWidgetState extends State<RolesWidget> {
                     backgroundColor: LightColors.kBlue,
                     textColor: LightColors.kLightYellow,
                     nextPage: AdminHomeWidget(),
-                    comService: widget.comService!,
                   ),
                 ],
               ),

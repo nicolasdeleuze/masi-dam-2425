@@ -11,9 +11,9 @@ class RoleButton extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final Widget nextPage;
-  final ComService comService;
+  ComService comService = ComService.getInstance();
 
-  const RoleButton({
+  RoleButton({
     required this.label,
     required this.role,
     required this.iconPath,
@@ -21,7 +21,6 @@ class RoleButton extends StatelessWidget {
     required this.backgroundColor,
     required this.textColor,
     required this.nextPage,
-    required this.comService,
     super.key,
   });
 
