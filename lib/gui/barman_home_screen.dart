@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
 import 'package:masi_dam_2425/gui/loader.dart';
@@ -44,16 +45,47 @@ class _BarmanHomeWidgetState extends State<BarmanHomeWidget> {
                     // launch communication service as bartender
                     // Go to bartender orders page
 
-                    void onConnect(String name, String address) {
-
+                    void snack(String msg) async {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          duration: const Duration(seconds: 2),
+                          content: Text(
+                            msg,
+                          ),
+                        ),
+                      );
                     }
 
-                    widget.comService.start();
-                    // widget.comService.startSocket(
-                    //     ,
-                    //     transferUpdate,
-                    //     receiveString
-                    // )
+                    void onConnect(String name, String address) {
+                    }
+
+                    void transferUpdate(TransferUpdate event) {
+                      throw UnimplementedError();
+                    }
+
+                    void receiveString(dynamic obj) {
+                      if (obj is String) {
+                        String message = obj;
+                        snack(message);
+                      }
+                      else {
+                        snack('Received unknown message : $obj');
+                      }
+                    }
+
+
+                    // Execute the following code block as a single async function
+                    // to keep order execution
+                    () async {
+                      widget.comService.start();
+                      widget.comService.startSocket(
+                          onConnect,
+                          transferUpdate,
+                          receiveString
+                      );
+                    }();
+
+
                   },
                   style: homeButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
                   child: Text('Enable Network'),

@@ -16,6 +16,7 @@ class ComService {
   WifiP2PInfo? _wifiP2PInfo;
   StreamSubscription<WifiP2PInfo>? _streamWifiInfo;
   StreamSubscription<List<DiscoveredPeers>>? _streamPeers;
+  bool _isGroupCreated = false;
 
   // private constructor
   ComService._() {
@@ -97,10 +98,14 @@ class ComService {
   }
 
   void createGroup() async {
+    if(_isGroupCreated) {
+      return;
+    }
     bool ret = await _connection!.createGroup();
     if(ret == false) {
       throw Exception('Failed to create group');
     }
+    _isGroupCreated = true;
   }
 
   void removeGroup() async {
@@ -108,6 +113,7 @@ class ComService {
     if(ret == false) {
       throw Exception('Failed to leave group');
     }
+    _isGroupCreated = false;
   }
 
   void discoverPeers() async {
