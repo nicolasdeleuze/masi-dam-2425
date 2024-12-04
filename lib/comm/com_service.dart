@@ -73,6 +73,15 @@ class ComService {
     await _connection!.initialize();
     await _connection!.register();
 
+    _streamWifiInfo = _connection!.streamWifiP2PInfo().listen((event) {
+      _wifiP2PInfo = event;
+    });
+
+    _streamPeers = _connection!.streamPeers().listen((event) {
+      peers.clear();
+      peers.addAll(event);
+    });
+
     _isInitialized = true;
 
     return ConnectionState.done;

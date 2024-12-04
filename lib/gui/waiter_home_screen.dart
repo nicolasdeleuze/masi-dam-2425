@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
 import 'package:masi_dam_2425/comm/com_service_peers_list.dart';
@@ -55,6 +56,47 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
                           // Join selected network
                           // launch communication service as waiter
                           // Go to waiter orders page
+
+                          void snack(String msg) async {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: const Duration(seconds: 2),
+                                content: Text(
+                                  msg,
+                                ),
+                              ),
+                            );
+                          }
+
+                          void onConnect(String address) {
+                          }
+
+                          void transferUpdate(TransferUpdate event) {
+                            throw UnimplementedError();
+                          }
+
+                          void receiveString(dynamic obj) {
+                            if (obj is String) {
+                              String message = obj;
+                              snack(message);
+                            }
+                            else {
+                              snack('Received unknown message : $obj');
+                            }
+                          }
+
+                          () async {
+                            widget.comService.start();
+                            widget.comService.discoverPeers();
+
+                            // TODO
+                            // après avoir choisi un réseau
+                            widget.comService.connectToSocket(
+                                onConnect,
+                                transferUpdate,
+                                receiveString
+                            );
+                          }();
 
                         },
                         style: homeButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
