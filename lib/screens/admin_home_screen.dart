@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
-import 'package:masi_dam_2425/widgets/home_button_widget.dart';
-import 'package:masi_dam_2425/widgets/homepage_top_container_widget.dart';
-import 'package:masi_dam_2425/widgets/top_container_widget.dart';
+import 'package:masi_dam_2425/theme/styles/colored_button_style.dart';
+import 'package:masi_dam_2425/widgets/header_container_widget.dart';
 
 class AdminHomeWidget extends StatelessWidget {
   const AdminHomeWidget({super.key});
@@ -11,12 +10,11 @@ class AdminHomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: LightColors.kLightYellow,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CustomTopContainer(
+            HeaderContainer(
               height: 150,
               width: width,
               subtitle: 'Event Administrator',

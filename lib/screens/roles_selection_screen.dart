@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:masi_dam_2425/gui/admin_home_screen.dart';
+import 'package:masi_dam_2425/screens/admin_home_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
-import 'package:masi_dam_2425/gui/barman_home_screen.dart';
-import 'package:masi_dam_2425/gui/waiter_home_screen.dart';
-import 'package:masi_dam_2425/widgets/homepage_top_container_widget.dart';
+import 'package:masi_dam_2425/screens/barman_home_screen.dart';
+import 'package:masi_dam_2425/screens/waiter_home_screen.dart';
+import 'package:masi_dam_2425/widgets/header_container_widget.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
-import 'package:masi_dam_2425/widgets/role_button_widget.dart';
+import 'package:masi_dam_2425/widgets/xlarge_button_widget.dart';
 
 class RolesWidget extends StatefulWidget {
   const RolesWidget({super.key, required ComService this.comService});
@@ -24,12 +24,10 @@ class _RolesWidgetState extends State<RolesWidget> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: LightColors.kLightYellow,
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CustomTopContainer(
+            HeaderContainer(
               height: 150,
               width: width,
               subtitle: 'Select your role',
@@ -38,7 +36,7 @@ class _RolesWidgetState extends State<RolesWidget> {
               child: ListView(
                 padding: EdgeInsets.all(40.0),
                 children: <Widget>[
-                  RoleButton(
+                  XLargeButton(
                     label: 'Bartender',
                     role: UserRole.barman,
                     iconPath: 'assets/images/bartender.png',
@@ -49,7 +47,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                     comService: widget.comService!,
                   ),
                   const SizedBox(height: 20),
-                  RoleButton(
+                  XLargeButton(
                     label: 'Waiter',
                     role: UserRole.waiter,
                     iconPath: 'assets/images/waiter.png',
@@ -60,7 +58,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                     comService: widget.comService!,
                   ),
                   const SizedBox(height: 20),
-                  RoleButton(
+                  XLargeButton(
                     label: 'Admin',
                     role: UserRole.admin,
                     iconPath: 'assets/images/admin.png',

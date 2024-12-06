@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
-import 'package:masi_dam_2425/widgets/home_button_widget.dart';
+import 'package:masi_dam_2425/theme/styles/colored_button_style.dart';
 
-class RoleButton extends StatelessWidget {
+class XLargeButton extends StatelessWidget {
   final String label;
   final UserRole role;
   final String iconPath;
@@ -13,7 +13,7 @@ class RoleButton extends StatelessWidget {
   final Widget nextPage;
   final ComService comService;
 
-  const RoleButton({
+  const XLargeButton({
     required this.label,
     required this.role,
     required this.iconPath,

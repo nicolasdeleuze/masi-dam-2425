@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
-import 'package:masi_dam_2425/widgets/top_container_widget.dart';
+import 'package:masi_dam_2425/widgets/colored_container_widget.dart';
 
-class CustomTopContainer extends StatelessWidget {
+class HeaderContainer extends StatelessWidget {
   final double height;
   final double width;
   final String subtitle;
   final String avatarPath;
   final _name = "Rodrigues";
 
-  const CustomTopContainer({
+  const HeaderContainer({
     super.key,
     required this.height,
     required this.width,
@@ -19,9 +19,11 @@ class CustomTopContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TopContainer(
+    return ColoredContainer(
+      color : LightColors.kDarkYellow,
       height: height,
       width: width,
+      radius : 40.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[

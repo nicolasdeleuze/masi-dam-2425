@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'theme/colors/light_colors.dart';
 import 'comm/com_service.dart';
-import 'gui/roles_selection_screen.dart';
+import 'screens/roles_selection_screen.dart';
 
 ComService comService = ComService();
 
@@ -17,17 +17,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Open Air POS',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: Theme.of(context).textTheme.apply(
-            bodyColor: LightColors.kDarkBlue,
-            displayColor: LightColors.kDarkBlue,
-            fontFamily: 'Poppins'
-        ),
-      ),
+      theme: _buildThemeData(context),
       home: RolesWidget(comService: comService),
     );
   }
+
+  ThemeData _buildThemeData(BuildContext context) {
+    const darkBlue = LightColors.kDarkBlue;
+    const lightYellow = LightColors.kLightYellow;
+
+    return ThemeData(
+      primarySwatch: Colors.blue,
+      textTheme: TextTheme(
+        bodyLarge: TextStyle(
+          color: darkBlue,
+          fontFamily: 'Poppins',
+        ),
+        displayLarge: TextStyle(
+          color: darkBlue,
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+        ),
+      ),
+      scaffoldBackgroundColor: lightYellow,
+    );
+  }
 }
-
-
