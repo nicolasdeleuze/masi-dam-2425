@@ -17,7 +17,8 @@ class AdminHomeWidget extends StatelessWidget {
             HeaderContainer(
               height: 150,
               width: width,
-              subtitle: 'Event Administrator',
+              subtitle: 'Event Admin',
+                userID : "RLE1234"
             ),
             const Spacer(),
             ElevatedButton(
@@ -29,10 +30,10 @@ class AdminHomeWidget extends StatelessWidget {
                 // Go to barman orders page
 
               },
-              style: homeButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
+              style: coloredButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
               child: const Text(
                 'Start event',
-                style: homeButtonTextStyle,
+                style: coloredButtonTextStyle,
               ),
             ),
             const Spacer(),
@@ -44,25 +45,23 @@ class AdminHomeWidget extends StatelessWidget {
                 // Go to events manager page
 
               },
-              style: homeButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
+              style: coloredButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
               child: const Text(
                 'Events manager',
-                style: homeButtonTextStyle,
+                style: coloredButtonTextStyle,
               ),
             ),
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-
                 // TODO
                 // Inventory manager
                 // Go to inventory manager page
-
               },
-              style: homeButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
+              style: coloredButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
               child: const Text(
                 'Inventory',
-                style: homeButtonTextStyle,
+                style: coloredButtonTextStyle,
               ),
             ),
             const Spacer(),

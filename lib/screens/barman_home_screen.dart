@@ -4,11 +4,12 @@ import 'package:masi_dam_2425/widgets/header_container_widget.dart';
 
 
 class BarmanHomeWidget extends StatelessWidget {
-  BarmanHomeWidget(
-      {super.key, required this.comService}
-  );
+  final ComService comService;
 
-  ComService comService;
+  const BarmanHomeWidget({
+    super.key,
+    required this.comService,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class BarmanHomeWidget extends StatelessWidget {
                 height: 150,
                 width: width,
                 subtitle: 'Bartender',
+                  userID : "RLE1234"
               ),
               Spacer()
             ],

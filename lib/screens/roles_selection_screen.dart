@@ -27,11 +27,8 @@ class _RolesWidgetState extends State<RolesWidget> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            HeaderContainer(
-              height: 150,
-              width: width,
-              subtitle: 'Select your role',
-            ),
+              HeaderContainer(
+                  width: width, subtitle: 'Select a role', userID: "RLE1234"),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.all(40.0),
@@ -40,7 +37,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                     label: 'Bartender',
                     role: UserRole.barman,
                     iconPath: 'assets/images/bartender.png',
-                    iconColor : LightColors.kLightYellow,
+                    iconColor: LightColors.kLightYellow,
                     backgroundColor: LightColors.kGreen,
                     textColor: LightColors.kLightYellow,
                     nextPage: BarmanHomeWidget(comService: widget.comService!),
@@ -51,7 +48,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                     label: 'Waiter',
                     role: UserRole.waiter,
                     iconPath: 'assets/images/waiter.png',
-                    iconColor : LightColors.kLightYellow,
+                    iconColor: LightColors.kLightYellow,
                     backgroundColor: LightColors.kRed,
                     textColor: LightColors.kLightYellow,
                     nextPage: WaiterHomeWidget(comService: widget.comService!),
@@ -62,7 +59,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                     label: 'Admin',
                     role: UserRole.admin,
                     iconPath: 'assets/images/admin.png',
-                    iconColor : LightColors.kLightYellow,
+                    iconColor: LightColors.kLightYellow,
                     backgroundColor: LightColors.kBlue,
                     textColor: LightColors.kLightYellow,
                     nextPage: AdminHomeWidget(),

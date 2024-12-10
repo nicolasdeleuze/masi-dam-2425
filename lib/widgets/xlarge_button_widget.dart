@@ -38,29 +38,37 @@ class XLargeButton extends StatelessWidget {
             ),
           );
         },
-        style: homeButtonStyle(backgroundColor, textColor),
+        style: coloredButtonStyle(backgroundColor, textColor),
         child: Center(
           child: Row(
             children: <Widget>[
               SizedBox(width: 20.0),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
-                child: Image.asset(
-                  iconPath,
-                  height: 80.0,
-                  width: 80.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
+              buildButtonIcon(),
               SizedBox(width: 20.0),
-              Text(
-                label,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              ),
+              buildButtonLabel(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Text buildButtonLabel() {
+    return Text(
+              label,
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25),
+            );
+  }
+
+  ClipRRect buildButtonIcon() {
+    return ClipRRect(
+              borderRadius: BorderRadius.circular(15.0),
+              child: Image.asset(
+                iconPath,
+                height: 80.0,
+                width: 80.0,
+                fit: BoxFit.cover,
+              ),
+            );
   }
 }
