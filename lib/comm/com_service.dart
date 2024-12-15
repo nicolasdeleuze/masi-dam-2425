@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
 
+import 'package:provider/provider.dart';
+
 import 'user_role.dart';
 
-class ComService {
+class ComService extends ChangeNotifier {
   static ComService? _instance;
 
   bool _isInitialized = false;

@@ -11,6 +11,7 @@ class RoleButton extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final Widget nextPage;
+  Function? beforeNextPage;
   ComService comService = ComService.getInstance();
 
   RoleButton({
@@ -21,6 +22,7 @@ class RoleButton extends StatelessWidget {
     required this.backgroundColor,
     required this.textColor,
     required this.nextPage,
+    this.beforeNextPage,
     super.key,
   });
 
@@ -30,6 +32,9 @@ class RoleButton extends StatelessWidget {
       height: 120,
       child: ElevatedButton(
         onPressed: () {
+          if(beforeNextPage != null) {
+            beforeNextPage!();
+          }
           Navigator.push(
             context,
             MaterialPageRoute(

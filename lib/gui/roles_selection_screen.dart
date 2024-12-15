@@ -23,6 +23,7 @@ class _RolesWidgetState extends State<RolesWidget> {
 
   @override
   Widget build(BuildContext context) {
+    widget.comService = ComService.getInstance();
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: LightColors.kLightYellow,
@@ -58,6 +59,9 @@ class _RolesWidgetState extends State<RolesWidget> {
                     backgroundColor: LightColors.kRed,
                     textColor: LightColors.kLightYellow,
                     nextPage: WaiterHomeWidget(),
+                    beforeNextPage: () async {
+                      await widget.comService!.init("OpenAirPOS", UserRole.waiter);
+                    },
                   ),
                   const SizedBox(height: 20),
                   RoleButton(

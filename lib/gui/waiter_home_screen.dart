@@ -24,7 +24,8 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
     return Scaffold(
       body: Center(
           child: FutureBuilder(
-              future: widget.comService.init("OpenAirPOS", UserRole.waiter),
+              // future: widget.comService.init("OpenAirPOS", UserRole.waiter),
+              future: () async {}(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Column(
@@ -44,7 +45,7 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
                       // make it selecteable
 
                       Expanded(
-                        child:  ComServicePeersList(comService: widget.comService),
+                        child:  ComServicePeersList(),
                       ),
 
 
