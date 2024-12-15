@@ -16,7 +16,6 @@ class ComService {
   WifiP2PInfo? _wifiP2PInfo;
   StreamSubscription<WifiP2PInfo>? _streamWifiInfo;
   StreamSubscription<List<DiscoveredPeers>>? _streamPeers;
-  bool _isGroupCreated = false;
 
   // private constructor
   ComService._() {
@@ -75,11 +74,14 @@ class ComService {
 
     _streamWifiInfo = _connection!.streamWifiP2PInfo().listen((event) {
       _wifiP2PInfo = event;
+      print("Listen Group Owner Address: ${_wifiP2PInfo!.groupOwnerAddress}");
     });
 
     _streamPeers = _connection!.streamPeers().listen((event) {
       peers.clear();
       peers.addAll(event);
+      print("Listen Peers: ${peers.length}");
+      print("Listen Peers: ${peers}");
     });
 
     _isInitialized = true;
@@ -91,7 +93,7 @@ class ComService {
     if (_role == UserRole.barman) {
       startAsBarman(_networkName!);
     } else if (_role == UserRole.waiter) {
-      startAsWaiter(_networkName!);
+      // TODO
     }
   }
 
@@ -99,30 +101,15 @@ class ComService {
     _connection!.removeGroup();
   }
 
-  void startAsBarman(String networkName) {
-    createGroup();
-  }
-
-  void startAsWaiter(String networkName) {
-  }
-
-  void createGroup() async {
-    if(_isGroupCreated) {
+  Future<void> startAsBarman(String networkName) async {
+    if(_wifiP2PInfo!.groupFormed) {
       return;
     }
-    bool ret = await _connection!.createGroup();
-    if(ret == false) {
-      throw Exception('Failed to create group');
-    }
-    _isGroupCreated = true;
+    await _connection!.createGroup();
   }
 
   void removeGroup() async {
-    bool ret = await _connection!.removeGroup();
-    if(ret == false) {
-      throw Exception('Failed to leave group');
-    }
-    _isGroupCreated = false;
+    await _connection!.removeGroup();
   }
 
   void discoverPeers() async {
@@ -144,16 +131,28 @@ class ComService {
       void Function(TransferUpdate) transferUpdate,
       void Function(dynamic) receiveString,
       ) async {
+    bool started = false;
+    int tryed = 0;
+
     if(_wifiP2PInfo != null) {
-      bool started = await _connection!.startSocket(
-        groupOwnerAddress: _wifiP2PInfo!.groupOwnerAddress,
-        downloadPath: '/storage/emulated/0/Download',
-        maxConcurrentDownloads: 2,
-        deleteOnError: true,
-        onConnect: onConnect,
-        transferUpdate: transferUpdate,
-        receiveString: receiveString,
-      );
+
+      do {
+        started = await _connection!.startSocket(
+          groupOwnerAddress: _wifiP2PInfo!.groupOwnerAddress,
+          downloadPath: '/storage/emulated/0/Download',
+          maxConcurrentDownloads: 2,
+          deleteOnError: true,
+          onConnect: onConnect,
+          transferUpdate: transferUpdate,
+          receiveString: receiveString,
+        );
+        if(!started) {
+          tryed++;
+          await Future.delayed(Duration(seconds: 1));
+        }
+      } while(!started && tryed < 3);
+
+
       if(!started) {
         throw Exception('Failed to start socket');
       }
