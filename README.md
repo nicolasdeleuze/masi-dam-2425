@@ -1,3 +1,17 @@
+# Avancement
+
+## Communication
+
+En ce qui concerne la communication root (barman) <-> clients (serveurs), cela avance, principalement par essai erreurs.
+Le root ouvre bien un réseau Wifi Direct (vérification à l'aide d'un autre appareil).
+Du côté du client, celui-ci voie bien le root, ceci étant observé via la console de debug, actuellement j'essaie d'utiliser la librairie *Provider* dans le but de mettre à jour l'UI à partir du backend.
+
+---
+---
+
+</br></br></br>
+
+
 # Mon Application
 
 > Vous vous adressez potentiellement à un futur employeur et donc une personne qui n'aura pas nécessairement l'occasion de compiler votre projet. Votre `README.md` contiendra donc au moins :
