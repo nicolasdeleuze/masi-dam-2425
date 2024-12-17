@@ -15,6 +15,7 @@ Les principaux dossiers du projets sont actuellement les suivants :
 ## 🚀 Présentation de l'Application
 
 > Une présentation de votre application. Ce dernier répond à un besoin, présentez-le. Ne faites aucune hypothèse sur le niveau de connaissances de votre lecteur. Vous vous adressez ici à un internaute quelconque qui découvre votre dépôt. Évitez un jargon technique dans cette partie de votre présentation.
+
 L'application 'OpenAir Point Of Sale' permet la prise de commande dans des conditions ne permettant pas d'avoir un accès facile à internet. Elle fonctionne donc en créant un réseau fermé à petite/moyenne échelle. Cette application vise plus particulièrement les créateurs d'évennements en plein air (festivals, tournoi sportifs, brocante, ...)
 L'application tourne autour de trois rôles principaux :
 - L'administrateur qui s'occupe de la gestion des évenemments. Il crée un évennement, y affecte du personnel et ajoute une carte de produits.
