@@ -1,17 +1,3 @@
-# Avancement
-
-## Communication
-
-En ce qui concerne la communication root (barman) <-> clients (serveurs), cela avance, principalement par essai erreurs.
-Le root ouvre bien un réseau Wifi Direct (vérification à l'aide d'un autre appareil).
-Du côté du client, celui-ci voie bien le root, ceci étant observé via la console de debug, actuellement j'essaie d'utiliser la librairie *Provider* dans le but de mettre à jour l'UI à partir du backend.
-
----
----
-
-</br></br></br>
-
-
 # Mon Application
 
 > Vous vous adressez potentiellement à un futur employeur et donc une personne qui n'aura pas nécessairement l'occasion de compiler votre projet. Votre `README.md` contiendra donc au moins :
@@ -19,10 +5,21 @@ Du côté du client, celui-ci voie bien le root, ceci étant observé via la con
 ## 📁 Présentation des Principaux Dossiers
 
 > Une présentation des principaux dossiers de votre dépôt. Quelles sont les différentes ressources qu'il contient à la racine ? Par exemple, les maquettes, vos inspirations, etc. Si vous avez fait des efforts quant à l'organisation de vos fichiers dans le dossier `lib`, expliquez-les ici.
+Les principaux dossiers du projets sont actuellement les suivants :
+- comm : contient la logique de communication entre les différents appareil
+- model : contient la logique métier de l'application
+- screens : contient les différents écrans de présentation de l'app
+- theme : contient les éléments de styles et de couleurs
+- widgets : contient les widgets réapplicable sur différents écrans
 
 ## 🚀 Présentation de l'Application
 
 > Une présentation de votre application. Ce dernier répond à un besoin, présentez-le. Ne faites aucune hypothèse sur le niveau de connaissances de votre lecteur. Vous vous adressez ici à un internaute quelconque qui découvre votre dépôt. Évitez un jargon technique dans cette partie de votre présentation.
+L'application 'OpenAir Point Of Sale' permet la prise de commande dans des conditions ne permettant pas d'avoir un accès facile à internet. Elle fonctionne donc en créant un réseau fermé à petite/moyenne échelle. Cette application vise plus particulièrement les créateurs d'évennements en plein air (festivals, tournoi sportifs, brocante, ...)
+L'application tourne autour de trois rôles principaux :
+- L'administrateur qui s'occupe de la gestion des évenemments. Il crée un évennement, y affecte du personnel et ajoute une carte de produits.
+- Le serveur qui prend les commandes des clients et les envoies vers le bar
+- Le bar qui prépare les commandes et notifie le serveur quand celle-ci est prête
 
 ## 🌐 Étude de l'Existant
 
@@ -45,6 +42,19 @@ Du côté du client, celui-ci voie bien le root, ceci étant observé via la con
 ## 📈 État d'Avancement
 
 >  Un état d'avancement pour chaque fonctionnalité de votre application. Ceci doit évidemment être mis à jour régulièrement. Dès lors que vous aurez terminé de programmer une fonctionnalité, ajoutez dans le document `README.md` un `.gif` qui l'illustre. Vous pouvez vous servir de [GIF Brewery](https://apps.apple.com/us/app/gif-brewery-3-by-gfycat/id1081413713?mt=12) (Si vous êtes sous macOS) ou de [Gyazo](https://gyazo.com) (Si vous êtes sous Windows).
+
+### Interface utilisateur
+
+Aucune connexion n'est actuellement faite avec le backend
+
+- L'utilisateur peut sélectionner le rôle qu'il désire prendre dans l'organisation de l'évennement(Cela sera par la suite modifié afin de protéger les rôles essentiels de toutes mauvaises manipulations)
+- Le serveur peut voir une liste de commandes contenant le numéro de la commande, le prix ainsi que le statut de celle-ci.
+
+### Communication
+
+La communication root (barman) <-> clients (serveurs) avance principalement par essai erreurs.
+Le root ouvre actuellement un réseau Wifi Direct (vérification à l'aide d'un autre appareil).
+Côté du client, nous observons via la console de debug que celui-ci voit le root. Actuellement nous essayons d'utiliser la librairie *Provider* dans le but de mettre à jour l'UI à partir du backend.
 
 ## ⚙️ Compilation de l'Application
 
