@@ -22,6 +22,8 @@ class WaiterHomeWidget extends StatefulWidget {
   State<WaiterHomeWidget> createState() => _WaiterHomeWidgetState();
 }
 
+/// A widget representing the Waiter's home screen.
+/// Displays a list of orders and provides options to add new ones.
 class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,7 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
                             height: MediaQuery.of(context).size.height - 355,
                             child:
                             OrderListView(
-                              // TODO : retreive order item from DB
+                              // TODO : retrieve order item from DB
                               orders: [
                                 Order(orderNumber: 101),
                                 Order(orderNumber: 102),
@@ -113,6 +115,7 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
   }
 }
 
+/// A button to add a new order, displayed at the bottom of the screen.
 class NewOrderButton extends StatelessWidget {
   const NewOrderButton({
     super.key,

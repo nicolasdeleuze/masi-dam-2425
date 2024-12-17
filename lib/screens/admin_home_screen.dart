@@ -3,6 +3,8 @@ import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/theme/styles/colored_button_style.dart';
 import 'package:masi_dam_2425/widgets/header_container_widget.dart';
 
+/// A widget representing the Administrator's home screen.
+/// Provides tools for managing events, supervising past events, and user management.
 class AdminHomeWidget extends StatelessWidget {
   const AdminHomeWidget({super.key});
 

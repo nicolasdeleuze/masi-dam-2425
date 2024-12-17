@@ -8,6 +8,8 @@ import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
 import 'package:masi_dam_2425/widgets/xlarge_button_widget.dart';
 
+/// A widget that allows users to select a role (e.g., Bartender, Waiter, Admin)
+/// and navigate to the corresponding home screen.
 class RolesWidget extends StatefulWidget {
   const RolesWidget({super.key, required ComService this.comService});
 
