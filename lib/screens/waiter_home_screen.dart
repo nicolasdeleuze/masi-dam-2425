@@ -36,73 +36,44 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
             if (snapshot.connectionState == ConnectionState.done) {
               return Column(
                 children: <Widget>[
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Column(
-                        children: <Widget>[
-                          HeaderContainer(
-                            height: 150,
-                            width: width,
-                            subtitle: 'Waiter',
-                            userID : "RLE1234"
-                          ),
-                          SizedBox(height: 10),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "      List of orders",
-                              style: const TextStyle(
-                                fontSize: 22.0,
-                                color: LightColors.kDarkBlue,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height - 355,
-                            child:
-                            OrderListView(
-                              // TODO : retrieve order item from DB
-                              orders: [
-                                Order(orderNumber: 101),
-                                Order(orderNumber: 102),
-                                Order(orderNumber: 103),
-                                Order(orderNumber: 104),
-                                Order(orderNumber: 105),
-                                Order(orderNumber: 106),
-                                Order(orderNumber: 107),
-                                Order(orderNumber: 108),
-                              ],
-                            )
-                          ),
-                        ],
+                  HeaderContainer(
+                    height: 150,
+                    width: width,
+                    subtitle: 'Waiter',
+                    userID: "RLE1234",
+                  ),
+                  SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "      List of orders",
+                      style: const TextStyle(
+                        fontSize: 22.0,
+                        color: LightColors.kDarkBlue,
+                        fontWeight: FontWeight.w800,
                       ),
-                      Positioned(
-                        top: 120,
-                        right: 30,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            // TODO: access settings
-                          },
-                          style: coloredButtonStyle(
-                            LightColors.kGreen,
-                            LightColors.kLightYellow,
-                          ),
-                          icon: Icon(Icons.settings, size: 15,),
-                          label: const Text(
-                            'Settings',
-                            style: coloredButtonTextStyle,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
+                  ),
+                  Expanded(
+                    child: OrderListView(
+                      // TODO : retrieve order item from DB
+                      orders: [
+                        Order(id: 101),
+                        Order(id: 102),
+                        Order(id: 103),
+                        Order(id: 104),
+                        Order(id: 105),
+                        Order(id: 106),
+                        Order(id: 107),
+                        Order(id: 108),
+                      ],
+                    ),
                   ),
                   SizedBox(
-                      height: 0,
-                      child:
-                          ComServicePeersList(comService: widget.comService)),
-                  NewOrderButton(width: width)
+                    height: 0,
+                    child: ComServicePeersList(comService: widget.comService),
+                  ),
+                  NewOrderButton(width: width),
                 ],
               );
             } else {
@@ -114,6 +85,7 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
     );
   }
 }
+
 
 /// A button to add a new order, displayed at the bottom of the screen.
 class NewOrderButton extends StatelessWidget {

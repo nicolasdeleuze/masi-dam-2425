@@ -8,7 +8,6 @@ class OrderListView extends StatelessWidget {
 
   const OrderListView({super.key, required this.orders});
 
-
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
@@ -16,30 +15,30 @@ class OrderListView extends StatelessWidget {
       itemCount: orders.length,
       itemBuilder: (context, index) {
         return OrderItem(
-          orderNumber: orders.elementAt(index).getOrderNumber(),
-          status: orders.elementAt(index).getStatus(),
-          price : orders.elementAt(index).calculateTotalPrice()
-        );
+            orderNumber: orders.elementAt(index).getOrderNumber(),
+            status: orders.elementAt(index).getStatus(),
+            price: orders.elementAt(index).getTotalPrice());
       },
       separatorBuilder: (context, index) {
         return const Divider(
           height: 0.0,
-          thickness: 1.0,
-          color: Colors.grey,
+          thickness: 2,
+          indent: 90,
+          endIndent: 0,
+          color: LightColors.kLightYellow2,
         );
       },
     );
   }
 }
 
-
 class OrderItem extends StatelessWidget {
   final double height;
   final double width;
   final EdgeInsets margin;
   final String status;
+  final String tag;
   final double price;
-  final String orderIconPath;
   final int orderNumber;
 
   const OrderItem({
@@ -48,10 +47,10 @@ class OrderItem extends StatelessWidget {
     this.width = 150,
     this.margin = const EdgeInsets.symmetric(vertical: 1.0),
     required this.orderNumber,
+    String? tag,
     required this.status,
     required this.price,
-    this.orderIconPath = "assets/images/product.png",
-  });
+  }) : tag = tag ?? "Order $orderNumber";
 
   @override
   Widget build(BuildContext context) {
@@ -59,70 +58,75 @@ class OrderItem extends StatelessWidget {
       margin: margin,
       height: height,
       width: width,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           buildOrderNumber(),
-          const SizedBox(width: 15.0),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildPriceTag(),
-              buildOrderStatus(),
-            ],
+          const SizedBox(width: 10.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                buildTag(),
+                buildOrderStatus(),
+              ],
+            ),
           ),
+          buildPrice(),
         ],
-        )
+      ),
+    );
+  }
+
+  Text buildTag() {
+    return Text(
+      tag,
+      style: const TextStyle(
+        fontSize: 16.0,
+        color: LightColors.kDarkBlue,
+        fontWeight: FontWeight.w700,
+      ),
+    );
+  }
+
+  Text buildPrice() {
+    return Text(
+      "\€$price",
+      style: const TextStyle(
+        fontSize: 20.0, // Plus grand
+        color: LightColors.kDarkBlue,
+        fontWeight: FontWeight.w900,
+      ),
     );
   }
 
   Text buildOrderStatus() {
     return Text(status,
-                style: const TextStyle(
-                  fontSize: 15.0,
-                  color: LightColors.kBlue,
-                  fontWeight: FontWeight.w500,
-                ));
-  }
-
-  Text buildPriceTag() {
-    return Text("$price \$",
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  color: LightColors.kDarkBlue,
-                  fontWeight: FontWeight.w800,
-                ));
+        style: const TextStyle(
+          fontSize: 15.0,
+          color: LightColors.kBlue,
+          fontWeight: FontWeight.w500,
+        ));
   }
 
   ColoredContainer buildOrderNumber() {
     return ColoredContainer(
-          height : 40,
-          width: 100,
-          radius: 50,
-          color: LightColors.kBlue,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                orderIconPath,
-                height: 25,
-                width: 25,
-                fit: BoxFit.cover,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                "#$orderNumber",
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: LightColors.kLightYellow,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ],
+      height: 40,
+      width: 60,
+      radius: 50,
+      color: LightColors.kBlue,
+      child:
+      Center(
+        child: Text(
+          "#$orderNumber",
+          style: const TextStyle(
+            fontSize: 18,
+            color: LightColors.kLightYellow,
+            fontWeight: FontWeight.w800,
           ),
-        );
+        ),
+      ),
+    );
   }
 }

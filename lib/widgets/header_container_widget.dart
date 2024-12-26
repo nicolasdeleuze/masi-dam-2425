@@ -26,8 +26,8 @@ class HeaderContainer extends StatelessWidget {
       children: [
         buildHeaderContainer(),
         Positioned(
-          top: 120,
-          right: 30,
+          top: 15,
+          left: 15,
           child: buildSettingsButton(),
         ),
       ],
@@ -96,30 +96,18 @@ class HeaderContainer extends StatelessWidget {
               );
   }
 
-  ElevatedButton buildSettingsButton() {
-    return ElevatedButton.icon(
-          onPressed: () {
-            // TODO: access settings
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: LightColors.kGreen,
-            foregroundColor: LightColors.kLightYellow,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-          ),
-          icon: const Icon(
-            Icons.settings,
-            size: 15,
-          ),
-          label: const Text(
-            'Settings',
-            style: TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        );
+  IconButton buildSettingsButton() {
+    return IconButton(
+      onPressed: () {
+        // TODO: access settings
+      },
+      icon: const Icon(
+        Icons.settings,
+        size: 30,
+        color: LightColors.kDarkBlue,
+      ),
+      splashRadius: 24.0,
+      tooltip: 'Settings',
+    );
   }
 }

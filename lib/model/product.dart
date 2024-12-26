@@ -11,7 +11,6 @@ class Product {
   final double _price;
   final MenuCategory _category;
   final List<String> _tags;
-  StockStatus _stockStatus;
 
   Product({
     required String name,
@@ -22,17 +21,7 @@ class Product {
   }) :  _name = name,
         _price = price,
         _category = category,
-        _tags = List.from(tags),
-        _stockStatus = stockStatus;
-
-  bool checkAvailability() {
-    return _stockStatus == StockStatus.inStock||
-        _stockStatus == StockStatus.limitedAvailability;
-  }
-
-  void setAvailability(StockStatus status) {
-    _stockStatus = status;
-  }
+        _tags = List.from(tags);
 
   String getName(){
     return _name;
@@ -79,5 +68,4 @@ class ProductItem {
   }
 
   double get totalPrice => product.getPrice() * quantity;
-  bool get isAvailable => product.checkAvailability();
 }

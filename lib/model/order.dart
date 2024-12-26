@@ -2,88 +2,58 @@ import 'package:masi_dam_2425/model/product.dart';
 import 'package:masi_dam_2425/model/status.dart';
 
 class Order {
-  final int _orderNumber;
+  final int _id;
   bool _isPayed;
   bool _isCanceled;
-  final double _price;
-  double _refund;
-  OrderStatus _orderStatus;
-  TransferStatus _transferStatus;
-  bool _hasMissingProduct;
+  double _price;
+  OrderStatus _status;
   final List<ProductItem> _order;
-  final List<ProductItem> _finalOrder;
+  final List<ProductItem> _missingProducts;
 
   Order({
-    required int orderNumber,
+    required int id,
     bool isCanceled = false,
     bool isPayed = false,
     double price = 0,
-    double refund = 0,
     orderStatus = OrderStatus.newOrder,
     transferStatus = TransferStatus.onHold,
     List<ProductItem>? order,
-    List<ProductItem>? finalOrder,
-    bool hasMissingProduct = false,
-  })  : _orderNumber = orderNumber,
+    List<ProductItem>? missingProducts,
+  })  : _id = id,
         _price = price,
-        _refund = refund,
-        _orderStatus = orderStatus,
-        _transferStatus = transferStatus,
+        _status = orderStatus,
         _order = order ?? [],
-        _finalOrder = finalOrder ?? [],
-        _isPayed = isPayed,
+        _missingProducts = missingProducts ?? [],
         _isCanceled = isCanceled,
-        _hasMissingProduct = hasMissingProduct;
-
-  void cancel() {
-    _isCanceled = true;
-  }
-
-  double calculateTotalPrice() {
-    return _order.fold(0, (sum, productItem) => sum + productItem.totalPrice);
-  }
-
-  double calculateRefund() {
-    if (areOrdersDifferent()) {
-      //calculate difference
-    }
-    if (_orderStatus == OrderStatus.canceled) {
-      _refund = _price;
-    }
-    return _refund;
-  }
-
-  bool areOrdersDifferent() {
-    return false;
-  }
+        _isPayed = isPayed;
 
   void nextStatus() {
-    if (!_orderStatus.isFinalState) {
+    if (!_status.isFinalState) {
       if (_isCanceled) {
-        _orderStatus = OrderStatus.canceled;
-      } else if (_orderStatus == OrderStatus.newOrder) {
-        _orderStatus = OrderStatus.queued;
-      } else if (_orderStatus == OrderStatus.queued) {
-        _orderStatus = OrderStatus.preparing;
-      } else if (_orderStatus == OrderStatus.preparing) {
-        _orderStatus = OrderStatus.ready;
-      } else if (_orderStatus == OrderStatus.ready) {
-        _orderStatus = OrderStatus.served;
+        _status = OrderStatus.canceled;
+      } else if (_status == OrderStatus.newOrder) {
+        _status = OrderStatus.queued;
+      } else if (_status == OrderStatus.queued) {
+        _status = OrderStatus.preparing;
+      } else if (_status == OrderStatus.preparing) {
+        _status = OrderStatus.ready;
+      } else if (_status == OrderStatus.ready) {
+        _status = OrderStatus.served;
       }
     }
   }
 
   int getOrderNumber() {
-    return _orderNumber;
+    return _id;
   }
 
   String getStatus() {
-    return _orderStatus.displayName;
+    return _status.displayName;
   }
 
   void addProduct(Product product, {int quantity = 1}) {
     final existingItem = _order.firstWhere(
-      (item) => item.product == product,
+          (item) => item.product == product,
       orElse: () => ProductItem(product: product, quantity: 0),
     );
 
@@ -92,11 +62,13 @@ class Order {
     } else {
       _order.add(ProductItem(product: product, quantity: quantity));
     }
+
+    _updateTotalPrice();
   }
 
   void removeProduct(Product product, {int quantity = 1}) {
     final existingItem = _order.firstWhere(
-      (item) => item.product == product,
+          (item) => item.product == product,
       orElse: () => ProductItem(product: product, quantity: 0),
     );
 
@@ -105,13 +77,31 @@ class Order {
     } else {
       _order.remove(existingItem);
     }
+
+    _updateTotalPrice();
   }
 
   List<ProductItem> getOrder() {
     return _order;
   }
 
+  void _updateTotalPrice() {
+    _price = _order.fold(0, (sum, productItem) => sum + productItem.totalPrice);
+  }
+
+  double getTotalPrice() {
+    return _price;
+  }
+
+  void cancel() {
+    _isCanceled = true;
+  }
+
+  void pay() {
+    _isPayed = true;
+  }
+
   bool isClosed() {
-    return _orderStatus.isFinalState;
+    return _status.isFinalState && _isPayed;
   }
 }
