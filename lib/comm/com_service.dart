@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
 
-import 'package:provider/provider.dart';
-
 import 'user_role.dart';
 
 class ComService extends ChangeNotifier {
   static ComService? _instance;
+  static BuildContext _context = null as dynamic;
 
   bool _isInitialized = false;
   String? _networkName;
@@ -29,6 +28,45 @@ class ComService extends ChangeNotifier {
       _instance = ComService._();
     }
     return _instance!;
+  }
+
+  void setContext(BuildContext context) {
+    _context = context;
+  }
+
+  void snack(String msg) async {
+    ScaffoldMessenger.of(_context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Text(
+          msg,
+        ),
+      ),
+    );
+  }
+
+  void on_connect_start_socket(String name, String address) {
+    snack('Connected to $address');
+  }
+
+  void on_connect_connect(String address) {
+    snack('Connected to $address');
+  }
+
+  void transferUpdate(TransferUpdate event) {
+    throw UnimplementedError();
+  }
+
+  void receiveString(dynamic obj) {
+    if (obj is String) {
+      String message = obj;
+      snack(message);
+      print("Received message: $message");
+    }
+    else {
+      snack('Received unknown message : $obj');
+      print("Received unknown message : $obj");
+    }
   }
 
   Future<ConnectionState> init(String networkName, UserRole role) async {
@@ -84,6 +122,7 @@ class ComService extends ChangeNotifier {
       peers.addAll(event);
       print("Listen Peers: ${peers.length}");
       print("Listen Peers: ${peers}");
+      notifyListeners();
     });
 
     _isInitialized = true;
@@ -114,6 +153,11 @@ class ComService extends ChangeNotifier {
     await _connection!.removeGroup();
   }
 
+  void connectToPeer(int index) async {
+    DiscoveredPeers peer = peers[index];
+    await _connection!.connect(peer.deviceAddress);
+  }
+
   void discoverPeers() async {
     bool ret = await _connection!.discover();
     if(ret == false) {
@@ -128,11 +172,7 @@ class ComService extends ChangeNotifier {
     }
   }
 
-  Future<void> startSocket (
-      void Function(String, String) onConnect,
-      void Function(TransferUpdate) transferUpdate,
-      void Function(dynamic) receiveString,
-      ) async {
+  Future<void> startSocket () async {
     bool started = false;
     int tryed = 0;
 
@@ -144,7 +184,7 @@ class ComService extends ChangeNotifier {
           downloadPath: '/storage/emulated/0/Download',
           maxConcurrentDownloads: 2,
           deleteOnError: true,
-          onConnect: onConnect,
+          onConnect: on_connect_start_socket,
           transferUpdate: transferUpdate,
           receiveString: receiveString,
         );
@@ -161,17 +201,13 @@ class ComService extends ChangeNotifier {
     }
   }
 
-  Future<void> connectToSocket(
-      void Function(String) onConnect,
-      void Function(TransferUpdate) transferUpdate,
-      void Function(dynamic) receiveString,
-      ) async {
+  Future<void> connectToSocket() async {
     await _connection!.connectToSocket(
       groupOwnerAddress: _wifiP2PInfo!.groupOwnerAddress,
       downloadPath: '/storage/emulated/0/Download',
       maxConcurrentDownloads: 2,
       deleteOnError: true,
-      onConnect: onConnect,
+      onConnect: on_connect_connect,
       transferUpdate: transferUpdate,
       receiveString: receiveString,
     );
@@ -186,6 +222,7 @@ class ComService extends ChangeNotifier {
 
   Future<void> sendString(String message) async {
     bool s = _connection!.sendStringToSocket(message);
+    print("Send message: $message");
     if(!s) {
       throw Exception('Failed to send message');
     }
