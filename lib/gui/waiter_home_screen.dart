@@ -19,6 +19,8 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    widget.comService.setContext(context);
+
     return Scaffold(
       body: Center(
           child: FutureBuilder(

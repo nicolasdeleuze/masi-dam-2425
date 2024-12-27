@@ -22,6 +22,7 @@ class _BarmanHomeWidgetState extends State<BarmanHomeWidget> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    widget.comService.setContext(context);
     return Scaffold(
       body: FutureBuilder(
         future: widget.comService.init("OpenAirPOS", UserRole.barman),
