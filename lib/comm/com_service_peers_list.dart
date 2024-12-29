@@ -30,12 +30,8 @@ class _ComServicePeersListState extends State<ComServicePeersList> {
                   itemBuilder: (BuildContext context, int index) {
                     return ElevatedButton(
                       onPressed: () {
-
-                        () async {
-                          comService.connectToPeer(index);
-                          comService.connectToSocket();
-                        }();
-
+                        comService.connectToPeer(index);
+                        comService.connectToSocket();
                       },
                       child: Text(comService.peers[index].deviceName),
                     );

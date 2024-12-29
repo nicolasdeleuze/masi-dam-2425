@@ -133,8 +133,6 @@ class ComService extends ChangeNotifier {
   void start() {
     if (_role == UserRole.barman) {
       startAsBarman(_networkName!);
-    } else if (_role == UserRole.waiter) {
-      // TODO
     }
   }
 
@@ -159,6 +157,9 @@ class ComService extends ChangeNotifier {
   }
 
   void discoverPeers() async {
+    while(_wifiP2PInfo == null) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
     bool ret = await _connection!.discover();
     if(ret == false) {
       throw Exception('Failed to enable peers discovery');
@@ -216,6 +217,12 @@ class ComService extends ChangeNotifier {
   }
 
   Future<void> connectToSocket() async {
+    while(_wifiP2PInfo == null) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
+    while(!_wifiP2PInfo!.groupFormed) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
     await _connection!.connectToSocket(
       groupOwnerAddress: _wifiP2PInfo!.groupOwnerAddress,
       downloadPath: '/storage/emulated/0/Download',

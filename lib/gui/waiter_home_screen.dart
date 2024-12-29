@@ -3,6 +3,7 @@ import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/com_service_peers_list.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/widgets/homepage_top_container_widget.dart';
+import '../comm/user_role.dart';
 import '../widgets/home_button_widget.dart';
 import 'loader.dart';
 
@@ -10,6 +11,12 @@ class WaiterHomeWidget extends StatefulWidget {
   WaiterHomeWidget({super.key});
 
   ComService comService = ComService.getInstance();
+
+  Future<ConnectionState> initialize_p2p_client() async {
+    ConnectionState cs = await comService.init("OpenAirPOS", UserRole.waiter);
+    comService.discoverPeers();
+    return cs;
+  }
 
   @override
   State<WaiterHomeWidget> createState() => _WaiterHomeWidgetState();
@@ -24,8 +31,7 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
     return Scaffold(
       body: Center(
           child: FutureBuilder(
-              // future: widget.comService.init("OpenAirPOS", UserRole.waiter),
-              future: () async {}(),
+              future: widget.initialize_p2p_client(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Column(
@@ -38,43 +44,19 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
                         subtitle: 'Waiter',
                       ),
                       Spacer(),
-
-
-                      // TODO
-                      // List all available networks
-                      // make it selecteable
-
                       Expanded(
                         child:  ComServicePeersList(),
                       ),
-
-
-
+                      Spacer(),
                       ElevatedButton(
                         onPressed: () {
-
-                          // TODO
-                          // Join selected network
-                          // launch communication service as waiter
-                          // Go to waiter orders page
-
-                          () async {
-                            widget.comService.start();
-                            widget.comService.discoverPeers();
-                          }();
-
+                          widget.comService.sendString("Hello from waiter");
                         },
                         style: homeButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
                         child: const Text(
-                          'Discover network',
+                          'Send message',
                           style: homeButtonTextStyle,
                         ),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-                            widget.comService.sendString("Hello from waiter");
-                          },
-                          child: const Text('Send message')
                       ),
                       Spacer()
                     ],
