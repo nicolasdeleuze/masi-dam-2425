@@ -138,19 +138,19 @@ class ComService extends ChangeNotifier {
     }
   }
 
-  void stop() {
-    _connection!.removeGroup();
+  void stop() async {
+    await _connection!.removeGroup();
   }
 
   Future<void> startAsBarman(String networkName) async {
+    while(_wifiP2PInfo == null) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
+
     if(_wifiP2PInfo!.groupFormed) {
       return;
     }
     await _connection!.createGroup();
-  }
-
-  void removeGroup() async {
-    await _connection!.removeGroup();
   }
 
   void connectToPeer(int index) async {
@@ -173,31 +173,45 @@ class ComService extends ChangeNotifier {
   }
 
   Future<void> startSocket () async {
+    dynamic dyn_started;  // rustine ...
     bool started = false;
     int tryed = 0;
 
-    if(_wifiP2PInfo != null) {
+    do {
+      while(_wifiP2PInfo == null) {
+        await Future.delayed(Duration(milliseconds: 500));
+      }
 
-      do {
-        started = await _connection!.startSocket(
-          groupOwnerAddress: _wifiP2PInfo!.groupOwnerAddress,
-          downloadPath: '/storage/emulated/0/Download',
-          maxConcurrentDownloads: 2,
-          deleteOnError: true,
-          onConnect: on_connect_start_socket,
-          transferUpdate: transferUpdate,
-          receiveString: receiveString,
-        );
-        if(!started) {
-          tryed++;
-          await Future.delayed(Duration(seconds: 1));
+      while(!_wifiP2PInfo!.groupFormed) {
+        await Future.delayed(Duration(milliseconds: 500));
+      }
+
+      dyn_started = _connection!.startSocket(
+        groupOwnerAddress: _wifiP2PInfo!.groupOwnerAddress,
+        downloadPath: '/storage/emulated/0/Download',
+        maxConcurrentDownloads: 2,
+        deleteOnError: true,
+        onConnect: on_connect_start_socket,
+        transferUpdate: transferUpdate,
+        receiveString: receiveString,
+      );
+      if (dyn_started is bool) {
+        started = dyn_started;
+      }
+      else {
+        if (dyn_started is Future<bool>) {
+          started = await dyn_started;
         }
-      } while(!started && tryed < 3);
-
+      }
 
       if(!started) {
-        throw Exception('Failed to start socket');
+        tryed++;
+        Future.delayed(Duration(seconds: 1));
       }
+    } while(!started && tryed < 3);
+
+    if(!started) {
+      throw Exception('Failed to start socket');
     }
   }
 
