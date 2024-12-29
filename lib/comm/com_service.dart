@@ -127,6 +127,12 @@ class ComService extends ChangeNotifier {
 
     _isInitialized = true;
 
+    if(_role == UserRole.waiter) {
+      await _connection!.discover();
+    }
+
+    print("Init done");
+
     return ConnectionState.done;
   }
 
@@ -156,14 +162,16 @@ class ComService extends ChangeNotifier {
     await _connection!.connect(peer.deviceAddress);
   }
 
-  void discoverPeers() async {
-    while(_wifiP2PInfo == null) {
+  Future<void> discoverPeers() async {
+    print("Discover peers");
+    do {
       await Future.delayed(Duration(milliseconds: 500));
-    }
+    } while(_isInitialized == false);
     bool ret = await _connection!.discover();
     if(ret == false) {
       throw Exception('Failed to enable peers discovery');
     }
+    print("Discover peers done");
   }
 
   void stopDiscoverPeers() async {

@@ -13,9 +13,8 @@ class WaiterHomeWidget extends StatefulWidget {
   ComService comService = ComService.getInstance();
 
   Future<ConnectionState> initialize_p2p_client() async {
-    ConnectionState cs = await comService.init("OpenAirPOS", UserRole.waiter);
-    comService.discoverPeers();
-    return cs;
+      ConnectionState cs = await comService.init("OpenAirPOS", UserRole.waiter);
+      return cs;
   }
 
   @override
@@ -48,6 +47,10 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
                         child:  ComServicePeersList(),
                       ),
                       Spacer(),
+
+
+                      // TODO
+                      // to remove, just for testing
                       ElevatedButton(
                         onPressed: () {
                           widget.comService.sendString("Hello from waiter");
@@ -58,7 +61,7 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
                           style: homeButtonTextStyle,
                         ),
                       ),
-                      Spacer()
+                      Spacer(),
                     ],
                   );
                 } else {
