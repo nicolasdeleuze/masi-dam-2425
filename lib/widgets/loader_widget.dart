@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-class Loader extends StatelessWidget {
+class LoaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(

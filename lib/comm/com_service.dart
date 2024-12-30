@@ -5,8 +5,9 @@ import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
 
 import 'user_role.dart';
 
-class ComService {
+class ComService extends ChangeNotifier {
   static ComService? _instance;
+  static BuildContext _context = null as dynamic;
 
   bool _isInitialized = false;
   String? _networkName;
@@ -16,7 +17,6 @@ class ComService {
   WifiP2PInfo? _wifiP2PInfo;
   StreamSubscription<WifiP2PInfo>? _streamWifiInfo;
   StreamSubscription<List<DiscoveredPeers>>? _streamPeers;
-  bool _isGroupCreated = false;
 
   // private constructor
   ComService._() {
@@ -28,6 +28,45 @@ class ComService {
       _instance = ComService._();
     }
     return _instance!;
+  }
+
+  void setContext(BuildContext context) {
+    _context = context;
+  }
+
+  void snack(String msg) async {
+    ScaffoldMessenger.of(_context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Text(
+          msg,
+        ),
+      ),
+    );
+  }
+
+  void on_connect_start_socket(String name, String address) {
+    snack('Connected to $address');
+  }
+
+  void on_connect_connect(String address) {
+    snack('Connected to $address');
+  }
+
+  void transferUpdate(TransferUpdate event) {
+    throw UnimplementedError();
+  }
+
+  void receiveString(dynamic obj) {
+    if (obj is String) {
+      String message = obj;
+      snack(message);
+      print("Received message: $message");
+    }
+    else {
+      snack('Received unknown message : $obj');
+      print("Received unknown message : $obj");
+    }
   }
 
   Future<ConnectionState> init(String networkName, UserRole role) async {
@@ -73,7 +112,26 @@ class ComService {
     await _connection!.initialize();
     await _connection!.register();
 
+    _streamWifiInfo = _connection!.streamWifiP2PInfo().listen((event) {
+      _wifiP2PInfo = event;
+      print("Listen Group Owner Address: ${_wifiP2PInfo!.groupOwnerAddress}");
+    });
+
+    _streamPeers = _connection!.streamPeers().listen((event) {
+      peers.clear();
+      peers.addAll(event);
+      print("Listen Peers: ${peers.length}");
+      print("Listen Peers: ${peers}");
+      notifyListeners();
+    });
+
     _isInitialized = true;
+
+    if(_role == UserRole.waiter) {
+      await _connection!.discover();
+    }
+
+    print("Init done");
 
     return ConnectionState.done;
   }
@@ -81,46 +139,39 @@ class ComService {
   void start() {
     if (_role == UserRole.barman) {
       startAsBarman(_networkName!);
-    } else if (_role == UserRole.waiter) {
-      startAsWaiter(_networkName!);
     }
   }
 
-  void stop() {
-    _connection!.removeGroup();
+  void stop() async {
+    await _connection!.removeGroup();
   }
 
-  void startAsBarman(String networkName) {
-    createGroup();
-  }
+  Future<void> startAsBarman(String networkName) async {
+    while(_wifiP2PInfo == null) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
 
-  void startAsWaiter(String networkName) {
-  }
-
-  void createGroup() async {
-    if(_isGroupCreated) {
+    if(_wifiP2PInfo!.groupFormed) {
       return;
     }
-    bool ret = await _connection!.createGroup();
-    if(ret == false) {
-      throw Exception('Failed to create group');
-    }
-    _isGroupCreated = true;
+    await _connection!.createGroup();
   }
 
-  void removeGroup() async {
-    bool ret = await _connection!.removeGroup();
-    if(ret == false) {
-      throw Exception('Failed to leave group');
-    }
-    _isGroupCreated = false;
+  void connectToPeer(int index) async {
+    DiscoveredPeers peer = peers[index];
+    await _connection!.connect(peer.deviceAddress);
   }
 
-  void discoverPeers() async {
+  Future<void> discoverPeers() async {
+    print("Discover peers");
+    do {
+      await Future.delayed(Duration(milliseconds: 500));
+    } while(_isInitialized == false);
     bool ret = await _connection!.discover();
     if(ret == false) {
       throw Exception('Failed to enable peers discovery');
     }
+    print("Discover peers done");
   }
 
   void stopDiscoverPeers() async {
@@ -130,38 +181,62 @@ class ComService {
     }
   }
 
-  Future<void> startSocket (
-      void Function(String, String) onConnect,
-      void Function(TransferUpdate) transferUpdate,
-      void Function(dynamic) receiveString,
-      ) async {
-    if(_wifiP2PInfo != null) {
-      bool started = await _connection!.startSocket(
+  Future<void> startSocket () async {
+    dynamic dyn_started;  // rustine ...
+    bool started = false;
+    int tryed = 0;
+
+    do {
+      while(_wifiP2PInfo == null) {
+        await Future.delayed(Duration(milliseconds: 500));
+      }
+
+      while(!_wifiP2PInfo!.groupFormed) {
+        await Future.delayed(Duration(milliseconds: 500));
+      }
+
+      dyn_started = _connection!.startSocket(
         groupOwnerAddress: _wifiP2PInfo!.groupOwnerAddress,
         downloadPath: '/storage/emulated/0/Download',
         maxConcurrentDownloads: 2,
         deleteOnError: true,
-        onConnect: onConnect,
+        onConnect: on_connect_start_socket,
         transferUpdate: transferUpdate,
         receiveString: receiveString,
       );
-      if(!started) {
-        throw Exception('Failed to start socket');
+      if (dyn_started is bool) {
+        started = dyn_started;
       }
+      else {
+        if (dyn_started is Future<bool>) {
+          started = await dyn_started;
+        }
+      }
+
+      if(!started) {
+        tryed++;
+        Future.delayed(Duration(seconds: 1));
+      }
+    } while(!started && tryed < 3);
+
+    if(!started) {
+      throw Exception('Failed to start socket');
     }
   }
 
-  Future<void> connectToSocket(
-      void Function(String) onConnect,
-      void Function(TransferUpdate) transferUpdate,
-      void Function(dynamic) receiveString,
-      ) async {
+  Future<void> connectToSocket() async {
+    while(_wifiP2PInfo == null) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
+    while(!_wifiP2PInfo!.groupFormed) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
     await _connection!.connectToSocket(
       groupOwnerAddress: _wifiP2PInfo!.groupOwnerAddress,
       downloadPath: '/storage/emulated/0/Download',
       maxConcurrentDownloads: 2,
       deleteOnError: true,
-      onConnect: onConnect,
+      onConnect: on_connect_connect,
       transferUpdate: transferUpdate,
       receiveString: receiveString,
     );
@@ -176,6 +251,7 @@ class ComService {
 
   Future<void> sendString(String message) async {
     bool s = _connection!.sendStringToSocket(message);
+    print("Send message: $message");
     if(!s) {
       throw Exception('Failed to send message');
     }
