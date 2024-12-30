@@ -2,16 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'com_service.dart';
+import '../comm/com_service.dart';
 
-class ComServicePeersList extends StatefulWidget {
-  ComServicePeersList({super.key});
+class ComServicePeersListWidget extends StatefulWidget {
+  ComServicePeersListWidget({super.key});
 
   @override
-  State<ComServicePeersList> createState() => _ComServicePeersListState();
+  State<ComServicePeersListWidget> createState() => _ComServicePeersListWidgetState();
 }
 
-class _ComServicePeersListState extends State<ComServicePeersList> {
+class _ComServicePeersListWidgetState extends State<ComServicePeersListWidget> {
 
   @override
   Widget build(BuildContext context) {

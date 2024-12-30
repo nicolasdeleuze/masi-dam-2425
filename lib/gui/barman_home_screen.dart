@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
-import 'package:masi_dam_2425/gui/loader.dart';
+import 'package:masi_dam_2425/widgets/loader_widget.dart';
 import 'package:masi_dam_2425/widgets/homepage_top_container_widget.dart';
 
 
@@ -46,7 +46,7 @@ class _BarmanHomeWidgetState extends State<BarmanHomeWidget> {
               ],
             );
           } else {
-            return Loader();
+            return LoaderWidget();
           }
         },
       ),

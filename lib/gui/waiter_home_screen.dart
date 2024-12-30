@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
-import 'package:masi_dam_2425/comm/com_service_peers_list.dart';
+import 'package:masi_dam_2425/widgets/com_service_peers_list_widget.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/widgets/homepage_top_container_widget.dart';
 import '../comm/user_role.dart';
 import '../widgets/home_button_widget.dart';
-import 'loader.dart';
+import '../widgets/loader_widget.dart';
 
 class WaiterHomeWidget extends StatefulWidget {
   WaiterHomeWidget({super.key});
@@ -44,7 +44,7 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
                       ),
                       Spacer(),
                       Expanded(
-                        child:  ComServicePeersList(),
+                        child:  ComServicePeersListWidget(),
                       ),
                       Spacer(),
 
@@ -57,7 +57,7 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
                         },
                         style: homeButtonStyle(LightColors.kLightGreen, LightColors.kDarkBlue),
                         child: const Text(
-                          'Send message',
+                          '(test) Send message',
                           style: homeButtonTextStyle,
                         ),
                       ),
@@ -65,7 +65,7 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
                     ],
                   );
                 } else {
-                  return Loader();
+                  return LoaderWidget();
                 }
               }
           )
