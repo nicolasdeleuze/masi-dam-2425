@@ -53,9 +53,9 @@ Aucune connexion n'est actuellement faite avec le backend
 
 ### Communication
 
-La communication root (barman) <-> clients (serveurs) avance principalement par essai erreurs.
-Le root ouvre actuellement un réseau Wifi Direct (vérification à l'aide d'un autre appareil).
-Côté du client, nous observons via la console de debug que celui-ci voit le root. Actuellement nous essayons d'utiliser la librairie *Provider* dans le but de mettre à jour l'UI à partir du backend.
+La communication root (barman) <-> clients (serveurs) fonctionne correctement.  
+- Le root (barman) a juste besoin d'ouvrir sa partie via le choix du rôle, et le réseau se crée automatiquement.
+- Les clients (serveurs) choisissent leur rôle, ensuite ils peuvent sélectionner à quel réseau ils veulent se connecter.
 
 ## ⚙️ Compilation de l'Application
 
