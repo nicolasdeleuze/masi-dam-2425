@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
 import 'package:masi_dam_2425/comm/com_service_peers_list.dart';
+import 'package:masi_dam_2425/repository/app_repository.dart';
+import 'package:masi_dam_2425/view_model/order_view_model.dart';
+import 'package:masi_dam_2425/view_model/view_model.dart';
+import 'package:masi_dam_2425/view_model/observer.dart';
 import 'package:masi_dam_2425/model/order.dart';
 import 'package:masi_dam_2425/model/status.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
+import 'package:masi_dam_2425/theme/styles/colored_button_style.dart';
 import 'package:masi_dam_2425/widgets/header_container_widget.dart';
 import 'package:masi_dam_2425/widgets/order_widget.dart';
-import '../theme/styles/colored_button_style.dart';
-import '../widgets/loader_widget.dart';
+import 'package:masi_dam_2425/widgets/loader_widget.dart';
 
 class WaiterHomeWidget extends StatefulWidget {
   final ComService comService;
@@ -24,7 +28,23 @@ class WaiterHomeWidget extends StatefulWidget {
 
 /// A widget representing the Waiter's home screen.
 /// Displays a list of orders and provides options to add new ones.
-class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
+class _WaiterHomeWidgetState extends State<WaiterHomeWidget> implements EventObserver {
+  final OrderViewModel _viewModel = OrderViewModel(AppRepository());
+  bool _isLoading = false;
+  List<Order> _orders = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel.subscribe(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _viewModel.unsubscribe(this);
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -37,7 +57,6 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
               return Column(
                 children: <Widget>[
                   HeaderContainer(
-                    height: 150,
                     width: width,
                     subtitle: 'Waiter',
                     userID: "RLE1234",
@@ -56,17 +75,7 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
                   ),
                   Expanded(
                     child: OrderListView(
-                      // TODO : retrieve order item from DB
-                      orders: [
-                        Order(id: 101),
-                        Order(id: 102),
-                        Order(id: 103),
-                        Order(id: 104),
-                        Order(id: 105),
-                        Order(id: 106),
-                        Order(id: 107),
-                        Order(id: 108),
-                      ],
+                      orders: _orders,
                     ),
                   ),
                   SizedBox(
@@ -84,8 +93,20 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
       ),
     );
   }
-}
 
+  @override
+  void notify(ViewEvent event) {
+    if (event is LoadingEvent) {
+      setState(() {
+        _isLoading = event.isLoading;
+      });
+    } else if (event is OrdersLoadedEvent) {
+      setState(() {
+        _orders = event.orders;
+      });
+    }
+  }
+}
 
 /// A button to add a new order, displayed at the bottom of the screen.
 class NewOrderButton extends StatelessWidget {
@@ -133,7 +154,7 @@ class NewOrderButton extends StatelessWidget {
             backgroundColor: LightColors.kLavender,
             child: ElevatedButton(
               onPressed: () {
-                // TODO ajouter commande
+                // TODO add order
               },
               style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(),

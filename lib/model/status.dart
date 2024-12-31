@@ -1,10 +1,10 @@
 enum OrderStatus{
+  canceled,
   newOrder,
   queued,
   preparing,
   ready,
   served,
-  canceled,
 }
 
 enum TransferStatus{
@@ -34,6 +34,25 @@ extension OrderStatusExtension on OrderStatus {
     }
   }
 
+  static OrderStatus fromString(String value){
+    switch (value) {
+      case 'New Order':
+        return OrderStatus.newOrder;
+      case 'Queued':
+        return OrderStatus.queued;
+      case 'Preparing':
+        return OrderStatus.preparing;
+      case "Ready for Pickup":
+        return OrderStatus.ready;
+      case "Served":
+        return OrderStatus.served;
+      case "Canceled":
+        return OrderStatus.canceled;
+      default:
+        throw ArgumentError('Invalid OrderStatus: $value');
+    }
+  }
+
   bool get isFinalState {
     return this == OrderStatus.served || this == OrderStatus.canceled;
   }
@@ -42,16 +61,24 @@ extension OrderStatusExtension on OrderStatus {
 extension TransferStatusExtension on TransferStatus {
   String get displayName {
     switch (this) {
-      case TransferStatus.sending:
-        return "Sending";
-      case TransferStatus.sent:
-        return "Sent";
-      case TransferStatus.received:
-        return "Received";
-      case TransferStatus.onHold:
-        return "On Hold";
+
       default:
         return "Unknown";
+    }
+  }
+
+  static TransferStatus fromString(String value) {
+    switch (value) {
+      case "Sending":
+        return TransferStatus.sending;
+      case "Sent":
+        return TransferStatus.sent;
+      case "Received":
+        return TransferStatus.received;
+      case "On Hold":
+        return TransferStatus.onHold;
+      default:
+        throw ArgumentError('Invalid TransferStatus: $value');
     }
   }
 

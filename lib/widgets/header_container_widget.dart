@@ -12,7 +12,7 @@ class HeaderContainer extends StatelessWidget {
 
   const HeaderContainer({
     super.key,
-    this.height = 150.0,
+    this.height = 110.0,
     required this.width,
     required this.subtitle,
     this.avatarPath = "assets/images/avatarMale.png",
@@ -26,8 +26,8 @@ class HeaderContainer extends StatelessWidget {
       children: [
         buildHeaderContainer(),
         Positioned(
-          top: 15,
-          left: 15,
+          top: 70,
+          left:110,
           child: buildSettingsButton(),
         ),
       ],
@@ -39,7 +39,7 @@ class HeaderContainer extends StatelessWidget {
         color: LightColors.kDarkYellow,
         height: height,
         width: width,
-        radius: 40.0,
+        radius: 35.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -104,7 +104,7 @@ class HeaderContainer extends StatelessWidget {
       icon: const Icon(
         Icons.settings,
         size: 30,
-        color: LightColors.kDarkBlue,
+        color: LightColors.kLightYellow,
       ),
       splashRadius: 24.0,
       tooltip: 'Settings',

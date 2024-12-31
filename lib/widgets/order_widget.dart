@@ -15,9 +15,10 @@ class OrderListView extends StatelessWidget {
       itemCount: orders.length,
       itemBuilder: (context, index) {
         return OrderItem(
-            orderNumber: orders.elementAt(index).getOrderNumber(),
-            status: orders.elementAt(index).getStatus(),
-            price: orders.elementAt(index).getTotalPrice());
+            orderNumber: orders.elementAt(index).id,
+            tag: orders.elementAt(index).tag,
+            status: orders.elementAt(index).statusToString,
+            price: orders.elementAt(index).price);
       },
       separatorBuilder: (context, index) {
         return const Divider(
@@ -92,9 +93,9 @@ class OrderItem extends StatelessWidget {
 
   Text buildPrice() {
     return Text(
-      "\€$price",
+      "€$price",
       style: const TextStyle(
-        fontSize: 20.0, // Plus grand
+        fontSize: 20.0,
         color: LightColors.kDarkBlue,
         fontWeight: FontWeight.w900,
       ),

@@ -22,7 +22,6 @@ class BarmanHomeWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               HeaderContainer(
-                height: 150,
                 width: width,
                 subtitle: 'Bartender',
                   userID : "RLE1234"

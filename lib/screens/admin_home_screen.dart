@@ -17,7 +17,6 @@ class AdminHomeWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             HeaderContainer(
-              height: 150,
               width: width,
               subtitle: 'Event Admin',
                 userID : "RLE1234"
