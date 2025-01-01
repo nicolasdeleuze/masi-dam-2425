@@ -26,8 +26,8 @@ class HeaderContainer extends StatelessWidget {
       children: [
         buildHeaderContainer(),
         Positioned(
-          top: 70,
-          left:110,
+          top: 8,
+          left : 12,
           child: buildSettingsButton(),
         ),
       ],
@@ -102,9 +102,9 @@ class HeaderContainer extends StatelessWidget {
         // TODO: access settings
       },
       icon: const Icon(
-        Icons.settings,
+        Icons.settings_sharp,
         size: 30,
-        color: LightColors.kLightYellow,
+        color: Colors.black54,
       ),
       splashRadius: 24.0,
       tooltip: 'Settings',

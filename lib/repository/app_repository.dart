@@ -19,7 +19,7 @@ class AppRepository {
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE products(
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             price REAL NOT NULL,
             category TEXT NOT NULL
@@ -27,7 +27,7 @@ class AppRepository {
         ''');
         await db.execute('''
           CREATE TABLE orders(
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             price REAL NOT NULL,
             status TEXT NOT NULL,
             transfer TEXT NOT NULL,
@@ -86,23 +86,29 @@ class AppRepository {
   }
 
   Future<void> insertOrder(Order order) async {
-    final orderId = await _database.insert(
-      'orders',
-      order.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    for (int i = 0; i < order.products.length; i++) {
-      await _database.insert(
-        'order_products',
-        {
-          'orderId': orderId,
-          'productId': order.products[i].id,
-          'quantity': order.quantities[i],
-          'missing': order.missing[i],
-        },
+    try {
+      final orderId = await _database.insert(
+        'orders',
+        order.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
+
+      for (int i = 0; i < order.products.length; i++) {
+        await _database.insert(
+          'order_products',
+          {
+            'orderId': orderId,
+            'productId': order.products[i].id,
+            'quantity': order.quantities[i],
+            'missing': order.missing[i],
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+    } catch (e) {
+      throw Exception('Could not insert new order');
     }
+
   }
 
   Future<List<Order>> getOrders() async {
@@ -124,7 +130,6 @@ class AppRepository {
       final missing = productsData.map((map) => map['missing'] as int).toList();
 
       orders.add(Order(
-        id: orderId,
         price: orderMap['price'] as double,
         status: OrderStatusExtension.fromString(orderMap['status'] as String),
         transfer: TransferStatusExtension.fromString(orderMap['transfer'] as String),

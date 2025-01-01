@@ -29,8 +29,6 @@ extension OrderStatusExtension on OrderStatus {
         return "Served";
       case OrderStatus.canceled:
         return "Canceled";
-      default:
-        return "Unknown";
     }
   }
 

@@ -1,42 +1,70 @@
 
+import 'package:flutter/foundation.dart';
 import 'package:masi_dam_2425/model/order.dart';
-import 'package:masi_dam_2425/view_model/view_model.dart';
-import 'package:masi_dam_2425/view_model/observer.dart';
 import 'package:masi_dam_2425/repository/app_repository.dart';
 
-class OrderViewModel extends EventViewModel {
+class OrderViewModel extends ChangeNotifier {
   final AppRepository _repository;
+  bool _isLoading = false;
+  List<Order> _orders = [];
+  List<Order> _activeOrders = [];
+  String? _errorMessage;
 
   OrderViewModel(this._repository);
 
-  void createOrder(Order order){
-    notify(LoadingEvent(isLoading: true));
-    _repository.insertOrder(order).then((value){
-      notify(OrderCreatedEvent(order));
-      notify(LoadingEvent(isLoading: false));
-    });
+  bool get isLoading => _isLoading;
+  List<Order> get orders => _orders;
+  List<Order> get activeOrders => _activeOrders;
+  String? get errorMessage => _errorMessage;
+
+  Future<void> createOrder(Order order) async {
+    _setLoading(true);
+    try {
+      await _repository.insertOrder(order);
+      _orders.add(order);
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = "Failed to create order: $e";
+      notifyListeners();
+    } finally {
+      _setLoading(false);
+    }
   }
 
-  void getOrders(){
-    notify(LoadingEvent(isLoading: true));
-    _repository.getOrders().then((value){
-      notify(OrdersLoadedEvent(orders: value));
-      notify(LoadingEvent(isLoading: false));
-    });
+  Future<void> getOrders() async {
+    _setLoading(true);
+    try {
+      final orders = await _repository.getOrders();
+      _orders = orders;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = "Failed to load orders: $e";
+      notifyListeners();
+    } finally {
+      _setLoading(false);
+    }
   }
-}
 
-class LoadingEvent extends ViewEvent {
-  bool isLoading;
-  LoadingEvent({required this.isLoading}) : super("LoadingEvent");
-}
+  Future<void> getActiveOrders() async {
+    _setLoading(true);
+    try {
+      final orders = await _repository.getOrders();
+      for (Order order in orders){
+        if (!order.isComplete()){
+          _activeOrders.add(order);
+        }
+      }
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = "Failed to load orders: $e";
+      notifyListeners();
+    } finally {
+      _setLoading(false);
+    }
+  }
 
-class OrdersLoadedEvent extends ViewEvent {
-  final List<Order> orders;
-  OrdersLoadedEvent({required this.orders}) : super("OrderLoadedEvent");
-}
-
-class OrderCreatedEvent extends ViewEvent {
-  final Order order;
-  OrderCreatedEvent(this.order) : super("OrderCreatedEvent");
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
 }

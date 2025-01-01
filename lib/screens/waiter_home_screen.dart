@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
 import 'package:masi_dam_2425/comm/com_service_peers_list.dart';
-import 'package:masi_dam_2425/repository/app_repository.dart';
+import 'package:masi_dam_2425/screens/new_order_screen.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
-import 'package:masi_dam_2425/view_model/view_model.dart';
-import 'package:masi_dam_2425/view_model/observer.dart';
-import 'package:masi_dam_2425/model/order.dart';
-import 'package:masi_dam_2425/model/status.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
-import 'package:masi_dam_2425/theme/styles/colored_button_style.dart';
+import 'package:masi_dam_2425/widgets/add_button_widget.dart';
 import 'package:masi_dam_2425/widgets/header_container_widget.dart';
 import 'package:masi_dam_2425/widgets/order_widget.dart';
 import 'package:masi_dam_2425/widgets/loader_widget.dart';
+import 'package:provider/provider.dart';
 
 class WaiterHomeWidget extends StatefulWidget {
   final ComService comService;
@@ -27,27 +24,15 @@ class WaiterHomeWidget extends StatefulWidget {
 }
 
 /// A widget representing the Waiter's home screen.
-/// Displays a list of orders and provides options to add new ones.
-class _WaiterHomeWidgetState extends State<WaiterHomeWidget> implements EventObserver {
-  final OrderViewModel _viewModel = OrderViewModel(AppRepository());
-  bool _isLoading = false;
-  List<Order> _orders = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _viewModel.subscribe(this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _viewModel.unsubscribe(this);
-  }
-
+/// Displays a list of orders and provides option to add new ones.
+class _WaiterHomeWidgetState extends State<WaiterHomeWidget> {
   @override
   Widget build(BuildContext context) {
+    final OrderViewModel viewModel =
+        Provider.of<OrderViewModel>(context, listen: true);
+    // TODO : retrieve only active orders
     double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder(
@@ -74,15 +59,30 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> implements EventObs
                     ),
                   ),
                   Expanded(
-                    child: OrderListView(
-                      orders: _orders,
-                    ),
+                    child: viewModel.isLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : viewModel.orders.isEmpty
+                            ? const Center(child: Text("No orders added yet."))
+                            : OrderListView(
+                                orders: viewModel.orders,
+                              ),
                   ),
                   SizedBox(
                     height: 0,
                     child: ComServicePeersList(comService: widget.comService),
                   ),
-                  NewOrderButton(width: width),
+                  AddButton(
+                    width: width,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NewOrderScreen(),
+                        ),
+                      );
+                    },
+                    text: "Add a new order",
+                  ),
                 ],
               );
             } else {
@@ -91,85 +91,6 @@ class _WaiterHomeWidgetState extends State<WaiterHomeWidget> implements EventObs
           },
         ),
       ),
-    );
-  }
-
-  @override
-  void notify(ViewEvent event) {
-    if (event is LoadingEvent) {
-      setState(() {
-        _isLoading = event.isLoading;
-      });
-    } else if (event is OrdersLoadedEvent) {
-      setState(() {
-        _orders = event.orders;
-      });
-    }
-  }
-}
-
-/// A button to add a new order, displayed at the bottom of the screen.
-class NewOrderButton extends StatelessWidget {
-  const NewOrderButton({
-    super.key,
-    required this.width,
-  });
-
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          padding: EdgeInsets.only(top: 60),
-          decoration: BoxDecoration(
-              color: LightColors.kLavender,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(40),
-                topLeft: Radius.circular(40),
-              )),
-          height: 100,
-          width: width,
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              const Text(
-                "Add a new order",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: LightColors.kBlue,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          top: -15,
-          child: CircleAvatar(
-            radius: 35,
-            backgroundColor: LightColors.kLavender,
-            child: ElevatedButton(
-              onPressed: () {
-                // TODO add order
-              },
-              style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-                padding: const EdgeInsets.all(15),
-                backgroundColor: LightColors.kBlue,
-              ),
-              child: const Icon(
-                Icons.add,
-                size: 30,
-                color: LightColors.kLightYellow,
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

@@ -15,7 +15,7 @@ class OrderListView extends StatelessWidget {
       itemCount: orders.length,
       itemBuilder: (context, index) {
         return OrderItem(
-            orderNumber: orders.elementAt(index).id,
+            orderNumber: index+1,
             tag: orders.elementAt(index).tag,
             status: orders.elementAt(index).statusToString,
             price: orders.elementAt(index).price);
@@ -26,7 +26,7 @@ class OrderListView extends StatelessWidget {
           thickness: 2,
           indent: 90,
           endIndent: 0,
-          color: LightColors.kLightYellow2,
+          color: LightColors.kLightGreen,
         );
       },
     );
@@ -103,10 +103,11 @@ class OrderItem extends StatelessWidget {
   }
 
   Text buildOrderStatus() {
-    return Text(status,
+    return Text(
+        status,
         style: const TextStyle(
           fontSize: 15.0,
-          color: LightColors.kBlue,
+          color: LightColors.kGreen,
           fontWeight: FontWeight.w500,
         ));
   }
@@ -116,7 +117,7 @@ class OrderItem extends StatelessWidget {
       height: 40,
       width: 60,
       radius: 50,
-      color: LightColors.kBlue,
+      color: LightColors.kGreen,
       child:
       Center(
         child: Text(

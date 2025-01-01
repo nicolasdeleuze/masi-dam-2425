@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
-
+import 'package:masi_dam_2425/repository/app_repository.dart';
+import 'package:masi_dam_2425/view_model/order_view_model.dart';
+import 'package:provider/provider.dart';
 import 'theme/colors/light_colors.dart';
 import 'comm/com_service.dart';
 import 'screens/roles_selection_screen.dart';
 
 ComService comService = ComService();
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final repository = AppRepository();
+  await repository.initDatabase();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => OrderViewModel(repository),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

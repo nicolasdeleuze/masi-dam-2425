@@ -15,7 +15,7 @@ import 'package:masi_dam_2425/model/status.dart';
 /// on the network. This allows the order to be held locally and retried later
 /// in case the recipient is temporarily unavailable.
 class Order {
-  final int _id;
+  int? _id;
   double _price;
   OrderStatus _status;
   TransferStatus _transfer;
@@ -25,7 +25,6 @@ class Order {
   final List<int> _missing;
 
   Order({
-    required int id,
     double price = 0.0,
     OrderStatus status = OrderStatus.newOrder,
     TransferStatus transfer = TransferStatus.onHold,
@@ -33,8 +32,7 @@ class Order {
     List<int>? quantity,
     List<int>? missingProducts,
     String? tag,
-  })  : _id = id,
-        _tag = tag,
+  })  : _tag = tag,
         _price = price,
         _status = status,
         _transfer = transfer,
@@ -49,7 +47,7 @@ class Order {
     _status = OrderStatus.values[_status.index + 1];
   }
 
-  int get id => _id;
+  int? get id => _id;
   double get price => _price;
   OrderStatus get status => _status;
   String get statusToString => _status.displayName;
@@ -63,6 +61,10 @@ class Order {
 
   void setTag(String tag) {
     _tag = tag;
+  }
+
+  void setID (int id){
+    _id = id;
   }
 
   void removeTag() {
@@ -207,7 +209,6 @@ class Order {
 
   static Order fromMap(Map<String, dynamic> map) {
     return Order(
-      id: map['id'],
       price: map['price'] ?? 0.0,
       status: OrderStatus.values.firstWhere(
         (e) => e.displayName == map['status'],
@@ -222,6 +223,6 @@ class Order {
           .toList(),
       quantity: List<int>.from(map['quantities'] ?? []),
       tag: map['tag'],
-    );
+    ).._id = map['id'] as int?;
   }
 }
