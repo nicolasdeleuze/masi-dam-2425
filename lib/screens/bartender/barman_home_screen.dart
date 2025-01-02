@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
-import 'package:masi_dam_2425/widgets/header_container_widget.dart';
+import 'package:masi_dam_2425/widgets/containers/header_container_widget.dart';
 
 /// A widget representing the Bartender's home screen.
 /// Displays a list of orders and provides options to see one in particular.

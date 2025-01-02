@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/model/order.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
-import 'package:masi_dam_2425/widgets/colored_container_widget.dart';
+import 'package:masi_dam_2425/widgets/containers/colored_container_widget.dart';
 
 class OrderListView extends StatelessWidget {
   final List<Order> orders;
@@ -107,7 +107,7 @@ class OrderItem extends StatelessWidget {
         status,
         style: const TextStyle(
           fontSize: 15.0,
-          color: LightColors.kGreen,
+          color: LightColors.kBlue,
           fontWeight: FontWeight.w500,
         ));
   }

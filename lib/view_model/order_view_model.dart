@@ -1,10 +1,10 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:masi_dam_2425/model/order.dart';
-import 'package:masi_dam_2425/repository/app_repository.dart';
+import 'package:masi_dam_2425/repository/order_repository.dart';
 
 class OrderViewModel extends ChangeNotifier {
-  final AppRepository _repository;
+  final OrderRepository _repository;
   bool _isLoading = false;
   List<Order> _orders = [];
   List<Order> _activeOrders = [];

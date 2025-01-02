@@ -9,9 +9,10 @@ ButtonStyle coloredButtonStyle(Color backgroundColor, Color foregroundColor) {
     padding: WidgetStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(13)),
     shape: WidgetStateProperty.all<RoundedRectangleBorder>(
       RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(20),
       ),
     ),
+    elevation: WidgetStatePropertyAll(1.0),
   );
 }
 

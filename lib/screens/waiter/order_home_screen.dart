@@ -1,0 +1,119 @@
+import 'package:flutter/material.dart';
+import 'package:masi_dam_2425/comm/com_service.dart';
+import 'package:masi_dam_2425/comm/user_role.dart';
+import 'package:masi_dam_2425/comm/com_service_peers_list.dart';
+import 'package:masi_dam_2425/screens/waiter/new_order_screen.dart';
+import 'package:masi_dam_2425/view_model/order_view_model.dart';
+import 'package:masi_dam_2425/theme/colors/light_colors.dart';
+import 'package:masi_dam_2425/widgets/buttons/add_button_widget.dart';
+import 'package:masi_dam_2425/widgets/containers/header_container_widget.dart';
+import 'package:masi_dam_2425/widgets/order_list_widget.dart';
+import 'package:masi_dam_2425/widgets/loader_widget.dart';
+import 'package:provider/provider.dart';
+
+class OrderHomeWidget extends StatefulWidget {
+  final ComService comService;
+
+  const OrderHomeWidget({
+    super.key,
+    required this.comService,
+  });
+
+  @override
+  State<OrderHomeWidget> createState() => _OrderHomeWidgetState();
+}
+
+/// A widget representing the Waiter's home screen.
+/// Displays a list of orders and provides option to add new ones.
+class _OrderHomeWidgetState extends State<OrderHomeWidget> {
+  @override
+  Widget build(BuildContext context) {
+    final OrderViewModel viewModel =
+        Provider.of<OrderViewModel>(context, listen: true);
+    // TODO : retrieve only active orders
+    double width = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+      body: SafeArea(
+        child: FutureBuilder(
+          future: widget.comService.init("OpenAirPOS", UserRole.waiter),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Column(
+                children: <Widget>[
+                  buildHeaderContainer(width),
+                  SizedBox(height: 10),
+                  //TODO : add padding instead of sized box
+                  buildOrdersTitle(),
+                  buildOrdersList(viewModel),
+                  SizedBox(
+                    height: 0,
+                    child: ComServicePeersList(comService: widget.comService),
+                  ),
+                  buildAddButton(width, context),
+                ],
+              );
+            } else {
+              return Loader();
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  AddButton buildAddButton(double width, BuildContext context) {
+    return AddButton(
+      width: width,
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewOrderWidget(),
+          ),
+        );
+      },
+      label: "Add new order",
+      icon: Icons.border_color_outlined,
+    );
+  }
+
+  Expanded buildOrdersList(OrderViewModel viewModel) {
+    return Expanded(
+      child: viewModel.isLoading
+          ? Center(child: CircularProgressIndicator())
+          : viewModel.orders.isEmpty
+              ? const Center(child: Text("No orders added yet."))
+              : OrderListView(
+                  orders: viewModel.orders,
+                ),
+    );
+  }
+
+  Row buildOrdersTitle() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            "Orders",
+            style: const TextStyle(
+              fontSize: 30.0,
+              color: LightColors.kDarkBlue,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  HeaderContainer buildHeaderContainer(double width) {
+    return HeaderContainer(
+      width: width,
+      subtitle: 'Waiter',
+      userID: "RLE1234",
+    );
+  }
+}

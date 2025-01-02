@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
-import 'package:masi_dam_2425/widgets/colored_container_widget.dart';
+import 'package:masi_dam_2425/widgets/containers/colored_container_widget.dart';
 
+/// This widget is designed to be displayed at the top of the screen.
+/// It shows a profile picture, the name of the current user, and their ID.
+/// Additionally, it includes menu buttons for easy access to critical features.
 class HeaderContainer extends StatelessWidget {
   final double height;
   final double width;

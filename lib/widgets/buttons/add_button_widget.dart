@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 
-/// A button to add a new order, displayed at the bottom of the screen.
+/// This widget represents a button that is intended to be displayed at
+/// the bottom of the screen.
+/// It requires an icon, a label (prompt), and a function that defines
+/// the action to perform when the button is pressed.
 class AddButton extends StatelessWidget {
   const AddButton({
     super.key,
     required this.width,
     required this.onPressed,
-    required this.text,
+    required this.label,
+    required this.icon,
   });
 
   final double width;
   final Function()? onPressed;
-  final String text;
+  final String label;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,7 @@ class AddButton extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                text,
+                label,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -56,8 +61,8 @@ class AddButton extends StatelessWidget {
                 padding: const EdgeInsets.all(15),
                 backgroundColor: LightColors.kGreen,
               ),
-              child: const Icon(
-                Icons.add,
+              child: Icon(
+                icon,
                 size: 30,
                 color: LightColors.kLightYellow,
               ),

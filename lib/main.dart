@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:masi_dam_2425/repository/app_repository.dart';
+import 'package:masi_dam_2425/repository/dataservice.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
 import 'package:provider/provider.dart';
 import 'theme/colors/light_colors.dart';
@@ -10,14 +10,14 @@ ComService comService = ComService();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final repository = AppRepository();
-  await repository.initDatabase();
+  final dataService = DataService();
+  await dataService.initialize();
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => OrderViewModel(repository),
+          create: (context) => OrderViewModel(dataService.orderRepository),
         ),
       ],
       child: MyApp(),

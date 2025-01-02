@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:masi_dam_2425/screens/admin_home_screen.dart';
+import 'package:masi_dam_2425/screens/admin/admin_home_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
-import 'package:masi_dam_2425/screens/barman_home_screen.dart';
-import 'package:masi_dam_2425/screens/waiter_home_screen.dart';
-import 'package:masi_dam_2425/widgets/header_container_widget.dart';
+import 'package:masi_dam_2425/screens/bartender/barman_home_screen.dart';
+import 'package:masi_dam_2425/screens/waiter/order_home_screen.dart';
+import 'package:masi_dam_2425/widgets/containers/header_container_widget.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
-import 'package:masi_dam_2425/widgets/xlarge_button_widget.dart';
+import 'package:masi_dam_2425/widgets/buttons/xlarge_button_widget.dart';
 
 /// A widget that allows users to select a role (e.g., Bartender, Waiter, Admin)
 /// and navigate to the corresponding home screen.
@@ -39,7 +39,6 @@ class _RolesWidgetState extends State<RolesWidget> {
                     label: 'Bartender',
                     role: UserRole.barman,
                     iconPath: 'assets/images/bartender.png',
-                    iconColor: LightColors.kLightYellow,
                     backgroundColor: LightColors.kGreen,
                     textColor: LightColors.kLightYellow,
                     nextPage: BarmanHomeWidget(comService: widget.comService!),
@@ -50,10 +49,9 @@ class _RolesWidgetState extends State<RolesWidget> {
                     label: 'Waiter',
                     role: UserRole.waiter,
                     iconPath: 'assets/images/waiter.png',
-                    iconColor: LightColors.kLightYellow,
                     backgroundColor: LightColors.kRed,
                     textColor: LightColors.kLightYellow,
-                    nextPage: WaiterHomeWidget(comService: widget.comService!),
+                    nextPage: OrderHomeWidget(comService: widget.comService!),
                     comService: widget.comService!,
                   ),
                   const SizedBox(height: 20),
@@ -61,7 +59,6 @@ class _RolesWidgetState extends State<RolesWidget> {
                     label: 'Admin',
                     role: UserRole.admin,
                     iconPath: 'assets/images/admin.png',
-                    iconColor: LightColors.kLightYellow,
                     backgroundColor: LightColors.kBlue,
                     textColor: LightColors.kLightYellow,
                     nextPage: AdminHomeWidget(),

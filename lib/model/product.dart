@@ -25,7 +25,7 @@ class Product {
   MenuCategory get category => _category;
   double get price => _price;
 
-  void changePrice(price){
+  void setPrice(price){
     _price = price;
   }
 

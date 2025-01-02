@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// This widget is a colored box with rounded corner.
 class ColoredContainer extends StatelessWidget {
   final double height;
   final double width;
