@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/repository/dataservice.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
+import 'package:masi_dam_2425/view_model/product_view_model.dart';
 import 'package:provider/provider.dart';
 import 'theme/colors/light_colors.dart';
 import 'comm/com_service.dart';
@@ -18,6 +19,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
           create: (context) => OrderViewModel(dataService.orderRepository),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProductViewModel(dataService.productRepository),
         ),
       ],
       child: MyApp(),

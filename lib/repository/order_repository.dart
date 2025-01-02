@@ -52,6 +52,7 @@ class OrderRepository {
         order.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
+      order.id=orderId;
 
       for (int i = 0; i < order.products.length; i++) {
         await _database.insert(

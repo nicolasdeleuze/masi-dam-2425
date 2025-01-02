@@ -3,6 +3,7 @@ import 'package:masi_dam_2425/model/menu_category.dart';
 import 'package:masi_dam_2425/model/order.dart';
 import 'package:masi_dam_2425/model/product.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
+import 'package:masi_dam_2425/theme/styles/textfield_style.dart';
 import 'package:masi_dam_2425/widgets/buttons/add_button_widget.dart';
 import 'package:masi_dam_2425/widgets/containers/colored_container_widget.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +51,7 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
         }
       },
       label: "Add new product",
-      icon: Icons.trolley,
+      icon: Icons.fastfood,
     );
   }
 
@@ -109,17 +110,7 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
             ),
             TextField(
               controller: _tagController,
-              decoration: const InputDecoration(
-                labelText: "Add optional order tag",
-                prefixIcon: const Icon(Icons.drive_file_rename_outline,),
-                labelStyle: TextStyle(color: LightColors.kDarkBlue),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: LightColors.kDarkBlue, width: 0.0),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: LightColors.kDarkBlue, width: 1.5),
-                ),
-              ),
+              decoration: textfieldStyle("Add optional order tag",Icon(Icons.drive_file_rename_outline)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -272,7 +263,6 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                 if (nameController.text.isNotEmpty &&
                     priceController.text.isNotEmpty) {
                   final product = Product(
-                    id: 1, // ID temp
                     name: nameController.text,
                     price: double.tryParse(priceController.text) ?? 0.0,
                     category: MenuCategory.juice,

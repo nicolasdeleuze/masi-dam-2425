@@ -1,5 +1,5 @@
-
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:masi_dam_2425/model/id_generator.dart';
 import 'package:masi_dam_2425/model/order.dart';
 import 'package:masi_dam_2425/repository/order_repository.dart';
 
@@ -7,10 +7,12 @@ class OrderViewModel extends ChangeNotifier {
   final OrderRepository _repository;
   bool _isLoading = false;
   List<Order> _orders = [];
-  List<Order> _activeOrders = [];
+  final List<Order> _activeOrders = [];
   String? _errorMessage;
 
-  OrderViewModel(this._repository);
+  OrderViewModel(this._repository){
+    getOrders();
+  }
 
   bool get isLoading => _isLoading;
   List<Order> get orders => _orders;
@@ -20,8 +22,13 @@ class OrderViewModel extends ChangeNotifier {
   Future<void> createOrder(Order order) async {
     _setLoading(true);
     try {
+      order.id = await IdGenerator.generateNewId('order');
       await _repository.insertOrder(order);
-      _orders.add(order);
+      if (orders.isEmpty){
+        getOrders();
+      } else {
+        _orders.add(order);
+      }
       notifyListeners();
     } catch (e) {
       _errorMessage = "Failed to create order: $e";

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/model/event.dart';
 import 'package:masi_dam_2425/model/menu.dart';
+import 'package:masi_dam_2425/screens/admin/menu_home_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/theme/styles/colored_button_style.dart';
 import 'package:masi_dam_2425/widgets/containers/header_container_widget.dart';
@@ -23,7 +24,7 @@ class _AdminHomeWidgetState extends State<AdminHomeWidget> {
       null,
       'Christmas Market',
       'City Center',
-      Menu(),
+      Menu(name:'',products: null),
       [],
     ),
     Event(
@@ -31,14 +32,16 @@ class _AdminHomeWidgetState extends State<AdminHomeWidget> {
       null,
       'New Year Eve',
       'Grand Hall',
-      Menu(),
+      Menu(name:'',products: null),
       [],
     ),
   ];
-  String _searchQuery = '';
+
 
   @override
   Widget build(BuildContext context) {
+
+    String searchQuery = "";
 
     double width = MediaQuery.of(context).size.width;
     double padding = 16.0;
@@ -48,7 +51,14 @@ class _AdminHomeWidgetState extends State<AdminHomeWidget> {
       SquareButton(label: "Events", icon: Icons.event, color: LightColors.kBlue, onPressed: () {}),
       SquareButton(label: "Stats", icon: Icons.bar_chart, color: LightColors.kDarkYellow, onPressed: () {}),
       SquareButton(label: "Teams", icon: Icons.group, color: LightColors.kRed, onPressed: () {}),
-      SquareButton(label: "Menus", icon: Icons.menu_book, color: LightColors.kGreen, onPressed: () {}),
+      SquareButton(label: "Menus", icon: Icons.menu_book, color: LightColors.kGreen, onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AdminMenuScreen(),
+          ),
+        );
+      },),
     ];
 
     return Scaffold(
@@ -88,7 +98,7 @@ class _AdminHomeWidgetState extends State<AdminHomeWidget> {
               child: TextField(
                 onChanged: (value) {
                   setState(() {
-                    _searchQuery = value;
+                    searchQuery = value;
                   });
                 },
                 decoration: InputDecoration(

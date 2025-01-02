@@ -6,7 +6,8 @@ ButtonStyle coloredButtonStyle(Color backgroundColor, Color foregroundColor) {
     backgroundColor: WidgetStateProperty.all<Color>(backgroundColor),
     foregroundColor: WidgetStateProperty.all<Color>(foregroundColor),
     overlayColor: WidgetStateProperty.all<Color>(backgroundColor),
-    padding: WidgetStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(13)),
+    padding:
+        WidgetStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(13)),
     shape: WidgetStateProperty.all<RoundedRectangleBorder>(
       RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -21,4 +22,3 @@ const TextStyle coloredButtonTextStyle = TextStyle(
   fontSize: 15,
   fontWeight: FontWeight.bold,
 );
-

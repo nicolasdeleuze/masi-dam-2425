@@ -17,7 +17,7 @@ import 'package:masi_dam_2425/model/status.dart';
 /// on the network. This allows the order to be held locally and retried later
 /// in case the recipient is temporarily unavailable.
 class Order {
-  int? _id;
+  int? id;
   double _price;
   OrderStatus _status;
   TransferStatus _transfer;
@@ -48,8 +48,6 @@ class Order {
     }
     _status = OrderStatus.values[_status.index + 1];
   }
-
-  int? get id => _id;
   double get price => _price;
   OrderStatus get status => _status;
   String get statusToString => _status.displayName;
@@ -63,10 +61,6 @@ class Order {
 
   void setTag(String tag) {
     _tag = tag;
-  }
-
-  void setID (int id){
-    _id = id;
   }
 
   void removeTag() {
@@ -201,11 +195,13 @@ class Order {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': _id,
+      'id': id,
       'price': _price,
       'status': _status.displayName,
       'transfer': _transfer.displayName,
       'tag': _tag,
+      'products': _order.map((product) => product.toMap()).toList(),
+      'quantities': _quantity,
     };
   }
 
@@ -225,6 +221,6 @@ class Order {
           .toList(),
       quantity: List<int>.from(map['quantities'] ?? []),
       tag: map['tag'],
-    ).._id = map['id'] as int?;
+    )..id = map['id'] as int?;
   }
 }

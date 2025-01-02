@@ -5,22 +5,19 @@ import 'package:masi_dam_2425/model/menu_category.dart';
 /// It has a name and a price. The price can be changed (for promotion or else)
 /// Category field is used to group products of the same kind.
 class Product {
-  final int _id;
+  int? id;
   final String _name;
   double _price;
   final MenuCategory _category;
 
   Product({
-    required int id,
     required String name,
     required double price,
     required MenuCategory category,
-  }) :  _id = id,
+  }) :
         _name = name,
         _price = price,
         _category = category;
-
-  int get id => _id;
   String get name => _name;
   MenuCategory get category => _category;
   double get price => _price;
@@ -31,19 +28,21 @@ class Product {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': _id,
+      'id' : id,
       'name': _name,
       'price': _price,
-      'category': _category,
+      'category': _category.displayName,
     };
   }
 
   static Product fromMap(Map<String, dynamic> map) {
     return Product(
-      id: map['id'],
       name: map['name'],
       price: map['price'],
-      category: map['category'],
-    );
+      category: MenuCategory.values.firstWhere(
+            (e) => e.displayName == map['category'],
+        orElse: () => MenuCategory.exotic,
+      ),
+    )..id = map['id'] as int?;
   }
 }

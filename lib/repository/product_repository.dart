@@ -33,7 +33,8 @@ class ProductRepository {
   }
 
   Future<void> insertProduct(Product product) async {
-    await _database.insert('products', product.toMap());
+    final id = await _database.insert('products', product.toMap());
+    product.id = id;
   }
 
   Future<void> updateProduct(Product product) async {
@@ -43,6 +44,14 @@ class ProductRepository {
       where: 'id = ?',
       whereArgs: [product.id],
     );
+  }
+
+  Future<void> deleteAll() async {
+    try {
+      await _database.delete('products');
+    } catch (e) {
+      throw Exception('Couldn\'t delete all');
+    }
   }
 
   Future<void> deleteProduct(Product product) async {
