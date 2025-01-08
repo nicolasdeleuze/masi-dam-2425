@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:masi_dam_2425/gui/barman_order_list_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'comm/com_service.dart';
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Poppins'
         ),
       ),
-      home: BarmanOrderListScreen(),
+      home: RolesWidget()
     );
   }
 }
