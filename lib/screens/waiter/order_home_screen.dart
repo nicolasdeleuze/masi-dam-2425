@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
-import 'package:masi_dam_2425/comm/com_service_peers_list.dart';
 import 'package:masi_dam_2425/screens/waiter/new_order_screen.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/widgets/buttons/add_button_widget.dart';
 import 'package:masi_dam_2425/widgets/containers/header_container_widget.dart';
 import 'package:masi_dam_2425/widgets/order_list_widget.dart';
-import 'package:masi_dam_2425/widgets/loader_widget.dart';
 import 'package:provider/provider.dart';
 
 class OrderHomeWidget extends StatefulWidget {
@@ -38,7 +36,6 @@ class _OrderHomeWidgetState extends State<OrderHomeWidget> {
         child: FutureBuilder(
           future: widget.comService.init("OpenAirPOS", UserRole.waiter),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
               return Column(
                 children: <Widget>[
                   buildHeaderContainer(width),
@@ -46,16 +43,9 @@ class _OrderHomeWidgetState extends State<OrderHomeWidget> {
                   //TODO : add padding instead of sized box
                   buildOrdersTitle(),
                   buildOrdersList(viewModel),
-                  SizedBox(
-                    height: 0,
-                    child: ComServicePeersList(comService: widget.comService),
-                  ),
                   buildAddButton(width, context),
                 ],
               );
-            } else {
-              return Loader();
-            }
           },
         ),
       ),

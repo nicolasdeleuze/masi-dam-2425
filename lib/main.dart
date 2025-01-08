@@ -7,7 +7,6 @@ import 'theme/colors/light_colors.dart';
 import 'comm/com_service.dart';
 import 'screens/roles_selection_screen.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dataService = DataService();
