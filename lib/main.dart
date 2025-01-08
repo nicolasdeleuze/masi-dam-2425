@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Poppins'
         ),
       ),
-      home: RolesWidget(),
+      home: RolesWidget()
     );
   }
 }
