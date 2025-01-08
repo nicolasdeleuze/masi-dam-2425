@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
-import '../theme/colors/light_colors.dart';
 
-class TopContainer extends StatelessWidget {
+/// This widget is a colored box with rounded corner.
+class ColoredContainer extends StatelessWidget {
   final double height;
   final double width;
   final Widget child;
+  final Color color;
+  final double radius;
   final EdgeInsets padding;
 
-  const TopContainer({
+  const ColoredContainer({
     super.key,
     required this.height,
     required this.width,
     required this.child,
-    this.padding = const EdgeInsets.symmetric(horizontal: 20.0),
+    required this.color,
+    this.radius = 25.0,
+    this.padding = const EdgeInsets.symmetric(horizontal: 0.0),
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(left: 8, right: 8,top: 8),
       padding: padding,
       decoration: BoxDecoration(
-        color: LightColors.kDarkYellow,
-        borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(40.0),
-          bottomLeft: Radius.circular(40.0),
-        ),
+        color: color,
+        borderRadius: BorderRadius.all(Radius.circular(radius))
       ),
       height: height,
       width: width,

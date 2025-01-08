@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:masi_dam_2425/repository/dataservice.dart';
+import 'package:masi_dam_2425/view_model/order_view_model.dart';
+import 'package:masi_dam_2425/view_model/product_view_model.dart';
 import 'package:provider/provider.dart';
-
-import 'comm/com_service.dart';
 import 'theme/colors/light_colors.dart';
-import 'gui/roles_selection_screen.dart';
+import 'comm/com_service.dart';
+import 'screens/roles_selection_screen.dart';
 
-void main() {
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final dataService = DataService();
+  await dataService.initialize();
+
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ComService.getInstance(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => OrderViewModel(dataService.orderRepository),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProductViewModel(dataService.productRepository),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ComService.getInstance(),
+          child: MyApp(),
+        ),
+      ],
       child: MyApp(),
     ),
   );
@@ -24,17 +42,29 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Open Air POS',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: Theme.of(context).textTheme.apply(
-            bodyColor: LightColors.kDarkBlue,
-            displayColor: LightColors.kDarkBlue,
-            fontFamily: 'Poppins'
+      theme: _buildThemeData(context),
+      home: RolesWidget(comService: comService),
+    );
+  }
+
+  ThemeData _buildThemeData(BuildContext context) {
+    const darkBlue = LightColors.kDarkBlue;
+    const lightYellow = LightColors.kLightYellow;
+
+    return ThemeData(
+      primarySwatch: Colors.blue,
+      textTheme: TextTheme(
+        bodyLarge: TextStyle(
+          color: darkBlue,
+          fontFamily: 'Poppins',
+        ),
+        displayLarge: TextStyle(
+          color: darkBlue,
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
         ),
       ),
-      home: RolesWidget(),
+      scaffoldBackgroundColor: lightYellow,
     );
   }
 }
-
-

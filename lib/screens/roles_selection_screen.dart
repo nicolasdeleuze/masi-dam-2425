@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:masi_dam_2425/gui/admin_home_screen.dart';
+import 'package:masi_dam_2425/screens/admin/admin_home_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
-import 'package:masi_dam_2425/gui/barman_home_screen.dart';
-import 'package:masi_dam_2425/gui/waiter_home_screen.dart';
-import 'package:masi_dam_2425/widgets/homepage_top_container_widget.dart';
-import 'package:masi_dam_2425/widgets/top_container_widget.dart';
+import 'package:masi_dam_2425/screens/bartender/barman_home_screen.dart';
+import 'package:masi_dam_2425/screens/waiter/order_home_screen.dart';
+import 'package:masi_dam_2425/widgets/containers/header_container_widget.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/user_role.dart';
-import 'package:masi_dam_2425/widgets/role_button_widget.dart';
+import 'package:masi_dam_2425/widgets/buttons/xlarge_button_widget.dart';
 
+/// A widget that allows users to select a role (e.g., Bartender, Waiter, Admin)
+/// and navigate to the corresponding home screen.
 class RolesWidget extends StatefulWidget {
-  RolesWidget({super.key});
+  const RolesWidget({super.key, required ComService this.comService});
 
-  ComService? comService;
+  final ComService? comService;
 
   @override
   State<RolesWidget> createState() => _RolesWidgetState();
@@ -23,55 +24,45 @@ class _RolesWidgetState extends State<RolesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    widget.comService = ComService.getInstance();
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: LightColors.kLightYellow,
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CustomTopContainer(
-              height: 150,
-              width: width,
-              title: 'Welcome Rodrigues',
-              subtitle: 'Select your role',
-            ),
+              HeaderContainer(
+                  width: width, subtitle: 'Select a role', userID: "RLE1234"),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.all(40.0),
                 children: <Widget>[
-                  RoleButton(
+                  XLargeButton(
                     label: 'Bartender',
                     role: UserRole.barman,
                     iconPath: 'assets/images/bartender.png',
-                    iconColor : LightColors.kLightYellow,
                     backgroundColor: LightColors.kGreen,
                     textColor: LightColors.kLightYellow,
-                    nextPage: BarmanHomeWidget(),
+                    nextPage: BarmanHomeWidget(comService: widget.comService!),
+                    comService: widget.comService!,
                   ),
                   const SizedBox(height: 20),
-                  RoleButton(
+                  XLargeButton(
                     label: 'Waiter',
                     role: UserRole.waiter,
                     iconPath: 'assets/images/waiter.png',
-                    iconColor : LightColors.kLightYellow,
                     backgroundColor: LightColors.kRed,
                     textColor: LightColors.kLightYellow,
-                    nextPage: WaiterHomeWidget(),
-                    beforeNextPage: () async {
-                      await widget.comService!.init("OpenAirPOS", UserRole.waiter);
-                    },
+                    nextPage: OrderHomeWidget(comService: widget.comService!),
+                    comService: widget.comService!,
                   ),
                   const SizedBox(height: 20),
-                  RoleButton(
+                  XLargeButton(
                     label: 'Admin',
                     role: UserRole.admin,
                     iconPath: 'assets/images/admin.png',
-                    iconColor : LightColors.kLightYellow,
                     backgroundColor: LightColors.kBlue,
                     textColor: LightColors.kLightYellow,
                     nextPage: AdminHomeWidget(),
+                    comService: widget.comService!,
                   ),
                 ],
               ),
