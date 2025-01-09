@@ -22,8 +22,7 @@ void main() async {
           create: (context) => ProductViewModel(dataService.productRepository),
         ),
         ChangeNotifierProvider(
-          create: (context) => ComService.getInstance(),
-          child: MyApp(),
+          create: (context) => ComService.getInstance()
         ),
       ],
       child: MyApp(),
