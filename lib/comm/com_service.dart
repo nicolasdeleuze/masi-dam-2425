@@ -9,6 +9,7 @@ class ComService extends ChangeNotifier {
   static ComService? _instance;
   static BuildContext _context = null as dynamic;
 
+  bool isConnected = false;
   bool _isInitialized = false;
   String? _networkName;
   UserRole? _role;
@@ -28,6 +29,11 @@ class ComService extends ChangeNotifier {
       _instance = ComService._();
     }
     return _instance!;
+  }
+
+  void setIsConnected(bool value) {
+    isConnected = value;
+    notifyListeners();
   }
 
   void setContext(BuildContext context) {

@@ -10,12 +10,9 @@ import 'package:masi_dam_2425/widgets/order_list_widget.dart';
 import 'package:provider/provider.dart';
 
 class OrderHomeWidget extends StatefulWidget {
-  final ComService comService;
+  ComService comService = ComService.getInstance();
 
-  const OrderHomeWidget({
-    super.key,
-    required this.comService,
-  });
+  OrderHomeWidget({super.key});
 
   @override
   State<OrderHomeWidget> createState() => _OrderHomeWidgetState();
