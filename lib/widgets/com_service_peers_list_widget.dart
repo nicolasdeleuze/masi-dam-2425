@@ -32,6 +32,7 @@ class _ComServicePeersListWidgetState extends State<ComServicePeersListWidget> {
                       onPressed: () {
                         comService.connectToPeer(index);
                         comService.connectToSocket();
+                        comService.setIsConnected(true);
                       },
                       child: Text(comService.peers[index].deviceName),
                     );

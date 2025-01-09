@@ -35,13 +35,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ComService comService = ComService.getInstance();
-    comService.setContext(context);
-
     return MaterialApp(
       title: 'Open Air POS',
       theme: _buildThemeData(context),
-      home: RolesWidget(comService: comService),
+      home: RolesWidget(),
     );
   }
 
