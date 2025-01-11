@@ -11,16 +11,16 @@ class Packet {
   static const String FIELD_SEPARATOR = ';';
 
   final String id;                  // unique identifier based on trunckated hash of the data
-  final String recipient_peer;      // recipient = peer address
-  final String source_peer;
+  final String recipient;           // recipient = peer address
+  final String source;              // source = peer address
   final String data;
   final PacketStatus status;
 
   Packet(
     {
       required this.id,
-      required this.recipient_peer,
-      required this.source_peer,
+      required this.recipient,
+      required this.source,
       required this.data,
       required this.status
     }
@@ -35,8 +35,8 @@ class Packet {
     }
   ) : this(
     id : _generateId(data),
-    recipient_peer: recipent,
-    source_peer: source,
+    recipient: recipent,
+    source: source,
     data: data,
     status: status
   );
@@ -46,8 +46,8 @@ class Packet {
     if(parts.length == 4) {
       return Packet(
           id: parts[2],
-          recipient_peer: parts[0],
-          source_peer: parts[1],
+          recipient: parts[0],
+          source: parts[1],
           data: parts[3],
           status: PacketStatus.RECEIVED
       );
@@ -56,7 +56,7 @@ class Packet {
   }
 
   String serialize() {
-    return '$recipient_peer$FIELD_SEPARATOR$source_peer$FIELD_SEPARATOR$id$FIELD_SEPARATOR$data';
+    return '$recipient$FIELD_SEPARATOR$source$FIELD_SEPARATOR$id$FIELD_SEPARATOR$data';
   }
 
   static String _generateId(String data) {

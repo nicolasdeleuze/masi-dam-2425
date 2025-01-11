@@ -10,6 +10,7 @@ class ComService extends ChangeNotifier {
   static ComService? _instance;
   static BuildContext _context = null as dynamic;
 
+  MessageManager? _msgManager;
   bool isConnected = false;
   bool _isInitialized = false;
   String? _networkName;
@@ -19,8 +20,6 @@ class ComService extends ChangeNotifier {
   WifiP2PInfo? _wifiP2PInfo;
   StreamSubscription<WifiP2PInfo>? _streamWifiInfo;
   StreamSubscription<List<DiscoveredPeers>>? _streamPeers;
-
-  MessageManager _msgManager = MessageManager.getInstance();
 
   // private constructor
   ComService._() {
@@ -32,6 +31,10 @@ class ComService extends ChangeNotifier {
       _instance = ComService._();
     }
     return _instance!;
+  }
+
+  void setMessageManager(MessageManager msgManager) {
+    _msgManager = msgManager;
   }
 
   void setIsConnected(bool value) {
@@ -69,7 +72,7 @@ class ComService extends ChangeNotifier {
   void receiveString(dynamic obj) {
     if (obj is String) {
       String message = obj;
-      _msgManager.addMessageReceived(message);
+      _msgManager?.addMessageReceived(message);
     }
     else {
       snack('Received unknown message : $obj');
@@ -266,6 +269,23 @@ class ComService extends ChangeNotifier {
 
   WifiP2PInfo getWifiP2PInfo() {
     return _wifiP2PInfo!;
+  }
+
+  String getMinePeerAddress() {
+    if (_wifiP2PInfo == null) {
+      return '';
+    }
+
+    // TODO
+    // ne peut être utilisé car identique ...
+    return _wifiP2PInfo!.groupOwnerAddress;
+  }
+
+  String getRootPeerAddress() {
+    if (_wifiP2PInfo == null) {
+      return '';
+    }
+    return _wifiP2PInfo!.groupOwnerAddress;
   }
 
 }

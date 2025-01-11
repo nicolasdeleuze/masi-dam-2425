@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
+import 'package:masi_dam_2425/comm/msg_manager.dart';
 import 'package:masi_dam_2425/repository/dataservice.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
 import 'package:masi_dam_2425/view_model/product_view_model.dart';
@@ -11,6 +12,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dataService = DataService();
   await dataService.initialize();
+  final ComService comService = ComService.getInstance();
+  final MessageManager messageManager = MessageManager.getInstance(comService: comService);
+  comService.setMessageManager(messageManager);
+  messageManager.start();
 
   runApp(
     MultiProvider(
@@ -30,8 +35,35 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) {
+      MessageManager.getInstance().stop();
+      Provider.of<ComService>(context, listen: false).closeSocket();
+      Provider.of<ComService>(context, listen: false).stop();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
 
   @override
   Widget build(BuildContext context) {
