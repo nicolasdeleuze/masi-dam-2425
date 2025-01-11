@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
+import 'package:masi_dam_2425/model/roles.dart';
 
-import 'user_role.dart';
 
 class ComService extends ChangeNotifier {
   static ComService? _instance;
@@ -12,7 +12,7 @@ class ComService extends ChangeNotifier {
   bool isConnected = false;
   bool _isInitialized = false;
   String? _networkName;
-  UserRole? _role;
+  Role? _role;
   FlutterP2pConnection? _connection;
   final List<DiscoveredPeers> peers = [];
   WifiP2PInfo? _wifiP2PInfo;
@@ -75,7 +75,7 @@ class ComService extends ChangeNotifier {
     }
   }
 
-  Future<ConnectionState> init(String networkName, UserRole role) async {
+  Future<ConnectionState> init(String networkName, Role role) async {
     if(_isInitialized && _networkName != null && _role != null && _networkName == networkName && _role == role) {
       return ConnectionState.done;
     }
@@ -133,7 +133,7 @@ class ComService extends ChangeNotifier {
 
     _isInitialized = true;
 
-    if(_role == UserRole.waiter) {
+    if(_role == Role.waiter) {
       await _connection!.discover();
     }
 
@@ -143,7 +143,7 @@ class ComService extends ChangeNotifier {
   }
 
   void start() {
-    if (_role == UserRole.barman) {
+    if (_role == Role.bartender) {
       startAsBarman(_networkName!);
     }
   }

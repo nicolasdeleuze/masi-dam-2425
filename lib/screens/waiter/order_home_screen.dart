@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
-import 'package:masi_dam_2425/comm/user_role.dart';
+import 'package:masi_dam_2425/model/roles.dart';
 import 'package:masi_dam_2425/screens/waiter/new_order_screen.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
@@ -31,7 +31,7 @@ class _OrderHomeWidgetState extends State<OrderHomeWidget> {
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder(
-          future: widget.comService.init("OpenAirPOS", UserRole.waiter),
+          future: widget.comService.init("OpenAirPOS", Role.waiter),
           builder: (context, snapshot) {
               return Column(
                 children: <Widget>[
