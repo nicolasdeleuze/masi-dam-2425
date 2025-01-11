@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
+import 'package:masi_dam_2425/comm/msg_manager.dart';
 import 'package:masi_dam_2425/model/roles.dart';
 
 
@@ -18,6 +19,8 @@ class ComService extends ChangeNotifier {
   WifiP2PInfo? _wifiP2PInfo;
   StreamSubscription<WifiP2PInfo>? _streamWifiInfo;
   StreamSubscription<List<DiscoveredPeers>>? _streamPeers;
+
+  MessageManager _msgManager = MessageManager.getInstance();
 
   // private constructor
   ComService._() {
@@ -66,12 +69,10 @@ class ComService extends ChangeNotifier {
   void receiveString(dynamic obj) {
     if (obj is String) {
       String message = obj;
-      snack(message);
-      print("Received message: $message");
+      _msgManager.addMessageReceived(message);
     }
     else {
       snack('Received unknown message : $obj');
-      print("Received unknown message : $obj");
     }
   }
 
