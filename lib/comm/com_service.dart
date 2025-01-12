@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
-import 'package:masi_dam_2425/comm/msg_manager.dart';
+import 'package:masi_dam_2425/comm/packet_manager.dart';
 import 'package:masi_dam_2425/model/roles.dart';
 
 
@@ -10,7 +10,7 @@ class ComService extends ChangeNotifier {
   static ComService? _instance;
   static BuildContext _context = null as dynamic;
 
-  MessageManager? _msgManager;
+  PacketManager? _msgManager;
   bool isConnected = false;
   bool _isInitialized = false;
   String? _networkName;
@@ -33,7 +33,7 @@ class ComService extends ChangeNotifier {
     return _instance!;
   }
 
-  void setMessageManager(MessageManager msgManager) {
+  void setMessageManager(PacketManager msgManager) {
     _msgManager = msgManager;
   }
 
@@ -270,22 +270,4 @@ class ComService extends ChangeNotifier {
   WifiP2PInfo getWifiP2PInfo() {
     return _wifiP2PInfo!;
   }
-
-  String getMinePeerAddress() {
-    if (_wifiP2PInfo == null) {
-      return '';
-    }
-
-    // TODO
-    // ne peut être utilisé car identique ...
-    return _wifiP2PInfo!.groupOwnerAddress;
-  }
-
-  String getRootPeerAddress() {
-    if (_wifiP2PInfo == null) {
-      return '';
-    }
-    return _wifiP2PInfo!.groupOwnerAddress;
-  }
-
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
+import 'package:masi_dam_2425/comm/packet_manager.dart';
 import 'package:masi_dam_2425/model/roles.dart';
 import 'package:masi_dam_2425/screens/waiter/order_home_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
@@ -15,7 +16,10 @@ class JoinNetworkScreen extends StatefulWidget {
 
   ComService comService = ComService.getInstance();
 
+  PacketManager packetManager = PacketManager.getInstance();
+
   Future<ConnectionState> initialize_p2p_client() async {
+    packetManager.setUserID("RLE123");                                     // TODO : ! hardcoded
     ConnectionState cs = await comService.init("OpenAirPOS", Role.waiter);
     return cs;
   }
@@ -50,34 +54,34 @@ class _JoinNetworkWidgetState extends State<JoinNetworkScreen> {
                                 subtitle: 'Waiter',
                                 userID: "RLE1234"
                             ),
-                            Spacer(),
                             Expanded(
                               child: ComServicePeersListWidget(),
                             ),
-                            Spacer(),
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                print(
-                                    "isReady: ${widget.comService.isConnected}");
-                                if (widget.comService.isConnected) {
-                                  widget.comService.stopDiscoverPeers();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => OrderHomeWidget(),
-                                    ),
-                                  );
-                                }
-                              },
-                              style: widget.comService.isConnected
-                                  ? readyStyle
-                                  : notReadyStyle,
-                              label: const Text(
-                                'Let\'s take some orders!',
-                                style: coloredButtonTextStyle,
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20.0),
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  print(
+                                      "isReady: ${widget.comService.isConnected}");
+                                  if (widget.comService.isConnected) {
+                                    widget.comService.stopDiscoverPeers();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => OrderHomeWidget(),
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: widget.comService.isConnected
+                                    ? readyStyle
+                                    : notReadyStyle,
+                                label: const Text(
+                                  'Let\'s take some orders!',
+                                  style: coloredButtonTextStyle,
+                                ),
                               ),
-                            ),
-                            Spacer()
+                            )
                           ],
                         );
                       }

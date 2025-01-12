@@ -10,11 +10,11 @@ import 'package:masi_dam_2425/comm/packet_status.dart';
 class Packet {
   static const String FIELD_SEPARATOR = ';';
 
-  final String id;                  // unique identifier based on trunckated hash of the data
-  final String recipient;           // recipient = peer address
-  final String source;              // source = peer address
+  final String id;                  // unique identifier based on trunckated hash of the data and timestamp
+  final String recipient;
+  final String source;
   final String data;
-  final PacketStatus status;
+  final PacketStatus status;        // status not used in transmission, but helps MessageManager to manage packets
 
   Packet(
     {
@@ -60,6 +60,9 @@ class Packet {
   }
 
   static String _generateId(String data) {
-    return data.hashCode.toRadixString(16).substring(0, 8);
+    var time = DateTime.now().millisecondsSinceEpoch;
+    var hash_time = time.hashCode.toRadixString(16).substring(0, 4);
+    var hash_data = data.hashCode.toRadixString(16).substring(0, 8);
+    return '$hash_time$hash_data';
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
-import 'package:masi_dam_2425/comm/msg_manager.dart';
+import 'package:masi_dam_2425/comm/packet_manager.dart';
 import 'package:masi_dam_2425/repository/dataservice.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
 import 'package:masi_dam_2425/view_model/product_view_model.dart';
@@ -13,7 +13,7 @@ void main() async {
   final dataService = DataService();
   await dataService.initialize();
   final ComService comService = ComService.getInstance();
-  final MessageManager messageManager = MessageManager.getInstance(comService: comService);
+  final PacketManager messageManager = PacketManager.getInstance(comService: comService);
   comService.setMessageManager(messageManager);
   messageManager.start();
 
@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.detached) {
-      MessageManager.getInstance().stop();
+      PacketManager.getInstance().stop();
       Provider.of<ComService>(context, listen: false).closeSocket();
       Provider.of<ComService>(context, listen: false).stop();
     }
