@@ -29,25 +29,25 @@ class _BarmanHomeWidgetState extends State<BarmanHomeWidget> {
     double width = MediaQuery.of(context).size.width;
     widget.comService.setContext(context);
     return Scaffold(
-      body: FutureBuilder(
-        future: widget.initialize_p2p_root(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                HeaderContainer(
-                    width: width,
-                    subtitle: 'Bartender',
-                    userID : "RLE1234"
-                ),
-                Spacer()
-              ],
-            );
-          } else {
-            return LoaderWidget();
-          }
-        },
+      body: SafeArea(
+        child: FutureBuilder(
+          future: widget.initialize_p2p_root(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  HeaderContainer(
+                      width: width,
+                  ),
+                  Spacer()
+                ],
+              );
+            } else {
+              return LoaderWidget();
+            }
+          },
+        ),
       ),
     );
   }

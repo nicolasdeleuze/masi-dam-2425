@@ -67,8 +67,6 @@ class _AdminHomeWidgetState extends State<AdminHomeWidget> {
           children: [
             HeaderContainer(
               width: width,
-              subtitle: 'Event Admin',
-              userID: "RLE1234",
             ),
             Padding(
               padding: EdgeInsets.only(left: padding, right: padding, top: 10),

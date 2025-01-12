@@ -99,8 +99,6 @@ class _OrderHomeWidgetState extends State<OrderHomeWidget> {
   HeaderContainer buildHeaderContainer(double width) {
     return HeaderContainer(
       width: width,
-      subtitle: 'Waiter',
-      userID: "RLE1234",
     );
   }
 }

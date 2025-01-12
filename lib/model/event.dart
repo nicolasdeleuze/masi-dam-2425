@@ -1,6 +1,6 @@
 import 'package:masi_dam_2425/model/menu.dart';
 import 'package:masi_dam_2425/model/order.dart';
-import 'package:masi_dam_2425/model/staff.dart';
+import 'package:masi_dam_2425/model/user.dart';
 
 class Event {
   final String _id;
@@ -10,7 +10,7 @@ class Event {
   final String _location;
   final Menu _menu;
   final List<Order> _orders = [];
-  final List<Staff> _crew = [];
+  final List<User> _crew = [];
 
   Event(
     DateTime start,
@@ -18,7 +18,7 @@ class Event {
     String name,
     String location,
     Menu menu,
-    List<Staff> crew,
+    List<User> crew,
   )   : _id = _createID(name, start),
         _start = start,
         _end = end,
@@ -38,7 +38,7 @@ class Event {
   String get location => _location;
   Menu get menu => _menu;
   List<Order>? get orders => List.unmodifiable(_orders);
-  List<Staff> get staff => List.unmodifiable(_crew);
+  List<User> get staff => List.unmodifiable(_crew);
 
   void addOrders(List<Order> orders) {
     _orders.addAll(orders);
@@ -48,11 +48,11 @@ class Event {
     _orders.add(order);
   }
 
-  void addStaff(Staff staff) {
+  void addStaff(User staff) {
     _crew.add(staff);
   }
 
-  void removeStaff(Staff staff) {
+  void removeStaff(User staff) {
     _crew.remove(staff);
   }
 }
