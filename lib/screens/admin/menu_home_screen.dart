@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:masi_dam_2425/model/menu.dart';
 import 'package:masi_dam_2425/screens/admin/product_mgmt_screen.dart';
 import 'package:masi_dam_2425/screens/admin/product_selection_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
@@ -22,6 +21,7 @@ class _AdminMenuScreenState extends State<AdminMenuScreen> {
   @override
   Widget build(BuildContext context) {
     final menuViewModel = Provider.of<MenuViewModel>(context);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -55,6 +55,7 @@ class _AdminMenuScreenState extends State<AdminMenuScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: TextField(
+                cursorColor: LightColors.kDarkBlue,
                 decoration: cleanTextfieldStyle("Search menu", Icon(Icons.search)),
                 onChanged: (value) {
                   // Action de recherche

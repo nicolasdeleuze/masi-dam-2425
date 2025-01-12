@@ -1,5 +1,6 @@
 import 'package:masi_dam_2425/model/menu_category.dart';
 import 'package:masi_dam_2425/model/product.dart';
+import 'package:masi_dam_2425/repository/product_repository.dart';
 
 class Menu {
   int? id;
@@ -16,8 +17,8 @@ class Menu {
   List<Product> get products => _products;
   int get nbProduct => _getNbProduct();
 
-  int _getNbProduct () {
-    return  _products.length;
+  int _getNbProduct() {
+    return _products.length;
   }
 
   void addProduct(Product product) {
@@ -49,12 +50,4 @@ class Menu {
     };
   }
 
-  static Menu fromMap(Map<String, dynamic> map) {
-    return Menu(
-      name: map['name'],
-      products: (map['products'] as List)
-          .map((productMap) => Product.fromMap(productMap))
-          .toList(),
-    )..id = map['id'] as int?;
-  }
 }

@@ -72,4 +72,15 @@ class ProductRepository {
     return result.map((map) => Product.fromMap(map)).toList();
   }
 
+  Future<List<Product>> getProductsByIds(List<int> ids) async {
+    if (ids.isEmpty) return [];
+    final idPlaceholders = List.filled(ids.length, '?').join(', ');
+    final results = await _database.query(
+      'products',
+      where: 'id IN ($idPlaceholders)',
+      whereArgs: ids,
+    );
+    return results.map((map) => Product.fromMap(map)).toList();
+  }
+
 }

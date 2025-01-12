@@ -38,7 +38,6 @@ class ProductViewModel extends ChangeNotifier {
     _setLoading(true);
     try {
       await _repository.deleteProduct(product);
-      //await _repository.deleteAll();
       product.id;
       _products.remove(product);
       notifyListeners();

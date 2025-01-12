@@ -23,7 +23,7 @@ void main() async {
           create: (context) => ProductViewModel(dataService.productRepository),
         ),
         ChangeNotifierProvider(
-          create: (context) => MenuViewModel(dataService.menuRepository),
+          create: (context) => MenuViewModel(dataService.menuRepository, dataService.productRepository),
         ),
         ChangeNotifierProvider(
           create: (context) => ComService.getInstance()

@@ -1,14 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:masi_dam_2425/model/menu.dart';
 import 'package:masi_dam_2425/repository/menu_repository.dart';
+import 'package:masi_dam_2425/repository/product_repository.dart';
 
 class MenuViewModel extends ChangeNotifier {
-  final MenuRepository _repository;
+  final MenuRepository _menuRepository;
+  final ProductRepository _productRepository;
   bool _isLoading = false;
   String? _errorMessage;
   List<Menu> _menus = [];
 
-  MenuViewModel(this._repository) {
+  MenuViewModel(this._menuRepository, this._productRepository) {
     getMenus();
   }
 
@@ -18,10 +20,9 @@ class MenuViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   Future<void> createMenu(Menu menu) async {
-    print("enter create");
     _setLoading(true);
     try {
-      await _repository.insertMenu(menu);
+      await _menuRepository.insertMenu(menu);
       _menus.add(menu);
       notifyListeners();
     } catch (e) {
@@ -30,14 +31,12 @@ class MenuViewModel extends ChangeNotifier {
     } finally {
       _setLoading(false);
     }
-    print("exit create");
   }
 
   Future<void> deleteMenu(Menu menu) async {
     _setLoading(true);
     try {
-      await _repository.deleteMenu(menu);
-      //await _repository.deleteAll();
+      await _menuRepository.deleteMenu(menu);
       menu.id;
       _menus.remove(menu);
       notifyListeners();
@@ -52,7 +51,7 @@ class MenuViewModel extends ChangeNotifier {
   Future<void> updateMenu(Menu menu) async {
     _setLoading(true);
     try {
-      await _repository.updateMenu(menu);
+      await _menuRepository.updateMenu(menu);
       _menus[_menus.indexWhere((p) => p.id ==menu.id)]=menu;
       notifyListeners();
     } catch (e) {
@@ -66,7 +65,7 @@ class MenuViewModel extends ChangeNotifier {
   Future<void> getMenus() async {
     _setLoading(true);
     try {
-      final menus = await _repository.getMenus();
+      final menus = await _menuRepository.getMenus(_productRepository);
       _menus = menus;
       notifyListeners();
     } catch (e) {
@@ -79,7 +78,7 @@ class MenuViewModel extends ChangeNotifier {
 
   Future<void> getMenusByName(String value) async{
     try {
-      final products = await _repository.getMenusByName(value);
+      final products = await _menuRepository.getMenusByName(value, _productRepository);
       _menus = products;
       notifyListeners();
     } catch (e) {
