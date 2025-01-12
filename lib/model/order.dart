@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:masi_dam_2425/model/product.dart';
 import 'package:masi_dam_2425/model/status.dart';
 
@@ -223,4 +225,13 @@ class Order {
       tag: map['tag'],
     )..id = map['id'] as int?;
   }
+
+  String toJson() {
+    return jsonEncode(toMap());
+  }
+
+  static Order fromJson(String jsonString) {
+    return Order.fromMap(jsonDecode(jsonString));
+  }
+
 }

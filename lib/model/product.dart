@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:masi_dam_2425/model/menu_category.dart';
 
 /// Class represents a product
@@ -44,5 +45,13 @@ class Product {
         orElse: () => MenuCategory.exotic,
       ),
     )..id = map['id'] as int?;
+  }
+
+  String toJson() {
+    return jsonEncode(toMap());
+  }
+
+  static Product fromJson(String jsonString) {
+    return Product.fromMap(jsonDecode(jsonString));
   }
 }

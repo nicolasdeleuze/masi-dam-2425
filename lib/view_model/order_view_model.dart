@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masi_dam_2425/comm/packet_manager.dart';
 import 'package:masi_dam_2425/model/id_generator.dart';
 import 'package:masi_dam_2425/model/order.dart';
 import 'package:masi_dam_2425/repository/order_repository.dart';
@@ -9,6 +10,7 @@ class OrderViewModel extends ChangeNotifier {
   List<Order> _orders = [];
   final List<Order> _activeOrders = [];
   String? _errorMessage;
+  PacketManager _packetManager = PacketManager.getInstance();
 
   OrderViewModel(this._repository){
     getOrders();
@@ -23,6 +25,8 @@ class OrderViewModel extends ChangeNotifier {
     _setLoading(true);
     try {
       order.id = await IdGenerator.generateNewId('order');
+      // send to root the new order
+      _packetManager.addMessageToSend(order);
       await _repository.insertOrder(order);
       if (orders.isEmpty){
         getOrders();
