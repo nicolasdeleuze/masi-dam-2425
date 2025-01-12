@@ -4,7 +4,7 @@ import 'package:masi_dam_2425/model/product.dart';
 class Menu {
   int? id;
   final String _name;
-  List<Product> _products = [];
+  final List<Product> _products;
 
   Menu({
     required String name,
@@ -13,6 +13,12 @@ class Menu {
         _products = products ?? [];
 
   String get name => _name;
+  List<Product> get products => _products;
+  int get nbProduct => _getNbProduct();
+
+  int _getNbProduct () {
+    return  _products.length;
+  }
 
   void addProduct(Product product) {
     _products.add(product);
@@ -40,7 +46,6 @@ class Menu {
     return {
       'id': id,
       'name': _name,
-      'products': _products.map((product) => product.toMap()).toList(),
     };
   }
 

@@ -110,7 +110,7 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
             ),
             TextField(
               controller: _tagController,
-              decoration: textfieldStyle("Add optional order tag",Icon(Icons.drive_file_rename_outline)),
+              decoration: underlinedTextfieldStyle("Add optional order tag",Icon(Icons.drive_file_rename_outline)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

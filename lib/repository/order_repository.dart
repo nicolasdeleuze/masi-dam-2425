@@ -12,37 +12,8 @@ class OrderRepository {
 
   OrderRepository._internal();
 
-  Future<void> initDatabase() async {
-    final dbPath = await getDatabasesPath();
-    _database = await openDatabase(
-      join(dbPath, 'app_database.db'),
-      onConfigure: (db) async {
-        await db.execute('PRAGMA foreign_keys = ON');
-      },
-      onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE orders(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            price REAL NOT NULL,
-            status TEXT NOT NULL,
-            transfer TEXT NOT NULL,
-            tag TEXT
-          )
-        ''');
-        await db.execute('''
-          CREATE TABLE order_products(
-            orderId INTEGER,
-            productId INTEGER,
-            quantity INTEGER NOT NULL,
-            missing INTEGER NOT NULL DEFAULT 0,
-            FOREIGN KEY(orderId) REFERENCES orders(id) ON DELETE CASCADE,
-            FOREIGN KEY(productId) REFERENCES products(id) ON DELETE CASCADE,
-            PRIMARY KEY(orderId, productId)
-          )
-        ''');
-      },
-      version: 1,
-    );
+  Future<void> initDatabase(Database db) async {
+    _database = db;
   }
 
   Future<void> insertOrder(Order order) async {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/repository/dataservice.dart';
+import 'package:masi_dam_2425/view_model/menu_view_model.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
 import 'package:masi_dam_2425/view_model/product_view_model.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => ProductViewModel(dataService.productRepository),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MenuViewModel(dataService.menuRepository),
         ),
         ChangeNotifierProvider(
           create: (context) => ComService.getInstance()

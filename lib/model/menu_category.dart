@@ -1,3 +1,5 @@
+import 'package:masi_dam_2425/model/menu.dart';
+
 enum MenuCategory {
   // Beverage
   soft,
@@ -22,6 +24,9 @@ enum MenuCategory {
 }
 
 extension MenuCategoryExtension on MenuCategory {
+
+  static int get nbCategory => MenuCategory.values.length;
+
   String get displayName {
     switch (this) {
       case MenuCategory.soft:
@@ -60,6 +65,47 @@ extension MenuCategoryExtension on MenuCategory {
         return "Snacks";
       case MenuCategory.exotic:
         return "Exotic";
+    }
+  }
+
+  String get iconName {
+    switch (this) {
+      case MenuCategory.soft:
+        return "soft.png";
+      case MenuCategory.beer:
+        return "beer.png";
+      case MenuCategory.wine:
+        return "wine.png";
+      case MenuCategory.cocktail:
+        return "cocktail.png";
+      case MenuCategory.hotDrink:
+        return "hotDrink.png";
+      case MenuCategory.spirits:
+        return "spirits.png";
+      case MenuCategory.juice:
+        return "juice.png";
+      case MenuCategory.smoothie:
+        return "smoothie.png";
+      case MenuCategory.water:
+        return "water.png";
+      case MenuCategory.fastFood:
+        return "fastFood.png";
+      case MenuCategory.pizza:
+        return "pizza.png";
+      case MenuCategory.pasta:
+        return "pasta.png";
+      case MenuCategory.sandwich:
+        return "sandwich.png";
+      case MenuCategory.vegetable:
+        return "vegetable.png";
+      case MenuCategory.barbecue:
+        return "barbecue.png";
+      case MenuCategory.dessert:
+        return "dessert.png";
+      case MenuCategory.snacks:
+        return "snacks.png";
+      case MenuCategory.exotic:
+        return "exotic.png";
     }
   }
 }

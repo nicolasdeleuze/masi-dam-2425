@@ -4,7 +4,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MenuRepository {
-
   static final MenuRepository _instance = MenuRepository._internal();
   late Database _database;
 
@@ -12,30 +11,20 @@ class MenuRepository {
 
   MenuRepository._internal();
 
-  Future<void> initDatabase() async {
-    final dbPath = await getDatabasesPath();
-    _database = await openDatabase(
-      join(dbPath, 'app_database.db'),
-      onConfigure: (db) async {
-        await db.execute('PRAGMA foreign_keys = ON');
-      },
-      onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE menus(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            productId INTEGER,
-            FOREIGN KEY(productId) REFERENCES products(id) ON DELETE CASCADE,
-          )
-        ''');
-      },
-      version: 1,
-    );
+  Future<void> initDatabase(Database db) async {
+    _database = db;
   }
 
   Future<void> insertMenu(Menu menu) async {
     final id = await _database.insert('menus', menu.toMap());
     menu.id = id;
+
+    for (final product in menu.products) {
+      await _database.insert('menu_products', {
+        'menuId': id,
+        'productId': product.id,
+      });
+    }
   }
 
   Future<void> updateMenu(Menu menu) async {
@@ -59,9 +48,17 @@ class MenuRepository {
     }
   }
 
-  Future<List<Product>> getMenus() async {
+  Future<List<Menu>> getMenus() async {
     final result = await _database.query('menus');
-    return result.map((map) => Product.fromMap(map)).toList();
+    return result.map((map) => Menu.fromMap(map)).toList();
   }
 
+  Future<List<Menu>> getMenusByName(String name) async {
+    final result = await _database.query(
+      'menus',
+      where: 'name LIKE ?',
+      whereArgs: ['%$name%'],
+    );
+    return result.map((map) => Menu.fromMap(map)).toList();
+  }
 }

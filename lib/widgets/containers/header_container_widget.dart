@@ -30,7 +30,7 @@ class HeaderContainer extends StatelessWidget {
         buildHeaderContainer(),
         Positioned(
           top: 8,
-          left : 12,
+          left: 12,
           child: buildSettingsButton(),
         ),
       ],
@@ -39,64 +39,64 @@ class HeaderContainer extends StatelessWidget {
 
   ColoredContainer buildHeaderContainer() {
     return ColoredContainer(
-        color: LightColors.kDarkYellow,
-        height: height,
-        width: width,
-        radius: 35.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                buildAvatar(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    buildWelcomeTitle(),
-                    buildSectionSubtitle(),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
+      color: LightColors.kDarkYellow,
+      height: height,
+      width: width,
+      radius: 35.0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              buildAvatar(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  buildWelcomeTitle(),
+                  buildSectionSubtitle(),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Text buildSectionSubtitle() {
     return Text(
-                    "$subtitle $userID",
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.black45,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  );
+      "$subtitle $userID",
+      style: const TextStyle(
+        fontSize: 16.0,
+        color: Colors.black45,
+        fontWeight: FontWeight.w400,
+      ),
+    );
   }
 
   Text buildWelcomeTitle() {
     return Text(
-                    "Hello, $userName",
-                    style: const TextStyle(
-                      fontSize: 22.0,
-                      color: LightColors.kDarkBlue,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  );
+      "Hello, $userName",
+      style: const TextStyle(
+        fontSize: 22.0,
+        color: LightColors.kDarkBlue,
+        fontWeight: FontWeight.w800,
+      ),
+    );
   }
 
   ClipRRect buildAvatar() {
     return ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
-                child: Image.asset(
-                  avatarPath,
-                  height: 80.0,
-                  width: 80.0,
-                  fit: BoxFit.cover,
-                ),
-              );
+      borderRadius: BorderRadius.circular(15.0),
+      child: Image.asset(
+        avatarPath,
+        height: 80.0,
+        width: 80.0,
+        fit: BoxFit.cover,
+      ),
+    );
   }
 
   IconButton buildSettingsButton() {

@@ -11,11 +11,11 @@ class Product {
   final MenuCategory _category;
 
   Product({
+    this.id,
     required String name,
     required double price,
     required MenuCategory category,
-  }) :
-        _name = name,
+  }) :  _name = name,
         _price = price,
         _category = category;
   String get name => _name;
