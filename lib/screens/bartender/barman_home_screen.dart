@@ -24,6 +24,8 @@ class BarmanHomeWidget extends StatefulWidget {
     return cs;
   }
 
+  List<Order> orders = [];
+
   @override
   State<BarmanHomeWidget> createState() => _BarmanHomeWidgetState();
 }
@@ -43,9 +45,7 @@ class _BarmanHomeWidgetState extends State<BarmanHomeWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   HeaderContainer(
-                      width: width,
-                      subtitle: 'Bartender',
-                      userID : "RLE1234"
+                      width: width
                   ),
                   Expanded(
                       child: OrderListView(orders: widget.orders)
