@@ -71,6 +71,24 @@ flutter:
       - assets/images/bartender.png
       - assets/images/admin.png
       - assets/images/waiter.png
+      - assets/images/productIcons/snacks.png
+      - assets/images/productIcons/fastFood.png
+      - assets/images/productIcons/barbecue.png
+      - assets/images/productIcons/soft.png
+      - assets/images/productIcons/beer.png
+      - assets/images/productIcons/wine.png
+      - assets/images/productIcons/cocktail.png
+      - assets/images/productIcons/hotDrink.png
+      - assets/images/productIcons/spirits.png
+      - assets/images/productIcons/juice.png
+      - assets/images/productIcons/smoothie.png
+      - assets/images/productIcons/water.png
+      - assets/images/productIcons/pizza.png
+      - assets/images/productIcons/pasta.png
+      - assets/images/productIcons/sandwich.png
+      - assets/images/productIcons/vegetable.png
+      - assets/images/productIcons/dessert.png
+      - assets/images/productIcons/exotic.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

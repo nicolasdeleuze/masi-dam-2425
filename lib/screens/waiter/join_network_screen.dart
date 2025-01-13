@@ -50,9 +50,7 @@ class _JoinNetworkWidgetState extends State<JoinNetworkScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             HeaderContainer(
-                                width: width,
-                                subtitle: 'Waiter',
-                                userID: "RLE1234"
+                              width: width,
                             ),
                             Expanded(
                               child: ComServicePeersListWidget(),

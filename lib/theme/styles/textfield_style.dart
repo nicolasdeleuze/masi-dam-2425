@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 
-InputDecoration textfieldStyle (String label, Icon? icon){
+InputDecoration underlinedTextfieldStyle (String label, Icon? icon){
   return InputDecoration(
     labelText: label,
     prefixIcon: icon,
@@ -13,5 +13,16 @@ InputDecoration textfieldStyle (String label, Icon? icon){
     focusedBorder: UnderlineInputBorder(
       borderSide: BorderSide(color: LightColors.kDarkBlue, width: 1.5),
     ),
+    floatingLabelStyle: TextStyle(color: LightColors.kDarkBlue),
+  );
+}
+
+InputDecoration cleanTextfieldStyle (String label, Icon? icon){
+  return InputDecoration(
+    labelText: label,
+    prefixIcon: icon,
+    labelStyle: TextStyle(color: LightColors.kDarkBlue),
+    floatingLabelStyle: TextStyle(color: LightColors.kDarkBlue),
+    border: InputBorder.none,
   );
 }

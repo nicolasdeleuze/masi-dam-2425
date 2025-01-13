@@ -11,25 +11,8 @@ class ProductRepository {
 
   ProductRepository._internal();
 
-  Future<void> initDatabase() async {
-    final dbPath = await getDatabasesPath();
-    _database = await openDatabase(
-      join(dbPath, 'app_database.db'),
-      onConfigure: (db) async {
-        await db.execute('PRAGMA foreign_keys = ON');
-      },
-      onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE products(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            price REAL NOT NULL,
-            category TEXT NOT NULL
-          )
-        ''');
-      },
-      version: 1,
-    );
+  Future<void> initDatabase(Database db) async {
+    _database = db;
   }
 
   Future<void> insertProduct(Product product) async {
@@ -79,4 +62,25 @@ class ProductRepository {
     );
     return result.map((map) => Product.fromMap(map)).toList();
   }
+
+  Future<List<Product>> getProductsByName(String name) async {
+    final result = await _database.query(
+      'products',
+      where: 'name LIKE ?',
+      whereArgs: ['%$name%'],
+    );
+    return result.map((map) => Product.fromMap(map)).toList();
+  }
+
+  Future<List<Product>> getProductsByIds(List<int> ids) async {
+    if (ids.isEmpty) return [];
+    final idPlaceholders = List.filled(ids.length, '?').join(', ');
+    final results = await _database.query(
+      'products',
+      where: 'id IN ($idPlaceholders)',
+      whereArgs: ids,
+    );
+    return results.map((map) => Product.fromMap(map)).toList();
+  }
+
 }

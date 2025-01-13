@@ -4,9 +4,12 @@ import 'package:masi_dam_2425/screens/admin/admin_home_screen.dart';
 import 'package:masi_dam_2425/screens/waiter/join_network_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/screens/bartender/barman_home_screen.dart';
+import 'package:masi_dam_2425/theme/styles/text_style.dart';
+import 'package:masi_dam_2425/view_model/staff_view_model.dart';
 import 'package:masi_dam_2425/widgets/containers/header_container_widget.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/widgets/buttons/xlarge_button_widget.dart';
+import 'package:provider/provider.dart';
 
 /// A widget that allows users to select a role (e.g., Bartender, Waiter, Admin)
 /// and navigate to the corresponding home screen.
@@ -25,12 +28,22 @@ class _RolesWidgetState extends State<RolesWidget> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: <Widget>[
               HeaderContainer(
-                  width: width, subtitle: 'Select a role', userID: "RLE1234"),
+                  width: width),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Select a role", style: extraBoldTitle(),),
+                ],
+              ),
+            ),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.all(40.0),

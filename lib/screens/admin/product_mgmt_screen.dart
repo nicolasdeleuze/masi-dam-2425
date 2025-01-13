@@ -6,10 +6,10 @@ import 'package:masi_dam_2425/theme/styles/text_style.dart';
 import 'package:masi_dam_2425/theme/styles/textfield_style.dart';
 import 'package:masi_dam_2425/view_model/product_view_model.dart';
 import 'package:masi_dam_2425/widgets/buttons/add_button_widget.dart';
+import 'package:masi_dam_2425/widgets/category_selection_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProductManagementScreen extends StatefulWidget {
-
   const ProductManagementScreen({super.key});
 
   @override
@@ -27,27 +27,20 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('Products', style: extraBoldTitle(),),
+                  Text(
+                    'Products',
+                    style: extraBoldTitle(),
+                  ),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2),
-              child: TextField(
-                decoration: InputDecoration(
-                  labelText: "Search product",
-                  border: InputBorder.none,
-                  prefixIcon: const Icon(Icons.search),
-                ),
-                onChanged: (value) {
-                  // Action de recherche
-                },
-              ),
-            ),
+            _buildSearchField(productViewModel),
+            CategorySelectionWidget(productViewModel : productViewModel),
             Expanded(
               child: _buildProductList(productViewModel),
             ),
@@ -56,6 +49,20 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
         ),
       ),
     );
+  }
+
+  Padding _buildSearchField(ProductViewModel productViewModel) {
+    return Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2),
+            child: TextField(
+              cursorColor: LightColors.kDarkBlue,
+              decoration: cleanTextfieldStyle("Search product", Icon(Icons.search)),
+              onChanged: (value) {
+                productViewModel.getProductsByName(value);
+              },
+            ),
+          );
   }
 
   Widget _buildProductList(ProductViewModel productViewModel) {
@@ -109,8 +116,7 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
       context,
       "Edit Product",
       product,
-      (product) =>
-          productViewModel.updateProduct(product),
+      (product) => productViewModel.updateProduct(product),
     );
   }
 
@@ -142,23 +148,23 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16,right: 16, top: 5),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 5),
       child: Card(
         color: LightColors.kLightGreen,
         child: ListTile(
-          title: Text(product.name, style : extraBoldText()),
-          subtitle: Text(
-              "Price: €${product.price}\n"
-                  "Category: ${product.category.displayName}"),
+          title: Text(product.name, style: extraBoldText()),
+          subtitle: Text("Price: €${product.price}\n"
+              "Category: ${product.category.displayName}"),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                icon: const Icon(Icons.edit_attributes, color: LightColors.kGreen, size :30),
+                icon: const Icon(Icons.edit_note,
+                    color: LightColors.kGreen, size: 30),
                 onPressed: onEdit,
               ),
               IconButton(
-                icon: const Icon(Icons.delete,  color: LightColors.kRed),
+                icon: const Icon(Icons.delete, color: LightColors.kRed),
                 onPressed: onDelete,
               ),
             ],
@@ -231,9 +237,10 @@ class _AddOrEditProductDialogState extends State<AddOrEditProductDialog> {
   Widget _buildTextField(TextEditingController controller, String hint,
       {bool isNumeric = false}) {
     return TextField(
+      cursorColor : LightColors.kDarkBlue,
       controller: controller,
       keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
-      decoration: textfieldStyle(hint, null),
+      decoration: underlinedTextfieldStyle(hint, null),
     );
   }
 
@@ -245,7 +252,7 @@ class _AddOrEditProductDialogState extends State<AddOrEditProductDialog> {
           selectedCategory = newCategory;
         });
       },
-      decoration: textfieldStyle("Category", null),
+      decoration: underlinedTextfieldStyle("Category", null),
       items: MenuCategory.values.map((category) {
         return DropdownMenuItem<MenuCategory>(
           value: category,
@@ -266,6 +273,7 @@ class _AddOrEditProductDialogState extends State<AddOrEditProductDialog> {
           if (nameController.text.isNotEmpty &&
               priceController.text.isNotEmpty) {
             final product = Product(
+              id: widget.product?.id,
               name: nameController.text,
               price: double.tryParse(priceController.text) ?? 0.0,
               category: selectedCategory!,
@@ -280,3 +288,4 @@ class _AddOrEditProductDialogState extends State<AddOrEditProductDialog> {
     ];
   }
 }
+

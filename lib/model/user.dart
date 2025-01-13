@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:masi_dam_2425/model/roles.dart';
 
-class Staff {
+class User {
   final String _id;
   final String _firstname;
   final String _lastname;
   final List<Role> _permissions;
 
-  Staff(String firstname, String lastname, List<Role> permissions)
+  User(String firstname, String lastname, List<Role> permissions)
       : _id = _generateUserId(firstname, lastname),
         _firstname = firstname,
         _lastname = lastname,

@@ -24,10 +24,6 @@ class BarmanHomeWidget extends StatefulWidget {
     return cs;
   }
 
-  // TODO
-  // à lier avec backend
-  List<Order> orders = [];
-
   @override
   State<BarmanHomeWidget> createState() => _BarmanHomeWidgetState();
 }
