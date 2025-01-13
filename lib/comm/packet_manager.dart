@@ -4,6 +4,7 @@ import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/packet_status.dart';
 import 'package:masi_dam_2425/comm/packet.dart';
 import 'package:masi_dam_2425/model/order.dart';
+import 'package:masi_dam_2425/view_model/order_view_model.dart';
 
 class PacketManager {
   static PacketManager? _instance;
@@ -15,18 +16,23 @@ class PacketManager {
       if (comService == null) {
         throw Exception("ComService is required");
       }
-      _instance = PacketManager._(comService : comService!);
+      _instance = PacketManager._(comService : comService);
     }
     return _instance!;
   }
 
   late ComService _comService;
+  late OrderViewModel _orderViewModel;
   String _source = "";
   String _destination = "ROOT";
   final Queue<Packet> _pkt_to_send = Queue<Packet>();       // contains messages serialized
   final Queue<Packet> _pkt_in_transit = Queue<Packet>();
   final Queue<Packet> _pkt_received = Queue<Packet>();
   bool _isRunning = false;
+
+  void setOrderViewModel(OrderViewModel orderViewModel) {
+    _orderViewModel = orderViewModel;
+  }
 
   void setUserID(String userID) {
     _source = userID;

@@ -21,7 +21,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => OrderViewModel(dataService.orderRepository),
+          create: (context) => OrderViewModel.getInstance(repository: dataService.orderRepository),
         ),
         ChangeNotifierProvider(
           create: (context) => ProductViewModel(dataService.productRepository),
@@ -46,12 +46,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
+    PacketManager.getInstance().setOrderViewModel(Provider.of<OrderViewModel>(context, listen: false));
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
