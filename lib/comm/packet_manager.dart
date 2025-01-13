@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/comm/packet_status.dart';
 import 'package:masi_dam_2425/comm/packet.dart';
+import 'package:masi_dam_2425/comm/packet_type.dart';
 import 'package:masi_dam_2425/model/order.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
 
@@ -58,6 +59,7 @@ class PacketManager {
       recipent: _destination,
       source: _source,
       data: "<WHO>${_source}",
+      type: PacketType.Who,
       status: PacketStatus.TO_SEND
     );
     _pkt_to_send.add(packet);
@@ -68,6 +70,7 @@ class PacketManager {
       recipent: _destination,
       source: _source,
       data: _objectToString(object),
+      type: PacketType.Order,
       status: PacketStatus.TO_SEND
     );
     _pkt_to_send.add(packet);
@@ -139,6 +142,7 @@ class PacketManager {
               recipent: packet.source,
               source: packet.recipient,
               data: "ACK>${packet.id}",
+              type: PacketType.Ack,
               status: PacketStatus.TO_SEND
             );
             _pkt_to_send.add(ack);
