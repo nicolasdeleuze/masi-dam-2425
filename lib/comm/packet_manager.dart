@@ -23,8 +23,8 @@ class PacketManager {
 
   late ComService _comService;
   late OrderViewModel _orderViewModel;
-  String _source = "";
-  String _destination = "ROOT";
+  String _source = "UNKNOWN_CLENT";
+  String _destination = "UNKNOWN_ROOT";
   final Queue<Packet> _pkt_to_send = Queue<Packet>();       // contains messages serialized
   final Queue<Packet> _pkt_in_transit = Queue<Packet>();
   final Queue<Packet> _pkt_received = Queue<Packet>();
@@ -51,6 +51,16 @@ class PacketManager {
       return;
     }
     _isRunning = false;
+  }
+
+  void identifyToRoot() {
+    Packet packet = Packet.create(
+      recipent: _destination,
+      source: _source,
+      data: "<WHO>${_source}",
+      status: PacketStatus.TO_SEND
+    );
+    _pkt_to_send.add(packet);
   }
 
   void addMessageToSend(dynamic object) {
@@ -94,7 +104,8 @@ class PacketManager {
       object = Packet.parse(data.substring(8));
     } else if(data.startsWith("<ORDER>")) {
       object = Order.fromJson(data.substring(7));
-    } else {
+    }
+    else {
       throw Exception("Unsupported type");
     }
     return object;

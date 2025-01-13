@@ -43,13 +43,13 @@ class OrderViewModel extends ChangeNotifier {
       } else {
         _orders.add(order);
       }
-      // send to root the new order
-      _packetManager.addMessageToSend(order);
       notifyListeners();
     } catch (e) {
       _errorMessage = "Failed to create order: $e";
+      print("OrderViewModel: Failed to create order: $e");
       notifyListeners();
     } finally {
+      _packetManager.addMessageToSend(order);   // send to root the new order   TODO : a déplacer dans le try
       _setLoading(false);
     }
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masi_dam_2425/comm/packet_manager.dart';
 import 'package:masi_dam_2425/screens/roles_selection_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/view_model/staff_view_model.dart';
@@ -72,6 +73,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     return;
                   }
                   final userId = userViewModel.createUser(firstname, lastname);
+                  PacketManager.getInstance().setUserID(userId);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

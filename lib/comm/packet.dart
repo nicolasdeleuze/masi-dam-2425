@@ -1,12 +1,5 @@
 import 'package:masi_dam_2425/comm/packet_status.dart';
 
-
-/*
-    Sended Packet Structure
-
-    recipent;source;id;data
-*/
-
 class Packet {
   static const String FIELD_SEPARATOR = ';';
 
@@ -61,8 +54,8 @@ class Packet {
 
   static String _generateId(String data) {
     var time = DateTime.now().millisecondsSinceEpoch;
-    var hash_time = time.hashCode.toRadixString(16).substring(0, 4);
-    var hash_data = data.hashCode.toRadixString(data.length);
+    var hash_time = time.hashCode.toRadixString(time.toString().length % 36);
+    var hash_data = data.hashCode.toRadixString(data.length % 36);
     return '$hash_time$hash_data';
   }
 }

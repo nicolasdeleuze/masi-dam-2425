@@ -1,0 +1,28 @@
+@startuml packet_sequence
+
+skinparam SequenceMessageAlignment center
+
+hide footbox
+title Packet exchange sequence
+autonumber
+
+participant Client    as C1
+participant ROOT      as RT
+
+|||
+
+== Identification ==
+
+C1 -> RT : WHO
+RT -> C1 : WHO
+
+|||
+
+== Exchange order ==
+
+loop
+    C1 -> RT : ORDER
+    RT -> C1 : ACK
+end
+
+@enduml
