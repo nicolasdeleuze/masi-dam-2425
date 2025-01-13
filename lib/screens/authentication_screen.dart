@@ -5,15 +5,23 @@ import 'package:masi_dam_2425/view_model/staff_view_model.dart';
 import 'package:masi_dam_2425/widgets/buttons/add_button_widget.dart';
 import 'package:provider/provider.dart';
 
-class AuthenticationScreen extends StatelessWidget {
+
+// we need to be stateful because we modify the state of the text fields, so we need to keep track of the controllers
+// and don't rebuild the whole widget
+class AuthenticationScreen extends StatefulWidget {
   const AuthenticationScreen({super.key});
+
+  @override
+  State<AuthenticationScreen> createState() => _AuthenticationScreenState();
+}
+
+class _AuthenticationScreenState extends State<AuthenticationScreen> {
+  final TextEditingController firstnameController = TextEditingController();
+  final TextEditingController lastnameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final userViewModel = Provider.of<UserViewModel>(context);
-
-    final TextEditingController firstnameController = TextEditingController();
-    final TextEditingController lastnameController = TextEditingController();
 
     double width = MediaQuery.of(context).size.width;
 
