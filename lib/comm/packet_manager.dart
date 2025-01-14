@@ -27,6 +27,7 @@ class PacketManager {
   late OrderViewModel _orderViewModel;
   String _source = "UNKNOWN";
   String _destination = "UNKNOWN";
+  final List<String> _knownPeers = [];
   final Queue<Packet> _pkt_to_send = Queue<Packet>();       // contains messages serialized
   final Queue<Packet> _pkt_in_transit = Queue<Packet>();
   final Queue<Packet> _pkt_received = Queue<Packet>();
@@ -143,52 +144,80 @@ class PacketManager {
       // receive messages
       while(_pkt_received.isNotEmpty) {
         Packet packet = _pkt_received.removeFirst();
+
+        // print("PcktManager : ${_source}");
+        // packet.debug();
+
         // test if packet is for me
         if(packet.recipient == _source || packet.type == PacketType.Who) {
-
-          if(packet.type == PacketType.Ack) {
-            // remove packet from _pkt_in_transit
-            _pkt_in_transit.removeWhere((element) => element.id == packet.data);
-          } else {
-            // send ACK
-            Packet ack = Packet.create(
-              recipent: packet.source,
-              source: packet.recipient,
-              data: "${packet.id}",
-              type: PacketType.Ack,
-              status: PacketStatus.TO_SEND
-            );
-            _pkt_to_send.add(ack);
-            processReceivedPacket(packet);
-          }
+          _processReceivedPacket(packet);
         }
       }
     }
   }
 
-  void processReceivedPacket(Packet packet) {
+  void _processReceivedPacket(Packet packet) {
     dynamic object = _stringToObject(packet.data, packet.type);
-    switch(object.runtimeType) {
-      case Order:
+    switch(packet.type) {
+      case PacketType.Order:
+        // send ACK
+        Packet ack = Packet.create(
+            recipent: packet.source,
+            source: packet.recipient,
+            data: "${packet.id}",
+            type: PacketType.Ack,
+            status: PacketStatus.TO_SEND
+        );
+        _pkt_to_send.add(ack);
         Order order = object as Order;
         // TODO
         // mettre à jour le viewmodel Order
         break;
-      case String:
-        _comService.snack("${object as String}");
-        break;
       case PacketType.Who:
-        // data structure: <R${role.index}>${_source}
+        // data structure:
+        // <R${role.index}>${_source} in case of identification
+        // <ACK>${packet.source} in case of ACK
         String data = object as String;
-        int roleIndex = int.parse(data.substring(2, 3));
-        Role role = Role.parse(roleIndex);
-        String source = data.substring(3);
-        if (role == Role.bartender) {
-          _destination = source;
+        if (data.startsWith("<R")) {
+          Role mine = _comService.getRole();
+          Role role = Role.parse(int.parse(data.substring(2, 3)));
+          String source = data.substring(4);
+          if(!_knownPeers.contains(source)) {
+            _knownPeers.add(source);
+            // send response
+            Packet response = Packet.create(
+                recipent: packet.source,
+                source: _source,
+                data: "<R${mine.index}>${_source}",
+                type: PacketType.Who,
+                status: PacketStatus.TO_SEND
+            );
+            _pkt_to_send.add(response);
+          }
+          else {
+            // send ACK
+            Packet ack = Packet.create(
+                recipent: packet.source,
+                source: packet.recipient,
+                data: "<ACK>${packet.source}",
+                type: PacketType.Who,
+                status: PacketStatus.TO_SEND
+            );
+            _pkt_to_send.add(ack);
+          }
+          if (role == Role.bartender) {
+            _destination = source;
+          }
+        } else if (data.startsWith("<ACK>")) {
+          String source = data.substring(5);
+          if(!_knownPeers.contains(source)) {
+            _knownPeers.add(source);
+          }
         }
         break;
       case PacketType.Ack:
-        _comService.snack("Received Ack for ${packet.id}");
+        // remove packet from _pkt_in_transit
+        _pkt_in_transit.removeWhere((element) => element.id == packet.data);
         break;
       default:
         throw Exception("Unsupported type");
