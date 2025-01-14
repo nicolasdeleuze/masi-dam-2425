@@ -172,6 +172,7 @@ class PacketManager {
         Order order = object as Order;
         // TODO
         // mettre à jour le viewmodel Order
+        _orderViewModel.addReceivedOrder(order);
         break;
       case PacketType.Who:
         // data structure:
