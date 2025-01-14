@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
+import 'package:masi_dam_2425/comm/packet_manager.dart';
 import 'package:masi_dam_2425/model/roles.dart';
 import 'package:masi_dam_2425/screens/waiter/order_home_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
@@ -14,6 +15,7 @@ class JoinNetworkScreen extends StatefulWidget {
   JoinNetworkScreen({super.key});
 
   ComService comService = ComService.getInstance();
+  PacketManager packetManager = PacketManager.getInstance();
 
   Future<ConnectionState> initialize_p2p_client() async {
     ConnectionState cs = await comService.init("OpenAirPOS", Role.waiter);
@@ -55,8 +57,7 @@ class _JoinNetworkWidgetState extends State<JoinNetworkScreen> {
                               padding: const EdgeInsets.only(bottom: 20.0),
                               child: ElevatedButton.icon(
                                 onPressed: () {
-                                  print(
-                                      "isReady: ${widget.comService.isConnected}");
+                                  widget.packetManager.identifyToRoot();
                                   if (widget.comService.isConnected) {
                                     widget.comService.stopDiscoverPeers();
                                     Navigator.push(

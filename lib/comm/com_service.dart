@@ -33,6 +33,10 @@ class ComService extends ChangeNotifier {
     return _instance!;
   }
 
+  Role getRole() {
+    return _role!;
+  }
+
   void setMessageManager(PacketManager msgManager) {
     _msgManager = msgManager;
   }

@@ -5,6 +5,7 @@ import 'package:masi_dam_2425/comm/packet_status.dart';
 import 'package:masi_dam_2425/comm/packet.dart';
 import 'package:masi_dam_2425/comm/packet_type.dart';
 import 'package:masi_dam_2425/model/order.dart';
+import 'package:masi_dam_2425/model/roles.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
 
 class PacketManager {
@@ -24,8 +25,8 @@ class PacketManager {
 
   late ComService _comService;
   late OrderViewModel _orderViewModel;
-  String _source = "UNKNOWN_CLENT";
-  String _destination = "UNKNOWN_ROOT";
+  String _source = "UNKNOWN";
+  String _destination = "UNKNOWN";
   final Queue<Packet> _pkt_to_send = Queue<Packet>();       // contains messages serialized
   final Queue<Packet> _pkt_in_transit = Queue<Packet>();
   final Queue<Packet> _pkt_received = Queue<Packet>();
@@ -55,10 +56,11 @@ class PacketManager {
   }
 
   void identifyToRoot() {
+    Role role = _comService.getRole();
     Packet packet = Packet.create(
       recipent: _destination,
       source: _source,
-      data: "${_source}",
+      data: "<R${role.index}>${_source}",
       type: PacketType.Who,
       status: PacketStatus.TO_SEND
     );
@@ -142,7 +144,8 @@ class PacketManager {
       while(_pkt_received.isNotEmpty) {
         Packet packet = _pkt_received.removeFirst();
         // test if packet is for me
-        if(packet.recipient == _source) {
+        if(packet.recipient == _source || packet.type == PacketType.Who) {
+
           if(packet.type == PacketType.Ack) {
             // remove packet from _pkt_in_transit
             _pkt_in_transit.removeWhere((element) => element.id == packet.data);
@@ -175,7 +178,14 @@ class PacketManager {
         _comService.snack("${object as String}");
         break;
       case PacketType.Who:
-        _comService.snack("Received Who from ${packet.data}");
+        // data structure: <R${role.index}>${_source}
+        String data = object as String;
+        int roleIndex = int.parse(data.substring(2, 3));
+        Role role = Role.parse(roleIndex);
+        String source = data.substring(3);
+        if (role == Role.bartender) {
+          _destination = source;
+        }
         break;
       case PacketType.Ack:
         _comService.snack("Received Ack for ${packet.id}");
