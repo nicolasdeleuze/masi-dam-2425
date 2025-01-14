@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
+import 'package:masi_dam_2425/comm/packet_manager.dart';
 import 'package:masi_dam_2425/repository/dataservice.dart';
 import 'package:masi_dam_2425/screens/authentication_screen.dart';
 import 'package:masi_dam_2425/view_model/menu_view_model.dart';
@@ -14,12 +15,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dataService = DataService();
   await dataService.initialize();
+  final ComService comService = ComService.getInstance();
+  final PacketManager messageManager = PacketManager.getInstance(comService: comService);
+  comService.setMessageManager(messageManager);
+  messageManager.start();
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => OrderViewModel(dataService.orderRepository),
+          create: (context) => OrderViewModel.getInstance(repository: dataService.orderRepository),
         ),
         ChangeNotifierProvider(
           create: (context) => ProductViewModel(dataService.productRepository),
@@ -40,8 +45,36 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    PacketManager.getInstance().setOrderViewModel(Provider.of<OrderViewModel>(context, listen: false));
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) {
+      PacketManager.getInstance().stop();
+      Provider.of<ComService>(context, listen: false).closeSocket();
+      Provider.of<ComService>(context, listen: false).stop();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
 
   @override
   Widget build(BuildContext context) {

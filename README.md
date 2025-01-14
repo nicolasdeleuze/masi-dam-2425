@@ -61,4 +61,12 @@ La communication root (barman) <-> clients (serveurs) fonctionne correctement.
 
 > Enfin, nous vous demandons d'ajouter une section pour les développeurs où vous expliquez ce qu'il faut faire pour pouvoir compiler l'application. Cette documentation doit être simple et surtout efficace.
 
+
+## Limitations
+
+L'application se limite malheuresement aux appareils Android dus à l'implémentation du plugin **flutter_p2p_connection**, de plus celui-ci se repose sur le WiFi-Direct.
+La technologie WiFi-Direct est implémenté ou non sur l'appareil, il est donc vivement conseillé de vérifier la compatibilité de la puce WiFi de l'appareil installé par le constructeur.  
+Pour la vérification, on peut compter sur la [WiFi Alliance](https://www.wi-fi.org/discover-wi-fi/wi-fi-direct) 
+plus précisément à cette addresse : [https://www.wi-fi.org/product-finder-results?sort_by=certified&sort_order=desc&certifications=900](https://www.wi-fi.org/product-finder-results?sort_by=certified&sort_order=desc&certifications=900).
+
 <!-- vim: set spelllang=fr :-->

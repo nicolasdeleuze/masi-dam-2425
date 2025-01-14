@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masi_dam_2425/model/roles.dart';
 import 'package:masi_dam_2425/screens/admin/admin_home_screen.dart';
 import 'package:masi_dam_2425/screens/waiter/join_network_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
@@ -7,7 +8,6 @@ import 'package:masi_dam_2425/theme/styles/text_style.dart';
 import 'package:masi_dam_2425/view_model/staff_view_model.dart';
 import 'package:masi_dam_2425/widgets/containers/header_container_widget.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
-import 'package:masi_dam_2425/comm/user_role.dart';
 import 'package:masi_dam_2425/widgets/buttons/xlarge_button_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +23,7 @@ class RolesWidget extends StatefulWidget {
 }
 
 class _RolesWidgetState extends State<RolesWidget> {
-  UserRole? role;
+  Role? role;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +33,9 @@ class _RolesWidgetState extends State<RolesWidget> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-              HeaderContainer(
-                  width: width),
+            HeaderContainer(
+                width: width
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
@@ -50,7 +51,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                 children: <Widget>[
                   XLargeButton(
                     label: 'Bartender',
-                    role: UserRole.barman,
+                    role: Role.bartender,
                     iconPath: 'assets/images/bartender.png',
                     backgroundColor: LightColors.kGreen,
                     textColor: LightColors.kLightYellow,
@@ -60,7 +61,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                   const SizedBox(height: 20),
                   XLargeButton(
                     label: 'Waiter',
-                    role: UserRole.waiter,
+                    role: Role.waiter,
                     iconPath: 'assets/images/waiter.png',
                     backgroundColor: LightColors.kRed,
                     textColor: LightColors.kLightYellow,
@@ -70,7 +71,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                   const SizedBox(height: 20),
                   XLargeButton(
                     label: 'Admin',
-                    role: UserRole.admin,
+                    role: Role.admin,
                     iconPath: 'assets/images/admin.png',
                     backgroundColor: LightColors.kBlue,
                     textColor: LightColors.kLightYellow,

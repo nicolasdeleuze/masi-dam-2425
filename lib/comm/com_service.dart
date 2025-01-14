@@ -2,17 +2,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
+import 'package:masi_dam_2425/comm/packet_manager.dart';
+import 'package:masi_dam_2425/model/roles.dart';
 
-import 'user_role.dart';
 
 class ComService extends ChangeNotifier {
   static ComService? _instance;
   static BuildContext _context = null as dynamic;
 
+  PacketManager? _msgManager;
   bool isConnected = false;
   bool _isInitialized = false;
   String? _networkName;
-  UserRole? _role;
+  Role? _role;
   FlutterP2pConnection? _connection;
   final List<DiscoveredPeers> peers = [];
   WifiP2PInfo? _wifiP2PInfo;
@@ -29,6 +31,14 @@ class ComService extends ChangeNotifier {
       _instance = ComService._();
     }
     return _instance!;
+  }
+
+  Role getRole() {
+    return _role!;
+  }
+
+  void setMessageManager(PacketManager msgManager) {
+    _msgManager = msgManager;
   }
 
   void setIsConnected(bool value) {
@@ -66,16 +76,14 @@ class ComService extends ChangeNotifier {
   void receiveString(dynamic obj) {
     if (obj is String) {
       String message = obj;
-      snack(message);
-      print("Received message: $message");
+      _msgManager?.addMessageReceived(message);
     }
     else {
       snack('Received unknown message : $obj');
-      print("Received unknown message : $obj");
     }
   }
 
-  Future<ConnectionState> init(String networkName, UserRole role) async {
+  Future<ConnectionState> init(String networkName, Role role) async {
     if(_isInitialized && _networkName != null && _role != null && _networkName == networkName && _role == role) {
       return ConnectionState.done;
     }
@@ -133,7 +141,7 @@ class ComService extends ChangeNotifier {
 
     _isInitialized = true;
 
-    if(_role == UserRole.waiter) {
+    if(_role == Role.waiter) {
       await _connection!.discover();
     }
 
@@ -143,7 +151,7 @@ class ComService extends ChangeNotifier {
   }
 
   void start() {
-    if (_role == UserRole.barman) {
+    if (_role == Role.bartender) {
       startAsBarman(_networkName!);
     }
   }
@@ -266,5 +274,4 @@ class ComService extends ChangeNotifier {
   WifiP2PInfo getWifiP2PInfo() {
     return _wifiP2PInfo!;
   }
-
 }

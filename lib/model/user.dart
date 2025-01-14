@@ -4,15 +4,17 @@ import 'package:masi_dam_2425/model/roles.dart';
 
 class User {
   final String _id;
-  final String _firstname;
-  final String _lastname;
+  String _firstname;
+  String _lastname;
   final List<Role> _permissions;
+  String _avatarPath;
 
   User(String firstname, String lastname, List<Role> permissions)
       : _id = _generateUserId(firstname, lastname),
         _firstname = firstname,
         _lastname = lastname,
-        _permissions = permissions;
+        _permissions = permissions,
+        _avatarPath = "assets/images/avatars/avatar_ungendered.png";
 
   static _generateUserId(String firstName, String lastName) {
     StringBuffer userId = StringBuffer();
@@ -28,6 +30,7 @@ class User {
   String get lastname => _lastname;
   String get firstname => _firstname;
   String get id => _id;
+  String get avatarPath => _avatarPath;
 
   void addRole(Role role) {
     if (!_permissions.contains(role)) {
@@ -39,5 +42,17 @@ class User {
     if (_permissions.contains(role)) {
       _permissions.remove(role);
     }
+  }
+
+  void updateFirstname(String firstname) {
+    _firstname = firstname;
+  }
+
+  void updateLastname(String lastname) {
+    _lastname = lastname;
+  }
+
+  void updateAvatar(String avatarPath) {
+    _avatarPath = avatarPath;
   }
 }

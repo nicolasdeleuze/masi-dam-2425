@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
-import 'package:masi_dam_2425/comm/user_role.dart';
+import 'package:masi_dam_2425/comm/packet_manager.dart';
+import 'package:masi_dam_2425/model/roles.dart';
 import 'package:masi_dam_2425/screens/waiter/order_home_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/theme/styles/colored_button_style.dart';
@@ -14,9 +15,10 @@ class JoinNetworkScreen extends StatefulWidget {
   JoinNetworkScreen({super.key});
 
   ComService comService = ComService.getInstance();
+  PacketManager packetManager = PacketManager.getInstance();
 
   Future<ConnectionState> initialize_p2p_client() async {
-    ConnectionState cs = await comService.init("OpenAirPOS", UserRole.waiter);
+    ConnectionState cs = await comService.init("OpenAirPOS", Role.waiter);
     return cs;
   }
 
@@ -46,36 +48,35 @@ class _JoinNetworkWidgetState extends State<JoinNetworkScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             HeaderContainer(
-                                width: width,
+                              width: width,
                             ),
-                            Spacer(),
                             Expanded(
                               child: ComServicePeersListWidget(),
                             ),
-                            Spacer(),
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                print(
-                                    "isReady: ${widget.comService.isConnected}");
-                                if (widget.comService.isConnected) {
-                                  widget.comService.stopDiscoverPeers();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => OrderHomeWidget(),
-                                    ),
-                                  );
-                                }
-                              },
-                              style: widget.comService.isConnected
-                                  ? readyStyle
-                                  : notReadyStyle,
-                              label: const Text(
-                                'Let\'s take some orders!',
-                                style: coloredButtonTextStyle,
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20.0),
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  widget.packetManager.identifyToRoot();
+                                  if (widget.comService.isConnected) {
+                                    widget.comService.stopDiscoverPeers();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => OrderHomeWidget(),
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: widget.comService.isConnected
+                                    ? readyStyle
+                                    : notReadyStyle,
+                                label: const Text(
+                                  'Let\'s take some orders!',
+                                  style: coloredButtonTextStyle,
+                                ),
                               ),
-                            ),
-                            Spacer()
+                            )
                           ],
                         );
                       }

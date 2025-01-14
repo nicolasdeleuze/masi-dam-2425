@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
-import 'package:masi_dam_2425/comm/user_role.dart';
+import 'package:masi_dam_2425/model/roles.dart';
 import 'package:masi_dam_2425/theme/styles/colored_button_style.dart';
 
 class XLargeButton extends StatelessWidget {
   final String label;
-  final UserRole role;
+  final Role role;
   final String iconPath;
   final Color backgroundColor;
   final Color textColor;
