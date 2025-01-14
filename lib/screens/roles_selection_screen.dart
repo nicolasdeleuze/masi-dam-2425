@@ -33,8 +33,9 @@ class _RolesWidgetState extends State<RolesWidget> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-              HeaderContainer(
-                  width: width),
+            HeaderContainer(
+                width: width
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
