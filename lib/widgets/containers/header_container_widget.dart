@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masi_dam_2425/screens/settings_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/view_model/staff_view_model.dart';
 import 'package:masi_dam_2425/widgets/containers/colored_container_widget.dart';
@@ -10,13 +11,13 @@ import 'package:provider/provider.dart';
 class HeaderContainer extends StatelessWidget {
   final double height;
   final double width;
-  final String avatarPath;
+  String avatarPath;
 
-  const HeaderContainer({
+  HeaderContainer({
     super.key,
     this.height = 110.0,
     required this.width,
-    this.avatarPath = "assets/images/avatarMale.png",
+    this.avatarPath = "assets/images/avatars/avatar_ungendered.png",
   });
 
   @override
@@ -24,6 +25,7 @@ class HeaderContainer extends StatelessWidget {
     final userViewModel = Provider.of<UserViewModel>(context);
     final String username = userViewModel.user!.firstname;
     final String userID = userViewModel.user!.id;
+    avatarPath = userViewModel.user!.avatarPath;
 
     return Stack(
       clipBehavior: Clip.none,
@@ -32,7 +34,7 @@ class HeaderContainer extends StatelessWidget {
         Positioned(
           top: 8,
           left: 12,
-          child: buildSettingsButton(),
+          child: buildSettingsButton(context),
         ),
       ],
     );
@@ -100,10 +102,15 @@ class HeaderContainer extends StatelessWidget {
     );
   }
 
-  IconButton buildSettingsButton() {
+  IconButton buildSettingsButton(BuildContext context) {
     return IconButton(
       onPressed: () {
-        // TODO: access settings
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SettingsScreen(),
+          ),
+        );
       },
       icon: const Icon(
         Icons.settings_sharp,

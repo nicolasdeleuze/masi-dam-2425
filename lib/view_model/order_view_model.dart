@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masi_dam_2425/comm/packet_manager.dart';
 import 'package:masi_dam_2425/model/order.dart';
 import 'package:masi_dam_2425/repository/order_repository.dart';
 import 'package:masi_dam_2425/repository/product_repository.dart';
@@ -10,6 +11,7 @@ class OrderViewModel extends ChangeNotifier {
   List<Order> _orders = [];
   final List<Order> _activeOrders = [];
   String? _errorMessage;
+  final PacketManager _packetManager = PacketManager.getInstance();
 
   OrderViewModel(this._orderRepository, this._productRepository) {
     getOrders();
@@ -25,6 +27,25 @@ class OrderViewModel extends ChangeNotifier {
     try {
       await _orderRepository.insertOrder(order);
       _orders.add(order);
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = "Failed to create order: $e";
+      notifyListeners();
+    } finally {
+      _packetManager.addMessageToSend(object:order,);
+      _setLoading(false);
+    }
+  }
+
+  Future<void> addReceivedOrder(Order order) async {
+    _setLoading(true);
+    try {
+      await _orderRepository.insertOrder(order);
+      if (orders.isEmpty){
+        getOrders();
+      } else {
+        _orders.add(order);
+      }
       notifyListeners();
     } catch (e) {
       _errorMessage = "Failed to create order: $e";

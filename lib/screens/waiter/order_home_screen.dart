@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
-import 'package:masi_dam_2425/comm/user_role.dart';
 import 'package:masi_dam_2425/screens/waiter/new_order_screen.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
@@ -27,24 +26,20 @@ class _OrderHomeWidgetState extends State<OrderHomeWidget> {
         Provider.of<OrderViewModel>(context, listen: true);
     // TODO : retrieve only active orders
     double width = MediaQuery.of(context).size.width;
+    widget.comService.setContext(context);
 
     return Scaffold(
       body: SafeArea(
-        child: FutureBuilder(
-          future: widget.comService.init("OpenAirPOS", UserRole.waiter),
-          builder: (context, snapshot) {
-              return Column(
-                children: <Widget>[
-                  buildHeaderContainer(width),
-                  SizedBox(height: 10),
-                  //TODO : add padding instead of sized box
-                  buildOrdersTitle(),
-                  buildOrdersList(viewModel),
-                  buildAddButton(width, context),
-                ],
-              );
-          },
-        ),
+        child: Column(
+          children: <Widget>[
+            buildHeaderContainer(width),
+            SizedBox(height: 10),
+            //TODO : add padding instead of sized box
+            buildOrdersTitle(),
+            buildOrdersList(viewModel),
+            buildAddButton(width, context),
+          ],
+        )
       ),
     );
   }
