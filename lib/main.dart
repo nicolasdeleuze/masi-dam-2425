@@ -19,7 +19,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => OrderViewModel(dataService.orderRepository),
+          create: (context) => OrderViewModel(dataService.orderRepository, dataService.productRepository),
         ),
         ChangeNotifierProvider(
           create: (context) => ProductViewModel(dataService.productRepository),

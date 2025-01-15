@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:masi_dam_2425/model/menu_category.dart';
 import 'package:masi_dam_2425/model/order.dart';
-import 'package:masi_dam_2425/model/product.dart';
+import 'package:masi_dam_2425/screens/waiter/order_%20product_selection.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/theme/styles/textfield_style.dart';
 import 'package:masi_dam_2425/widgets/buttons/add_button_widget.dart';
@@ -18,7 +17,7 @@ class NewOrderWidget extends StatefulWidget {
 
 class _NewOrderWidgetState extends State<NewOrderWidget> {
   final TextEditingController _tagController = TextEditingController();
-  final Order _currentOrder = Order();
+  Order _currentOrder = Order();
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +42,21 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
     return AddButton(
       width: width,
       onPressed: () async {
-        final newProduct = await _showAddProductDialog(context);
-        if (newProduct != null) {
+        final updatedOrder = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                OrderProductSelectionScreen(currentOrder: _currentOrder),
+          ),
+        );
+
+        if (updatedOrder != null && updatedOrder is Order) {
           setState(() {
-            _currentOrder.addProduct(newProduct);
+            _currentOrder = updatedOrder;
           });
         }
       },
-      label: "Add new product",
+      label: "Add new product(s)",
       icon: Icons.fastfood,
     );
   }
@@ -110,7 +116,8 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
             ),
             TextField(
               controller: _tagController,
-              decoration: underlinedTextfieldStyle("Add optional order tag",Icon(Icons.drive_file_rename_outline)),
+              decoration: underlinedTextfieldStyle("Add optional order tag",
+                  Icon(Icons.drive_file_rename_outline)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -220,61 +227,6 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
                 );
               },
             ),
-    );
-  }
-
-  Future<Product?> _showAddProductDialog(BuildContext context) async {
-    final nameController = TextEditingController();
-    final priceController = TextEditingController();
-    final categoryController = TextEditingController();
-
-    return showDialog<Product>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Add Product"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: "Product Name"),
-              ),
-              TextField(
-                controller: priceController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: "Price"),
-              ),
-              TextField(
-                controller: categoryController,
-                decoration: const InputDecoration(labelText: "Category"),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Cancel"),
-            ),
-            TextButton(
-              onPressed: () {
-                if (nameController.text.isNotEmpty &&
-                    priceController.text.isNotEmpty) {
-                  final product = Product(
-                    name: nameController.text,
-                    price: double.tryParse(priceController.text) ?? 0.0,
-                    category: MenuCategory.juice,
-                  );
-                  Navigator.of(context).pop(product);
-                }
-              },
-              child: const Text("Add"),
-            ),
-          ],
-        );
-      },
     );
   }
 }

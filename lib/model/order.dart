@@ -123,6 +123,14 @@ class Order {
     }
   }
 
+  bool contains (Product product){
+    return  _order.contains(product);
+  }
+
+  bool isEmpty (){
+    return _order.isEmpty;
+  }
+
   void send() {
     if (_status == OrderStatus.newOrder) {
       nextStatus(); //Queued
@@ -200,8 +208,6 @@ class Order {
       'status': _status.displayName,
       'transfer': _transfer.displayName,
       'tag': _tag,
-      'products': _order.map((product) => product.toMap()).toList(),
-      'quantities': _quantity,
     };
   }
 

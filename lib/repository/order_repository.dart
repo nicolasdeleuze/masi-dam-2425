@@ -1,7 +1,6 @@
 import 'package:masi_dam_2425/model/status.dart';
+import 'package:masi_dam_2425/repository/product_repository.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:masi_dam_2425/model/product.dart';
 import 'package:masi_dam_2425/model/order.dart';
 
 class OrderRepository {
@@ -17,14 +16,20 @@ class OrderRepository {
   }
 
   Future<void> insertOrder(Order order) async {
+    print("NEW ORDER");
     try {
       final orderId = await _database.insert(
         'orders',
         order.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-      order.id=orderId;
-
+      order.id = orderId;
+      if (order.products.length != order.quantities.length ||
+          order.products.length != order.missing.length) {
+        throw Exception(
+            'Mismatch in product, quantity, or missing lists length');
+      }
+print("ORDER OK");
       for (int i = 0; i < order.products.length; i++) {
         await _database.insert(
           'order_products',
@@ -37,40 +42,65 @@ class OrderRepository {
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
       }
+      print("PRODUCTS OK");
     } catch (e) {
-      throw Exception('Could not insert new order');
+      throw Exception('Could not insert new order: $e');
     }
-
   }
 
-  Future<List<Order>> getOrders() async {
-    final ordersData = await _database.query('orders');
-    List<Order> orders = [];
+  Future<List<Order>> getOrders(ProductRepository productRepository) async {
+    try {
+      final ordersResults = await _database.query('orders');
 
-    for (var orderMap in ordersData) {
-      final orderId = orderMap['id'] as int;
-      final productsData = await _database.rawQuery('''
-        SELECT products.*, order_products.quantity, order_products.missing
-        FROM products 
-        INNER JOIN order_products 
-        ON products.id = order_products.productId 
-        WHERE order_products.orderId = ?
-      ''', [orderId]);
+      if (ordersResults.isEmpty) {
+        return [];
+      }
 
-      final products = productsData.map((map) => Product.fromMap(map)).toList();
-      final quantity = productsData.map((map) => map['quantity'] as int).toList();
-      final missing = productsData.map((map) => map['missing'] as int).toList();
+      final ordersIds =
+          ordersResults.map((order) => order['id'] as int).toList();
+      final orderProductsResults = await _database.query(
+        'order_products',
+        where: 'orderId IN (${List.filled(ordersIds.length, '?').join(', ')})',
+        whereArgs: ordersIds,
+      );
 
-      orders.add(Order(
-        price: orderMap['price'] as double,
-        status: OrderStatusExtension.fromString(orderMap['status'] as String),
-        transfer: TransferStatusExtension.fromString(orderMap['transfer'] as String),
-        tag: orderMap['tag'] as String,
-        order: products,
-        quantity: quantity,
-        missingProducts: missing,
-      ));
+      final orderProductsMap = <int, List<Map<String, dynamic>>>{};
+      for (final row in orderProductsResults) {
+        final orderId = row['orderId'] as int;
+        orderProductsMap.putIfAbsent(orderId, () => []).add(row);
+      }
+
+      return await Future.wait(ordersResults.map((orderMap) async {
+        final orderId = orderMap['id'] as int;
+
+        final productRows = orderProductsMap[orderId] ?? [];
+        final productIds =
+            productRows.map((row) => row['productId'] as int).toList();
+        final products = await productRepository.getProductsByIds(productIds);
+
+        final quantities =
+            productRows.map((row) => row['quantity'] as int).toList();
+        final missing =
+            productRows.map((row) => row['missing'] as int).toList();
+
+        return Order(
+          price: (orderMap['price'] as num?)?.toDouble() ?? 0.0,
+          status: OrderStatus.values.firstWhere(
+            (e) => e.displayName == orderMap['status'],
+            orElse: () => OrderStatus.newOrder,
+          ),
+          transfer: TransferStatus.values.firstWhere(
+            (e) => e.displayName == orderMap['transfer'],
+            orElse: () => TransferStatus.onHold,
+          ),
+          order: products,
+          quantity: quantities,
+          missingProducts: missing,
+          tag: orderMap['tag'] as String?,
+        )..id = orderId;
+      }));
+    } catch (e) {
+      throw Exception('Could not retrieve orders: $e');
     }
-    return orders;
   }
 }

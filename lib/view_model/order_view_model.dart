@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:masi_dam_2425/model/id_generator.dart';
 import 'package:masi_dam_2425/model/order.dart';
 import 'package:masi_dam_2425/repository/order_repository.dart';
+import 'package:masi_dam_2425/repository/product_repository.dart';
 
 class OrderViewModel extends ChangeNotifier {
-  final OrderRepository _repository;
+  final OrderRepository _orderRepository;
+  final ProductRepository _productRepository;
   bool _isLoading = false;
   List<Order> _orders = [];
   final List<Order> _activeOrders = [];
   String? _errorMessage;
 
-  OrderViewModel(this._repository){
+  OrderViewModel(this._orderRepository, this._productRepository) {
     getOrders();
   }
 
@@ -22,13 +23,8 @@ class OrderViewModel extends ChangeNotifier {
   Future<void> createOrder(Order order) async {
     _setLoading(true);
     try {
-      order.id = await IdGenerator.generateNewId('order');
-      await _repository.insertOrder(order);
-      if (orders.isEmpty){
-        getOrders();
-      } else {
-        _orders.add(order);
-      }
+      await _orderRepository.insertOrder(order);
+      _orders.add(order);
       notifyListeners();
     } catch (e) {
       _errorMessage = "Failed to create order: $e";
@@ -41,7 +37,7 @@ class OrderViewModel extends ChangeNotifier {
   Future<void> getOrders() async {
     _setLoading(true);
     try {
-      final orders = await _repository.getOrders();
+      final orders = await _orderRepository.getOrders(_productRepository);
       _orders = orders;
       notifyListeners();
     } catch (e) {
@@ -55,9 +51,9 @@ class OrderViewModel extends ChangeNotifier {
   Future<void> getActiveOrders() async {
     _setLoading(true);
     try {
-      final orders = await _repository.getOrders();
-      for (Order order in orders){
-        if (!order.isComplete()){
+      final orders = await _orderRepository.getOrders(_productRepository);
+      for (Order order in orders) {
+        if (!order.isComplete()) {
           _activeOrders.add(order);
         }
       }
