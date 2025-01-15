@@ -57,7 +57,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    PacketManager.getInstance().setOrderViewModel(Provider.of<OrderViewModel>(context, listen: false));
+    PacketManager.getInstance().setViewModel(
+        orderViewModel: Provider.of<OrderViewModel>(context, listen: false),
+        productViewModel: Provider.of<ProductViewModel>(context, listen: false)
+    );
   }
 
   @override

@@ -233,11 +233,36 @@ class Order {
   }
 
   String toJson() {
-    return jsonEncode(toMap());
+    Map<String, dynamic> map = {
+      'id': id,
+      'price': _price,
+      'status': _status.displayName,
+      'transfer': _transfer.displayName,
+      'products': _order.map((product) => product.toMap()).toList(),
+      'quantities': _quantity,
+      'tag': _tag,
+    };
+    return jsonEncode(map);
   }
 
   static Order fromJson(String jsonString) {
-    return Order.fromMap(jsonDecode(jsonString));
+    Map<String, dynamic> map = jsonDecode(jsonString);
+    return Order(
+      price: map['price'] ?? 0.0,
+      status: OrderStatus.values.firstWhere(
+        (e) => e.displayName == map['status'],
+        orElse: () => OrderStatus.newOrder,
+      ),
+      transfer: TransferStatus.values.firstWhere(
+        (e) => e.displayName == map['transfer'],
+        orElse: () => TransferStatus.onHold,
+      ),
+      order: (map['products'] as List)
+          .map((productMap) => Product.fromMap(productMap))
+          .toList(),
+      quantity: List<int>.from(map['quantities'] ?? []),
+      tag: map['tag'],
+    )..id = map['id'] as int?;
   }
 
 }

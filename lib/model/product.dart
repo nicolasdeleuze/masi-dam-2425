@@ -48,10 +48,24 @@ class Product {
   }
 
   String toJson() {
-    return jsonEncode(toMap());
+    Map<String, dynamic> map = {
+      'id' : id,
+      'name': _name,
+      'price': _price,
+      'category': _category.displayName,
+    };
+    return jsonEncode(map);
   }
 
   static Product fromJson(String jsonString) {
-    return Product.fromMap(jsonDecode(jsonString));
+    Map<String, dynamic> map = jsonDecode(jsonString);
+    return Product(
+      name: map['name'],
+      price: map['price'],
+      category: MenuCategory.values.firstWhere(
+            (e) => e.displayName == map['category'],
+        orElse: () => MenuCategory.exotic,
+      ),
+    )..id = map['id'] as int?;
   }
 }

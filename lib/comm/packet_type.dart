@@ -3,6 +3,7 @@ enum PacketType {
   String,
   Order,
   Who,
+  ProductForSale,
   Ack;
 
   static PacketType parse(int idx) {
@@ -14,6 +15,8 @@ enum PacketType {
       case 2:
         return PacketType.Who;
       case 3:
+        return PacketType.ProductForSale;
+      case 4:
         return PacketType.Ack;
       default:
         throw Exception('Invalid packet type');
