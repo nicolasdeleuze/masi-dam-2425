@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/theme/styles/text_style.dart';
 import 'package:masi_dam_2425/view_model/staff_view_model.dart';
-import 'package:masi_dam_2425/widgets/avatar_picker.dart';
+import 'package:masi_dam_2425/screens/avatar_picker_screen.dart';
 import 'package:masi_dam_2425/widgets/buttons/return_button_widget.dart';
 import 'package:masi_dam_2425/widgets/text_field_widget.dart';
 import 'package:provider/provider.dart';
@@ -32,11 +32,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      top: false,
-      bottom: false,
       child: Consumer<UserViewModel>(
         builder: (BuildContext context, UserViewModel value, Widget? child) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 50.0),
@@ -60,7 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => AvatarPicker(currentAvatar: userViewModel.user!.avatarPath),
+                              builder: (context) => AvatarPickerScreen(currentAvatar: userViewModel.user!.avatarPath),
                             ),
                           );
                         },

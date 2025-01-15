@@ -25,9 +25,10 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
     double width = MediaQuery.of(context).size.width;
     final orderViewModel = Provider.of<OrderViewModel>(context);
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Column(
           children: [
             buildHeaderContainer(width, context, orderViewModel),
             buildPriceDisplay(),
@@ -232,6 +233,7 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          scrollable: true,
           title: const Text("Add Product"),
           content: Column(
             mainAxisSize: MainAxisSize.min,

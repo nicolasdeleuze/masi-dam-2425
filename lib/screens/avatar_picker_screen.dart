@@ -6,16 +6,16 @@ import 'package:masi_dam_2425/widgets/buttons/avatar_button_widget.dart';
 import 'package:masi_dam_2425/widgets/buttons/return_button_widget.dart';
 import 'package:provider/provider.dart';
 
-class AvatarPicker extends StatefulWidget {
+class AvatarPickerScreen extends StatefulWidget {
   var currentAvatar;
 
-  AvatarPicker({super.key, required this.currentAvatar});
+  AvatarPickerScreen({super.key, required this.currentAvatar});
 
   @override
-  State<AvatarPicker> createState() => _AvatarPickerState();
+  State<AvatarPickerScreen> createState() => _AvatarPickerScreenState();
 }
 
-class _AvatarPickerState extends State<AvatarPicker> {
+class _AvatarPickerScreenState extends State<AvatarPickerScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -27,7 +27,7 @@ class _AvatarPickerState extends State<AvatarPicker> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("Choose Avatar", style: extraBoldTitle(),),
+                  Text("Choose avatar", style: extraBoldTitle(),),
                 ],
               ),
             ),
@@ -84,7 +84,7 @@ class _AvatarPickerState extends State<AvatarPicker> {
                     userViewModel.updateAvatar(widget.currentAvatar);
                     Navigator.pop(context);
                   },
-                  label: "Save Avatar"
+                  label: "Save"
               ),
             )
           ],

@@ -39,9 +39,13 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
     final productViewModel = Provider.of<ProductViewModel>(context);
     final menuViewModel = Provider.of<MenuViewModel>(context);
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
+    // width = MediaQuery.of(context).size.width - size of the text "Name" - size of the padding
+    var width_enter_name = MediaQuery.of(context).size.width - "Name".length * 25 - 32;
+
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Column(
           children: [
             Padding(
               padding:
@@ -76,7 +80,7 @@ class _ProductSelectionScreenState extends State<ProductSelectionScreen> {
                       ),
                     ),
                     SizedBox(
-                      width: 250,
+                      width: width_enter_name,
                       child: TextField(
                         controller: controller,
                         keyboardType: TextInputType.text,

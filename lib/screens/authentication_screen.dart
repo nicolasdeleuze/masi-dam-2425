@@ -26,9 +26,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
 
     double width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,17 +47,21 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 20.0),
-                    buildTextField(
-                      controller: firstnameController,
-                      label: 'Enter firstname',
-                      icon: Icons.person,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: buildTextField(
+                        controller: firstnameController,
+                        label: 'Enter firstname',
+                        icon: Icons.person,
+                      ),
                     ),
-                    const SizedBox(height: 20.0),
-                    buildTextField(
-                      controller: lastnameController,
-                      label: 'Enter lastname',
-                      icon: Icons.person,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: buildTextField(
+                        controller: lastnameController,
+                        label: 'Enter lastname',
+                        icon: Icons.person,
+                      ),
                     ),
                   ],
                 ),

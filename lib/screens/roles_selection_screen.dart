@@ -5,11 +5,9 @@ import 'package:masi_dam_2425/screens/waiter/join_network_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/screens/bartender/barman_home_screen.dart';
 import 'package:masi_dam_2425/theme/styles/text_style.dart';
-import 'package:masi_dam_2425/view_model/staff_view_model.dart';
 import 'package:masi_dam_2425/widgets/containers/header_container_widget.dart';
 import 'package:masi_dam_2425/comm/com_service.dart';
 import 'package:masi_dam_2425/widgets/buttons/xlarge_button_widget.dart';
-import 'package:provider/provider.dart';
 
 /// A widget that allows users to select a role (e.g., Bartender, Waiter, Admin)
 /// and navigate to the corresponding home screen.
