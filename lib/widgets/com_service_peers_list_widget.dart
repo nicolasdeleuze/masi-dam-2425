@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../comm/com_service.dart';
 
 class ComServicePeersListWidget extends StatefulWidget {
-  ComServicePeersListWidget({super.key});
+  const ComServicePeersListWidget({super.key});
 
   @override
   State<ComServicePeersListWidget> createState() => _ComServicePeersListWidgetState();

@@ -128,14 +128,11 @@ class ComService extends ChangeNotifier {
 
     _streamWifiInfo = _connection!.streamWifiP2PInfo().listen((event) {
       _wifiP2PInfo = event;
-      print("Listen Group Owner Address: ${_wifiP2PInfo!.groupOwnerAddress}");
     });
 
     _streamPeers = _connection!.streamPeers().listen((event) {
       peers.clear();
       peers.addAll(event);
-      print("Listen Peers: ${peers.length}");
-      print("Listen Peers: $peers");
       notifyListeners();
     });
 
@@ -145,7 +142,6 @@ class ComService extends ChangeNotifier {
       await _connection!.discover();
     }
 
-    print("Init done");
 
     return ConnectionState.done;
   }
@@ -177,7 +173,6 @@ class ComService extends ChangeNotifier {
   }
 
   Future<void> discoverPeers() async {
-    print("Discover peers");
     do {
       await Future.delayed(Duration(milliseconds: 500));
     } while(_isInitialized == false);
@@ -185,7 +180,6 @@ class ComService extends ChangeNotifier {
     if(ret == false) {
       throw Exception('Failed to enable peers discovery');
     }
-    print("Discover peers done");
   }
 
   void stopDiscoverPeers() async {
@@ -196,7 +190,7 @@ class ComService extends ChangeNotifier {
   }
 
   Future<void> startSocket () async {
-    dynamic dyn_started;  // rustine ...
+    dynamic dynStarted;  // rustine ...
     bool started = false;
     int tryed = 0;
 
@@ -209,7 +203,7 @@ class ComService extends ChangeNotifier {
         await Future.delayed(Duration(milliseconds: 500));
       }
 
-      dyn_started = _connection!.startSocket(
+      dynStarted = _connection!.startSocket(
         groupOwnerAddress: _wifiP2PInfo!.groupOwnerAddress,
         downloadPath: '/storage/emulated/0/Download',
         maxConcurrentDownloads: 2,
@@ -218,12 +212,12 @@ class ComService extends ChangeNotifier {
         transferUpdate: transferUpdate,
         receiveString: receiveString,
       );
-      if (dyn_started is bool) {
-        started = dyn_started;
+      if (dynStarted is bool) {
+        started = dynStarted;
       }
       else {
-        if (dyn_started is Future<bool>) {
-          started = await dyn_started;
+        if (dynStarted is Future<bool>) {
+          started = await dynStarted;
         }
       }
 
@@ -265,7 +259,6 @@ class ComService extends ChangeNotifier {
 
   Future<void> sendString(String message) async {
     bool s = _connection!.sendStringToSocket(message);
-    print("Send message: $message");
     if(!s) {
       throw Exception('Failed to send message');
     }
