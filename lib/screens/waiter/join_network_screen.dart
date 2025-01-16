@@ -5,6 +5,7 @@ import 'package:masi_dam_2425/model/roles.dart';
 import 'package:masi_dam_2425/screens/waiter/order_home_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/theme/styles/colored_button_style.dart';
+import 'package:masi_dam_2425/theme/styles/text_style.dart';
 import 'package:masi_dam_2425/widgets/com_service_peers_list_widget.dart';
 import 'package:masi_dam_2425/widgets/containers/header_container_widget.dart';
 import 'package:masi_dam_2425/widgets/loader_widget.dart';
@@ -49,6 +50,18 @@ class _JoinNetworkWidgetState extends State<JoinNetworkScreen> {
                           children: <Widget>[
                             HeaderContainer(
                               width: width,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                  child: Text(
+                                    'Select a root device',
+                                    style: extraBoldTitle()
+                                  ),
+                                ),
+                              ],
                             ),
                             Expanded(
                               child: ComServicePeersListWidget(),
