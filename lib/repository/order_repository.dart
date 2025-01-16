@@ -16,7 +16,6 @@ class OrderRepository {
   }
 
   Future<void> insertOrder(Order order) async {
-    print("NEW ORDER");
     try {
       final orderId = await _database.insert(
         'orders',
@@ -29,7 +28,6 @@ class OrderRepository {
         throw Exception(
             'Mismatch in product, quantity, or missing lists length');
       }
-print("ORDER OK");
       for (int i = 0; i < order.products.length; i++) {
         await _database.insert(
           'order_products',
@@ -42,7 +40,6 @@ print("ORDER OK");
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
       }
-      print("PRODUCTS OK");
     } catch (e) {
       throw Exception('Could not insert new order: $e');
     }

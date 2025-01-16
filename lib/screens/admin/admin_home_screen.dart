@@ -79,7 +79,6 @@ class _AdminHomeWidgetState extends State<AdminHomeWidget> {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      // TODO: Navigate to the create event screen
                     },
                     style: coloredButtonStyle(
                         LightColors.kBlue, LightColors.kLightYellow),
@@ -137,7 +136,6 @@ class _AdminHomeWidgetState extends State<AdminHomeWidget> {
                               icon: const Icon(Icons.more_horiz,
                                   color: LightColors.kDarkBlue),
                               onPressed: () {
-                                // TODO: Navigate to event editor
                               },
                             )
                           ],

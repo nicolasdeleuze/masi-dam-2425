@@ -54,31 +54,21 @@ class Packet {
     throw Exception('Invalid packet format');
   }
 
-  void debug() {
-    print("Packet : ");
-    print("\t id : $id");
-    print("\t recipent : $recipient");
-    print("\t source : $source");
-    print("\t data : $data");
-    print("\t type : $type");
-    print("\t status : $status");
-  }
-
   String serialize() {
     return '$recipient$FIELD_SEPARATOR$source$FIELD_SEPARATOR$id$FIELD_SEPARATOR${type.index}$FIELD_SEPARATOR$data';
   }
 
   static String _generateId(String data) {
     var time = DateTime.now().millisecondsSinceEpoch;
-    var hash_time = time.hashCode.toRadixString(time.toString().length % 36);
-    int radix_length = data.length % 36;
-    if (radix_length < 2 ) {
-      radix_length = 2;
+    var hashTime = time.hashCode.toRadixString(time.toString().length % 36);
+    int radixLength = data.length % 36;
+    if (radixLength < 2 ) {
+      radixLength = 2;
     }
-    else if (radix_length > 36) {
-      radix_length = 36;
+    else if (radixLength > 36) {
+      radixLength = 36;
     }
-    var hash_data = data.hashCode.toRadixString(radix_length);
-    return '$hash_time$hash_data';
+    var hashData = data.hashCode.toRadixString(radixLength);
+    return '$hashTime$hashData';
   }
 }

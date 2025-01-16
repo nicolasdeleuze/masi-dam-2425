@@ -25,7 +25,7 @@ class PacketManager {
   }
 
   int _idx_received_order = 0;
-  late ComService _comService;
+  final ComService _comService;
   late OrderViewModel _orderViewModel;
   late ProductViewModel _productViewModel;
   String _source = "UNKNOWN";
@@ -70,14 +70,14 @@ class PacketManager {
     Packet packet = Packet.create(
       recipent: _destination,
       source: _source,
-      data: "<R${role.index}>${_source}",
-      type: PacketType.Who,
+      data: "<R${role.index}>$_source",
+      type: PacketType.WHO,
       status: PacketStatus.TO_SEND
     );
     _pkt_to_send.add(packet);
   }
 
-  void addMessageToSend({required dynamic object, PacketType type = PacketType.Order}) {
+  void addMessageToSend({required dynamic object, PacketType type = PacketType.ORDER}) {
     late Packet packet;
     packet = Packet.create(
       recipent: _destination,
@@ -97,19 +97,19 @@ class PacketManager {
   String _objectToString(dynamic object, PacketType type) {
     String data = "";
     switch(type) {
-      case PacketType.String:
-        data = '${object as String}';
+      case PacketType.STRING:
+        data = object as String;
         break;
-      case PacketType.Order:
-        data = '${(object as Order).toJson()}';
+      case PacketType.ORDER:
+        data = (object as Order).toJson();
         break;
-      case(PacketType.Who):
-        data = '${object as String}';
+      case(PacketType.WHO):
+        data = object as String;
         break;
-      case PacketType.ProductForSale:
+      case PacketType.PRODUCTS_FOR_SALE:
         break;
-      case PacketType.Ack:
-        data = '${object as String}';
+      case PacketType.ACK:
+        data = object as String;
         break;
       default:
         throw Exception("Unsupported type");
@@ -120,18 +120,18 @@ class PacketManager {
   dynamic _stringToObject(String data, PacketType type) {
     dynamic object;
     switch(type) {
-      case PacketType.String:
+      case PacketType.STRING:
         object = data;
         break;
-      case PacketType.Order:
+      case PacketType.ORDER:
         object = Order.fromJson(data);
         break;
-      case PacketType.Who:
+      case PacketType.WHO:
         object = data;
         break;
-      case PacketType.ProductForSale:
+      case PacketType.PRODUCTS_FOR_SALE:
         break;
-      case PacketType.Ack:
+      case PacketType.ACK:
         object = data;
         break;
       default:
@@ -162,7 +162,7 @@ class PacketManager {
         // packet.debug();
 
         // test if packet is for me
-        if(packet.recipient == _source || packet.type == PacketType.Who) {
+        if(packet.recipient == _source || packet.type == PacketType.WHO) {
           _processReceivedPacket(packet);
         }
       }
@@ -172,13 +172,13 @@ class PacketManager {
   void _processReceivedPacket(Packet packet) {
     dynamic object = _stringToObject(packet.data, packet.type);
     switch(packet.type) {
-      case PacketType.Order:
+      case PacketType.ORDER:
         // send ACK
         Packet ack = Packet.create(
             recipent: packet.source,
             source: packet.recipient,
-            data: "${packet.id}",
-            type: PacketType.Ack,
+            data: packet.id,
+            type: PacketType.ACK,
             status: PacketStatus.TO_SEND
         );
         _pkt_to_send.add(ack);
@@ -186,7 +186,7 @@ class PacketManager {
         order.id = _getWaiterIDFromSource(packet.source);
         _orderViewModel.addReceivedOrder(order);
         break;
-      case PacketType.Who:
+      case PacketType.WHO:
         // data structure:
         // <R${role.index}>${_source} in case of identification
         // <ACK>${packet.source} in case of ACK
@@ -201,19 +201,19 @@ class PacketManager {
             Packet response = Packet.create(
                 recipent: packet.source,
                 source: _source,
-                data: "<R${mine.index}>${_source}",
-                type: PacketType.Who,
+                data: "<R${mine.index}>$_source",
+                type: PacketType.WHO,
                 status: PacketStatus.TO_SEND
             );
             _pkt_to_send.add(response);
-            Packet product_sale_exchange = Packet.create(
+            Packet productSaleExchange = Packet.create(
                 recipent: packet.source,
                 source: _source,
                 data: _productViewModel.toJson(),
-                type: PacketType.ProductForSale,
+                type: PacketType.PRODUCTS_FOR_SALE,
                 status: PacketStatus.TO_SEND
             );
-            _pkt_to_send.add(product_sale_exchange);
+            _pkt_to_send.add(productSaleExchange);
           }
           else {
             // send ACK
@@ -221,7 +221,7 @@ class PacketManager {
                 recipent: packet.source,
                 source: packet.recipient,
                 data: "<ACK>${packet.source}",
-                type: PacketType.Who,
+                type: PacketType.WHO,
                 status: PacketStatus.TO_SEND
             );
             _pkt_to_send.add(ack);
@@ -236,18 +236,18 @@ class PacketManager {
           }
         }
         break;
-      case PacketType.ProductForSale:
+      case PacketType.PRODUCTS_FOR_SALE:
         _productViewModel.fromJson(packet.data);
         Packet ack = Packet.create(
             recipent: packet.source,
             source: packet.recipient,
-            data: "${packet.id}",
-            type: PacketType.Ack,
+            data: packet.id,
+            type: PacketType.ACK,
             status: PacketStatus.TO_SEND
         );
         _pkt_to_send.add(ack);
         break;
-      case PacketType.Ack:
+      case PacketType.ACK:
         // remove packet from _pkt_in_transit
         _pkt_in_transit.removeWhere((element) => element.id == packet.data);
         break;
@@ -257,13 +257,13 @@ class PacketManager {
   }
 
   int _getWaiterIDFromSource(String source) {
-    int idx_first_int = source.indexOf(RegExp(r'[0-9]'));
-    int id_first_part = int.parse(source.substring(idx_first_int));
-    int id_second_part = _idx_received_order;
+    int idxFirstInt = source.indexOf(RegExp(r'[0-9]'));
+    int idFirstPart = int.parse(source.substring(idxFirstInt));
+    int idSecondPart = _idx_received_order;
     _idx_received_order++;
-    String str_second_id = id_second_part.toString();
-    int padding = 4 - str_second_id.length;
-    str_second_id = "0" * padding + str_second_id;
-    return int.parse("${id_first_part}${str_second_id}");
+    String strSecondId = idSecondPart.toString();
+    int padding = 4 - strSecondId.length;
+    strSecondId = "0" * padding + strSecondId;
+    return int.parse("$idFirstPart$strSecondId");
   }
 }

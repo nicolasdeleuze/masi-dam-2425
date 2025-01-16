@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:masi_dam_2425/model/product.dart';
 import 'package:masi_dam_2425/model/status.dart';
 
-//TODO : add the ID of the waiter
 
 /// This class represents an order, uniquely identified by its ID (order number).
 ///

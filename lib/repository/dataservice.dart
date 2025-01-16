@@ -31,7 +31,7 @@ class DataService {
       await _orderRepository.initDatabase(_database);
       await _menuRepository.initDatabase(_database);
     } catch (e) {
-      print("Database initialization error: $e");
+      throw Exception('Could not initialize database: $e');
     }
   }
 
@@ -83,29 +83,8 @@ class DataService {
         FOREIGN KEY(productId) REFERENCES products(id) ON DELETE CASCADE
       )
     ''');
-
-    _printDatabaseTables(db);
   }
 
-  Future<void> _resetDatabase(String dbPath) async {
-    await deleteDatabase(join(dbPath, 'app_database.db'));
-    print("Database deleted successfully.");
-  }
-
-  Future<void> _printDatabaseTables(Database db) async {
-    final result = await db.rawQuery(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"
-    );
-
-    if (result.isNotEmpty) {
-      print('Tables in the database:');
-      for (var row in result) {
-        print(row['name']);
-      }
-    } else {
-      print('No tables found in the database.');
-    }
-  }
 
   OrderRepository get orderRepository => _orderRepository;
   ProductRepository get productRepository => _productRepository;
