@@ -49,6 +49,7 @@ class OrderViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _errorMessage = "Failed to create order: $e";
+      print("OrderViewModel addReceivedOrder error: $e");
       notifyListeners();
     } finally {
       _setLoading(false);

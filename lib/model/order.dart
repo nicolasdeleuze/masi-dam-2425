@@ -240,6 +240,7 @@ class Order {
       'transfer': _transfer.displayName,
       'products': _order.map((product) => product.toMap()).toList(),
       'quantities': _quantity,
+      'missing': _missing,
       'tag': _tag,
     };
     return jsonEncode(map);
@@ -261,6 +262,7 @@ class Order {
           .map((productMap) => Product.fromMap(productMap))
           .toList(),
       quantity: List<int>.from(map['quantities'] ?? []),
+      missingProducts: List<int>.from(map['missing'] ?? []),
       tag: map['tag'],
     )..id = map['id'] as int?;
   }
