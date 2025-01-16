@@ -25,7 +25,7 @@ class PacketManager {
   }
 
   int _idx_received_order = 0;
-  late ComService _comService;
+  final ComService _comService;
   late OrderViewModel _orderViewModel;
   late ProductViewModel _productViewModel;
   String _source = "UNKNOWN";
@@ -70,7 +70,7 @@ class PacketManager {
     Packet packet = Packet.create(
       recipent: _destination,
       source: _source,
-      data: "<R${role.index}>${_source}",
+      data: "<R${role.index}>$_source",
       type: PacketType.Who,
       status: PacketStatus.TO_SEND
     );
@@ -98,18 +98,18 @@ class PacketManager {
     String data = "";
     switch(type) {
       case PacketType.String:
-        data = '${object as String}';
+        data = object as String;
         break;
       case PacketType.Order:
-        data = '${(object as Order).toJson()}';
+        data = (object as Order).toJson();
         break;
       case(PacketType.Who):
-        data = '${object as String}';
+        data = object as String;
         break;
       case PacketType.ProductForSale:
         break;
       case PacketType.Ack:
-        data = '${object as String}';
+        data = object as String;
         break;
       default:
         throw Exception("Unsupported type");
@@ -177,7 +177,7 @@ class PacketManager {
         Packet ack = Packet.create(
             recipent: packet.source,
             source: packet.recipient,
-            data: "${packet.id}",
+            data: packet.id,
             type: PacketType.Ack,
             status: PacketStatus.TO_SEND
         );
@@ -201,7 +201,7 @@ class PacketManager {
             Packet response = Packet.create(
                 recipent: packet.source,
                 source: _source,
-                data: "<R${mine.index}>${_source}",
+                data: "<R${mine.index}>$_source",
                 type: PacketType.Who,
                 status: PacketStatus.TO_SEND
             );
@@ -241,7 +241,7 @@ class PacketManager {
         Packet ack = Packet.create(
             recipent: packet.source,
             source: packet.recipient,
-            data: "${packet.id}",
+            data: packet.id,
             type: PacketType.Ack,
             status: PacketStatus.TO_SEND
         );
@@ -264,6 +264,6 @@ class PacketManager {
     String str_second_id = id_second_part.toString();
     int padding = 4 - str_second_id.length;
     str_second_id = "0" * padding + str_second_id;
-    return int.parse("${id_first_part}${str_second_id}");
+    return int.parse("$id_first_part$str_second_id");
   }
 }

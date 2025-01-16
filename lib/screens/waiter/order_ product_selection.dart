@@ -128,7 +128,6 @@ class _OrderProductSelectionScreenState extends State<OrderProductSelectionScree
               );
               return;
             }
-            //TODO : add product to order
             Navigator.of(context).pop(_currentOrder);
           },
           label: "Add product(s)",

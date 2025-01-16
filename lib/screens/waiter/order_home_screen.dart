@@ -22,7 +22,6 @@ class OrderHomeWidget extends StatefulWidget {
 class _OrderHomeWidgetState extends State<OrderHomeWidget> {
   @override
   Widget build(BuildContext context) {
-    // TODO : retrieve only active orders
     double width = MediaQuery.of(context).size.width;
     widget.comService.setContext(context);
 
@@ -34,7 +33,6 @@ class _OrderHomeWidgetState extends State<OrderHomeWidget> {
               children: <Widget>[
                 buildHeaderContainer(width),
                 SizedBox(height: 10),
-                //TODO : add padding instead of sized box
                 buildOrdersTitle(),
                 buildOrdersList(orderViewModel),
                 buildAddButton(width, context),

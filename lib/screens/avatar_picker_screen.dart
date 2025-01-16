@@ -7,7 +7,7 @@ import 'package:masi_dam_2425/widgets/buttons/return_button_widget.dart';
 import 'package:provider/provider.dart';
 
 class AvatarPickerScreen extends StatefulWidget {
-  var currentAvatar;
+  String currentAvatar = "assets/images/avatars/avatar_ungendered.png";
 
   AvatarPickerScreen({super.key, required this.currentAvatar});
 

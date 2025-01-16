@@ -76,7 +76,7 @@ class OrderOverview extends StatelessWidget {
                               Text("Order ${order.id}", style: extraBoldTitle(),),
                             ],
                           ),
-                          _buildOrderDetails(label: "Status : ", value: "${order.statusToString}"),
+                          _buildOrderDetails(label: "Status : ", value: order.statusToString),
                           _buildOrderDetails(label: "Price : ", value: "€${order.price}"),
                           Divider(),
                           _buildProductListOrderDetails(order: order)

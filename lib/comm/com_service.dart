@@ -135,7 +135,7 @@ class ComService extends ChangeNotifier {
       peers.clear();
       peers.addAll(event);
       print("Listen Peers: ${peers.length}");
-      print("Listen Peers: ${peers}");
+      print("Listen Peers: $peers");
       notifyListeners();
     });
 
