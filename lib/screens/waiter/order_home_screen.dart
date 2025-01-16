@@ -22,23 +22,25 @@ class OrderHomeWidget extends StatefulWidget {
 class _OrderHomeWidgetState extends State<OrderHomeWidget> {
   @override
   Widget build(BuildContext context) {
-    final OrderViewModel viewModel =
-        Provider.of<OrderViewModel>(context, listen: true);
     // TODO : retrieve only active orders
     double width = MediaQuery.of(context).size.width;
     widget.comService.setContext(context);
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            buildHeaderContainer(width),
-            SizedBox(height: 10),
-            //TODO : add padding instead of sized box
-            buildOrdersTitle(),
-            buildOrdersList(viewModel),
-            buildAddButton(width, context),
-          ],
+        child: Consumer<OrderViewModel>(
+          builder: (context, orderViewModel, child) {
+            return Column(
+              children: <Widget>[
+                buildHeaderContainer(width),
+                SizedBox(height: 10),
+                //TODO : add padding instead of sized box
+                buildOrdersTitle(),
+                buildOrdersList(orderViewModel),
+                buildAddButton(width, context),
+              ],
+            );
+          },
         )
       ),
     );

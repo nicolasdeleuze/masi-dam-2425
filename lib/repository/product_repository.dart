@@ -1,5 +1,4 @@
 import 'package:masi_dam_2425/model/product.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ProductRepository {

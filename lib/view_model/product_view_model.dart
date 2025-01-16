@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:masi_dam_2425/model/menu_category.dart';
 import 'package:masi_dam_2425/model/product.dart';
@@ -123,6 +125,24 @@ class ProductViewModel extends ChangeNotifier {
 
   void _setLoading(bool value) {
     _isLoading = value;
+    notifyListeners();
+  }
+
+  String toJson() {
+    Map<String, dynamic> map = {
+      'products': _products.map((product) => product.toMap()).toList(),
+    };
+    return jsonEncode(map);
+  }
+
+  void fromJson(String jsonString) {
+    Map<String, dynamic> map = jsonDecode(jsonString);
+    List<Product> products = (map['products'] as List)
+        .map((productMap) => Product.fromMap(productMap))
+        .toList();
+    for (Product product in products) {
+      _products.add(product);
+    }
     notifyListeners();
   }
 

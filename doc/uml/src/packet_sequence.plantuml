@@ -18,7 +18,12 @@ RT -> C1 : WHO
 
 |||
 
-== Exchange order ==
+== Products lists sync ==
+
+RT -> C1 : PRODUCTSSALED
+C1 -> RT : ACK
+
+== Exchange orders ==
 
 loop
     C1 -> RT : ORDER

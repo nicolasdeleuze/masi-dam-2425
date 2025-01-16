@@ -71,7 +71,14 @@ class Packet {
   static String _generateId(String data) {
     var time = DateTime.now().millisecondsSinceEpoch;
     var hash_time = time.hashCode.toRadixString(time.toString().length % 36);
-    var hash_data = data.hashCode.toRadixString(data.length % 36);
+    int radix_length = data.length % 36;
+    if (radix_length < 2 ) {
+      radix_length = 2;
+    }
+    else if (radix_length > 36) {
+      radix_length = 36;
+    }
+    var hash_data = data.hashCode.toRadixString(radix_length);
     return '$hash_time$hash_data';
   }
 }

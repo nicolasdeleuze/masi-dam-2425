@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:masi_dam_2425/model/roles.dart';
 import 'package:masi_dam_2425/screens/admin/admin_home_screen.dart';
 import 'package:masi_dam_2425/screens/waiter/join_network_screen.dart';
-import 'package:masi_dam_2425/screens/waiter/order_home_screen.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/screens/bartender/barman_home_screen.dart';
 import 'package:masi_dam_2425/theme/styles/text_style.dart';
@@ -64,8 +63,7 @@ class _RolesWidgetState extends State<RolesWidget> {
                     iconPath: 'assets/images/waiter.png',
                     backgroundColor: LightColors.kRed,
                     textColor: LightColors.kLightYellow,
-                    //nextPage: JoinNetworkScreen(),
-                    nextPage: OrderHomeWidget(),
+                    nextPage: JoinNetworkScreen(),
                     comService: widget.comService,
                   ),
                   const SizedBox(height: 20),

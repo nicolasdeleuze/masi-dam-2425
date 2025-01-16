@@ -7,6 +7,7 @@ import 'package:masi_dam_2425/comm/packet_type.dart';
 import 'package:masi_dam_2425/model/order.dart';
 import 'package:masi_dam_2425/model/roles.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
+import 'package:masi_dam_2425/view_model/product_view_model.dart';
 
 class PacketManager {
   static PacketManager? _instance;
@@ -23,8 +24,10 @@ class PacketManager {
     return _instance!;
   }
 
+  int _idx_received_order = 0;
   late ComService _comService;
   late OrderViewModel _orderViewModel;
+  late ProductViewModel _productViewModel;
   String _source = "UNKNOWN";
   String _destination = "UNKNOWN";
   final List<String> _knownPeers = [];
@@ -33,8 +36,14 @@ class PacketManager {
   final Queue<Packet> _pkt_received = Queue<Packet>();
   bool _isRunning = false;
 
-  void setOrderViewModel(OrderViewModel orderViewModel) {
+  void setViewModel(
+    {
+      required OrderViewModel orderViewModel,
+      required ProductViewModel productViewModel
+    }
+  ) {
     _orderViewModel = orderViewModel;
+    _productViewModel = productViewModel;
   }
 
   void setUserID(String userID) {
@@ -97,6 +106,8 @@ class PacketManager {
       case(PacketType.Who):
         data = '${object as String}';
         break;
+      case PacketType.ProductForSale:
+        break;
       case PacketType.Ack:
         data = '${object as String}';
         break;
@@ -117,6 +128,8 @@ class PacketManager {
         break;
       case PacketType.Who:
         object = data;
+        break;
+      case PacketType.ProductForSale:
         break;
       case PacketType.Ack:
         object = data;
@@ -170,6 +183,7 @@ class PacketManager {
         );
         _pkt_to_send.add(ack);
         Order order = object as Order;
+        order.id = _getWaiterIDFromSource(packet.source);
         _orderViewModel.addReceivedOrder(order);
         break;
       case PacketType.Who:
@@ -192,6 +206,14 @@ class PacketManager {
                 status: PacketStatus.TO_SEND
             );
             _pkt_to_send.add(response);
+            Packet product_sale_exchange = Packet.create(
+                recipent: packet.source,
+                source: _source,
+                data: _productViewModel.toJson(),
+                type: PacketType.ProductForSale,
+                status: PacketStatus.TO_SEND
+            );
+            _pkt_to_send.add(product_sale_exchange);
           }
           else {
             // send ACK
@@ -214,6 +236,17 @@ class PacketManager {
           }
         }
         break;
+      case PacketType.ProductForSale:
+        _productViewModel.fromJson(packet.data);
+        Packet ack = Packet.create(
+            recipent: packet.source,
+            source: packet.recipient,
+            data: "${packet.id}",
+            type: PacketType.Ack,
+            status: PacketStatus.TO_SEND
+        );
+        _pkt_to_send.add(ack);
+        break;
       case PacketType.Ack:
         // remove packet from _pkt_in_transit
         _pkt_in_transit.removeWhere((element) => element.id == packet.data);
@@ -221,5 +254,16 @@ class PacketManager {
       default:
         throw Exception("Unsupported type");
     }
+  }
+
+  int _getWaiterIDFromSource(String source) {
+    int idx_first_int = source.indexOf(RegExp(r'[0-9]'));
+    int id_first_part = int.parse(source.substring(idx_first_int));
+    int id_second_part = _idx_received_order;
+    _idx_received_order++;
+    String str_second_id = id_second_part.toString();
+    int padding = 4 - str_second_id.length;
+    str_second_id = "0" * padding + str_second_id;
+    return int.parse("${id_first_part}${str_second_id}");
   }
 }
