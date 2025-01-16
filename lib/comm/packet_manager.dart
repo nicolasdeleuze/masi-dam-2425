@@ -25,6 +25,7 @@ class PacketManager {
     return _instance!;
   }
 
+  int _idx_received_order = 0;
   late ComService _comService;
   late OrderViewModel _orderViewModel;
   late ProductViewModel _productViewModel;
@@ -258,6 +259,12 @@ class PacketManager {
 
   int _getWaiterIDFromSource(String source) {
     int idx_first_int = source.indexOf(RegExp(r'[0-9]'));
-    return int.parse(source.substring(idx_first_int));
+    int id_first_part = int.parse(source.substring(idx_first_int));
+    int id_second_part = _idx_received_order;
+    _idx_received_order++;
+    String str_second_id = id_second_part.toString();
+    int padding = 4 - str_second_id.length;
+    str_second_id = "0" * padding + str_second_id;
+    return int.parse("${id_first_part}${str_second_id}");
   }
 }

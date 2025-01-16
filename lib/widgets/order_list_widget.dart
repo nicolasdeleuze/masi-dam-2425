@@ -77,7 +77,7 @@ class OrderOverview extends StatelessWidget {
                             ],
                           ),
                           _buildOrderDetails(label: "Status : ", value: "${order.statusToString}"),
-                          _buildOrderDetails(label: "Price : ", value: "${order.price}"),
+                          _buildOrderDetails(label: "Price : ", value: "€${order.price}"),
                           Divider(),
                           _buildProductListOrderDetails(order: order)
                         ]
@@ -138,7 +138,7 @@ Widget _buildActionButtonOrderDetails({required Order order, required BuildConte
     children: [
       ElevatedButton.icon(
         onPressed: () {
-          order.prepared();
+          // order.prepared();
         },
         style: coloredButtonStyle(
             LightColors.kBlue, LightColors.kLightYellow),
