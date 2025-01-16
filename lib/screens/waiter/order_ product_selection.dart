@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:masi_dam_2425/model/menu.dart';
 import 'package:masi_dam_2425/model/menu_category.dart';
 import 'package:masi_dam_2425/model/order.dart';
 import 'package:masi_dam_2425/model/product.dart';
 import 'package:masi_dam_2425/theme/colors/light_colors.dart';
 import 'package:masi_dam_2425/theme/styles/text_style.dart';
 import 'package:masi_dam_2425/theme/styles/textfield_style.dart';
-import 'package:masi_dam_2425/view_model/menu_view_model.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
 import 'package:masi_dam_2425/view_model/product_view_model.dart';
 import 'package:masi_dam_2425/widgets/buttons/add_button_widget.dart';
@@ -29,7 +27,7 @@ class _OrderProductSelectionScreenState extends State<OrderProductSelectionScree
   @override
   void initState() {
     super.initState();
-    _currentOrder = widget.currentOrder!;
+    _currentOrder = widget.currentOrder;
     controller = TextEditingController(text: "");
   }
 

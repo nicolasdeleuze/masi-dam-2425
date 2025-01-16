@@ -5,7 +5,6 @@ import 'package:masi_dam_2425/comm/packet_status.dart';
 import 'package:masi_dam_2425/comm/packet.dart';
 import 'package:masi_dam_2425/comm/packet_type.dart';
 import 'package:masi_dam_2425/model/order.dart';
-import 'package:masi_dam_2425/model/product.dart';
 import 'package:masi_dam_2425/model/roles.dart';
 import 'package:masi_dam_2425/view_model/order_view_model.dart';
 import 'package:masi_dam_2425/view_model/product_view_model.dart';

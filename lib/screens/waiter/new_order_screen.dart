@@ -22,19 +22,22 @@ class _NewOrderWidgetState extends State<NewOrderWidget> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    final orderViewModel = Provider.of<OrderViewModel>(context);
 
     return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          children: [
-            buildHeaderContainer(width, context, orderViewModel),
-            buildPriceDisplay(),
-            buildProductsList(),
-            buildAddButton(width, context)
-          ],
-        ),
+      child: Consumer<OrderViewModel>(
+        builder: (context, orderViewModel, child) {
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Column(
+              children: [
+                buildHeaderContainer(width, context, orderViewModel),
+                buildPriceDisplay(),
+                buildProductsList(),
+                buildAddButton(width, context)
+              ],
+            ),
+          );
+        }
       ),
     );
   }

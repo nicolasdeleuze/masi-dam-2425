@@ -9,7 +9,6 @@ import 'package:masi_dam_2425/view_model/product_view_model.dart';
 import 'package:masi_dam_2425/view_model/staff_view_model.dart';
 import 'package:provider/provider.dart';
 import 'theme/colors/light_colors.dart';
-import 'screens/roles_selection_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

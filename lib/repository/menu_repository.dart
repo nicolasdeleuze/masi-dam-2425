@@ -1,7 +1,5 @@
 import 'package:masi_dam_2425/model/menu.dart';
-import 'package:masi_dam_2425/model/product.dart';
 import 'package:masi_dam_2425/repository/product_repository.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MenuRepository {

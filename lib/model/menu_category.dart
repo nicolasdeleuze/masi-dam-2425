@@ -1,4 +1,3 @@
-import 'package:masi_dam_2425/model/menu.dart';
 
 enum MenuCategory {
   // Beverage
