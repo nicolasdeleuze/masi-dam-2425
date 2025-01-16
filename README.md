@@ -76,6 +76,10 @@ En tant qu’utilisateur de l’application, je désire :
 - pouvoir m’authentifier sur l’application
 - pouvoir gérer les notifications que je reçois de l'application
 
+Une commande doit suivre le cycle de vie suivant :
+
+![Alt Text](https://i.ibb.co/fNnS4zB/image.png)
+
 
 ## 📈 État d'Avancement
 
@@ -172,3 +176,18 @@ Pour la vérification, on peut compter sur la [WiFi Alliance](https://www.wi-fi.
 Plus d'information à l'adresse suivante : [https://www.wi-fi.org/product-finder-results?sort_by=certified&sort_order=desc&certifications=900](https://www.wi-fi.org/product-finder-results?sort_by=certified&sort_order=desc&certifications=900).
 
 <!-- vim: set spelllang=fr :-->
+
+## Pour aller plus loin
+
+Certaines idées et autres fonctionnalités à ajouter :
+- Onboard pour présenter l'application au démarrage
+- Possibilité d'ajout d'utilisateurs à la volée. Utile si l'utilisateur n'a pas été encodé avant l'évennement.
+- Gestion de promotions sur les produits
+- Implémentation de la gestion des stocks
+- ...
+
+## Moodboard
+Notre volonté, en terme d'interface graphique, était d'avoir une interface douce et agréable au regard. Nous sommes donc parti sur un compromis de couleurs chaudes/pastels.
+L'inspiration principale a été la suivante : [flutter-task-planner-app](https://github.com/TheAlphaApp/flutter-task-planner-app)
+
+![Alt Text](https://i.ibb.co/tXqNF9J/2025-01-16-232519.jpg)
